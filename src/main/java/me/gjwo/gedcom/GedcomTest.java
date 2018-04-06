@@ -34,7 +34,7 @@ public class GedcomTest
         }
 */
         get("/hello", (req, res) -> "Hello World");
-
+/*
         get("/person/:id", (req, res) ->
         {
             String id = req.params(":id");
@@ -52,7 +52,7 @@ public class GedcomTest
                 FamilyPage fp = new FamilyPage(g.getFamilies().get(id));
                 return fp.toHTML();
             } else return "Unknown family";
-        });
+        });*/
         get("/individualsfamily/:id", (req, res) ->
         {
             String id = req.params(":id");

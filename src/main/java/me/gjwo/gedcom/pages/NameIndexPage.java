@@ -5,9 +5,9 @@ import me.gjwo.gedcom.pages.abstractions.WebPage;
 import java.io.IOException;
 
 /**
- * IndividualPage   -   The page displays facts/events for an individual
+ * NameIndexPage   -   This is the page for displaying the list of names
  */
-public class IndividualPage extends WebPage {
+public class NameIndexPage extends WebPage {
     @Override
     public String render() throws IOException {
         return null;

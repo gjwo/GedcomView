@@ -20,7 +20,7 @@ public class CoupleTable extends WebElement
 
     private String buildSingleCoupleTable(Family family) throws IOException {
         LinkBuilder lb = new LinkBuilder();
-        String content = readFile("couple.html");
+        String content = readFile("coupleNamesTable.html");
 
         String husband = "No Husband Present";
         String wife = "No Wife Present";

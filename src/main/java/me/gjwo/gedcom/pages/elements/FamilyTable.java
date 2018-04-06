@@ -20,7 +20,7 @@ public class FamilyTable extends WebElement
 
     private String buildSingleFamilyTable(Family family) throws IOException {
         LinkBuilder lb = new LinkBuilder();
-        String content = readFile("couple.html");
+        String content = readFile("coupleNamesTable.html");
 
         String husband = "No Husband Present";
         String wife = "No Wife Present";
@@ -30,8 +30,7 @@ public class FamilyTable extends WebElement
 
         content = content.replace("!HUSBAND!", husband);
         content = content.replace("!WIFE!", wife);
-
-        content += lb.buildChildrenLinksList(family);
+        content += lb.buildChildrenLinksTable(family);
 
         return content;
     }

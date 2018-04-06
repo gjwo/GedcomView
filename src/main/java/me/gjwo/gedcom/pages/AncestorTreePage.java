@@ -5,9 +5,9 @@ import me.gjwo.gedcom.pages.abstractions.WebPage;
 import java.io.IOException;
 
 /**
- * IndividualPage   -   The page displays facts/events for an individual
+ * AncestorTreePage   -   This is the page for the ancestor tree for an individual
  */
-public class IndividualPage extends WebPage {
+public class AncestorTreePage extends WebPage {
     @Override
     public String render() throws IOException {
         return null;

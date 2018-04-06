@@ -32,7 +32,7 @@ public class IndividualsFamilyPage extends WebPage
 
     @Override
     public String render() throws IOException {
-        String content = readFile("IndividualsFamilies.html");
+        String content = readFile("IndividualsFamiliesPage.html");
         content = content.replace("!HEAD!", elements.get(ElementTypes.PAGE_HEADER).render());
         content = content.replace("!NAME!", elements.get(ElementTypes.NAME_ELEMENT).render());
         content = content.replace("!PARENTS!", elements.get(ElementTypes.PARENTS_ELEMENT).render());
