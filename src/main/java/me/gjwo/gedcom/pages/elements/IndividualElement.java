@@ -9,15 +9,20 @@ import java.io.IOException;
 public class IndividualElement extends WebElement
 {
     private final Individual individual;
+    private boolean linkToFamily;
+
+    public void setLinkIndividual(){linkToFamily=false;}
+    public void setlinkFamily(){linkToFamily=true;}
 
     public IndividualElement(Individual individual)
     {
         this.individual = individual;
+        this.linkToFamily = true;
     }
 
     @Override
     public String render() throws IOException {
         LinkBuilder lb = new LinkBuilder();
-        return lb.buildPersonLink(individual);
+        return linkToFamily?lb.buildPersonFamilyLink(individual):lb.buildPersonIndividualLink(individual);
     }
 }

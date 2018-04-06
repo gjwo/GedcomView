@@ -8,8 +8,12 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 
 public class LinkBuilder
 {
-    public String buildPersonLink(Individual person) {
+    public String buildPersonFamilyLink(Individual person) {
         return "<a href=\""+"/individualsfamily/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
+    }
+
+    public String buildPersonIndividualLink(Individual person) {
+        return "<a href=\""+"/individual/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
     }
 
     private String buildPersonSummaryLink(Individual person) throws IOException {
@@ -18,7 +22,9 @@ public class LinkBuilder
         content = content.replace("!ID!", person.getXref());
         content = content.replace("!TEXT!", person.getFormattedName());
         content = content.replace("!DOB!", fb.getDateOfBirth(person));
+        content = content.replace("!POB!", fb.getPlaceOfBirth(person));
         content = content.replace("!DOD!", fb.getDateOfDeath(person));
+        content = content.replace("!POD!", fb.getPlaceOfDeath(person));
         return content;
     }
     public String buildFamilyLink(Family family){

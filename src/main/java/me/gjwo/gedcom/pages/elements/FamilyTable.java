@@ -25,8 +25,8 @@ public class FamilyTable extends WebElement
         String husband = "No Husband Present";
         String wife = "No Wife Present";
 
-        if(family.getHusband() != null) husband = lb.buildPersonLink(family.getHusband().getIndividual());
-        if(family.getWife() != null) wife = lb.buildPersonLink(family.getWife().getIndividual());
+        if(family.getHusband() != null) husband = lb.buildPersonFamilyLink(family.getHusband().getIndividual());
+        if(family.getWife() != null) wife = lb.buildPersonFamilyLink(family.getWife().getIndividual());
 
         content = content.replace("!HUSBAND!", husband);
         content = content.replace("!WIFE!", wife);

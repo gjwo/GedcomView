@@ -1,5 +1,6 @@
 package me.gjwo.gedcom;
 
+import me.gjwo.gedcom.pages.IndividualPage;
 import me.gjwo.gedcom.pages.IndividualsFamilyPage;
 import org.gedcom4j.exception.GedcomParserException;
 import org.gedcom4j.model.*;
@@ -59,6 +60,15 @@ public class GedcomTest
             if(g.getIndividuals().containsKey(id))
             {
                 IndividualsFamilyPage pp = new IndividualsFamilyPage(g.getIndividuals().get(id));
+                return pp.render();
+            } else return "Unknown person";
+        });
+        get("/individual/:id", (req, res) ->
+        {
+            String id = req.params(":id");
+            if(g.getIndividuals().containsKey(id))
+            {
+                IndividualPage pp = new IndividualPage(g.getIndividuals().get(id));
                 return pp.render();
             } else return "Unknown person";
         });

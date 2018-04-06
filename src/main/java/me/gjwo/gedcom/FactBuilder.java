@@ -12,21 +12,48 @@ public class FactBuilder {
         for (IndividualEvent bd : birthDates) {
             if (bd.getDate() != null && bd.getDate().trim()
                     .length() > 0) {
-                sb.append(" " + bd.getDate());
+                sb.append(bd.getDate());
             }
         }
         return sb.toString();
     }
+
+    public String getPlaceOfBirth(Individual person) {
+        StringBuilder sb = new StringBuilder();
+        List<IndividualEvent> birthDates = person.getEventsOfType(
+                IndividualEventType.BIRTH);
+        for (IndividualEvent bd : birthDates) {
+            if (bd.getPlace() != null && bd.getPlace()
+                    .getPlaceName() != null) {
+                sb.append(bd.getPlace().getPlaceName());
+            }
+        }
+        return sb.toString();
+    }
+
     public String getDateOfDeath(Individual person) {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> DeathDates = person.getEventsOfType(
                 IndividualEventType.DEATH);
-        for (IndividualEvent bd : DeathDates) {
-            if (bd.getDate() != null && bd.getDate().trim()
+        for (IndividualEvent dd : DeathDates) {
+            if (dd.getDate() != null && dd.getDate().trim()
                     .length() > 0) {
-                sb.append(" " + bd.getDate());
+                sb.append(dd.getDate());
             }
         }
         return sb.toString();
+    }
+
+    public String getPlaceOfDeath(Individual person) {
+        StringBuilder sb = new StringBuilder();
+        List<IndividualEvent> DeathDates = person.getEventsOfType(
+                IndividualEventType.DEATH);
+        for (IndividualEvent dd : DeathDates) {
+            if (dd.getPlace() != null && dd.getPlace()
+                    .getPlaceName() != null) {
+                sb.append(dd.getPlace().getPlaceName());
+            }
+        }
+            return sb.toString();
     }
 }
