@@ -23,7 +23,7 @@ public class PersonPage
             content = content.replace("!NAME!", person.getFormattedName());
             content = content.replace("!SPOUSES!", lb.buildLinkedSpouseList(person));
             content = content.replace("!FAMILIES_SPOUSE!", lb.buildLinkedSpouseFamilyList(person));
-            content = content.replace("!FAMILIES_CHILD!", lb.buildParentalFamilyList(person));
+            content = content.replace("!PARENTS!", lb.buildParentalFamilyList(person));
             return content;
         } catch (IOException e) {
             System.err.println("Person template missing.");

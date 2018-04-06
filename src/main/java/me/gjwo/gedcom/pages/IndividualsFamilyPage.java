@@ -11,9 +11,13 @@ import java.io.IOException;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 
+/**
+ * IndividualsFamilyPage    -   This class produces a family group sheet form an individual's perspective covering
+ *                              - Their Parents
+ *                              - Any families including spouse and shared children
+ */
 public class IndividualsFamilyPage extends WebPage
 {
-
 
     public IndividualsFamilyPage(Individual individual)
     {
@@ -31,7 +35,7 @@ public class IndividualsFamilyPage extends WebPage
         String content = readFile("IndividualsFamilies.html");
         content = content.replace("!HEAD!", elements.get(ElementTypes.PAGE_HEADER).render());
         content = content.replace("!NAME!", elements.get(ElementTypes.NAME_ELEMENT).render());
-        content = content.replace("!FAMILIES_CHILD!", elements.get(ElementTypes.PARENTS_ELEMENT).render());
+        content = content.replace("!PARENTS!", elements.get(ElementTypes.PARENTS_ELEMENT).render());
         content = content.replace("!FAMILIES_SPOUSE!", elements.get(ElementTypes.FAMILIES_ELEMENT).render());
         return content;
     }
