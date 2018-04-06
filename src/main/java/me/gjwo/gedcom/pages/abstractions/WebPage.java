@@ -3,6 +3,7 @@ package me.gjwo.gedcom.pages.abstractions;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import me.gjwo.gedcom.pages.elements.ElementTypes;
 
 public abstract class WebPage
 {
@@ -10,7 +11,7 @@ public abstract class WebPage
         this.elements = new HashMap<>();
     }
 
-    protected HashMap<Integer, WebElement> elements;
+    protected HashMap<ElementTypes, WebElement> elements;
 
     public abstract String render() throws IOException;
 
