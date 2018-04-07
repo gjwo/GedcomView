@@ -11,11 +11,11 @@ import java.io.IOException;
 import static me.gjwo.gedcom.FileUtil.readFile;
 
 
-public class CensusTable extends WebElement
+public class CensusTableElement extends WebElement
 {
     private final Individual person;
 
-    public CensusTable(Individual person)
+    public CensusTableElement(Individual person)
     {
         this.person = person;
     }

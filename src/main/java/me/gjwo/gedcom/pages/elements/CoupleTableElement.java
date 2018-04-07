@@ -9,16 +9,16 @@ import java.io.IOException;
 import static me.gjwo.gedcom.FileUtil.readFile;
 
 
-public class FamilyTable extends WebElement
+public class CoupleTableElement extends WebElement
 {
     private final Family[] families;
 
-    public FamilyTable(Family... families)
+    public CoupleTableElement(Family... families)
     {
         this.families = families;
     }
 
-    private String buildSingleFamilyTable(Family family) throws IOException {
+    private String buildSingleCoupleTable(Family family) throws IOException {
         LinkBuilder lb = new LinkBuilder();
         String content = readFile("coupleNamesTable.html");
 
@@ -30,7 +30,6 @@ public class FamilyTable extends WebElement
 
         content = content.replace("!HUSBAND!", husband);
         content = content.replace("!WIFE!", wife);
-        content += lb.buildChildrenLinksTable(family,Boolean.TRUE);
 
         return content;
     }
@@ -39,7 +38,7 @@ public class FamilyTable extends WebElement
     public String render() throws IOException
     {
         StringBuilder sb = new StringBuilder();
-        for(Family f:families) sb.append(buildSingleFamilyTable(f));
+        for(Family f:families) sb.append(buildSingleCoupleTable(f));
         return sb.toString();
     }
 }

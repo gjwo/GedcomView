@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 
-public class PageHeader extends WebElement{
+public class PageHeaderElement extends WebElement{
     private String title;
-    public PageHeader(String title){
+    public PageHeaderElement(String title){
         this.title = title;
     }
 

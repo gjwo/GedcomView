@@ -22,13 +22,13 @@ public class IndividualsFamilyPage extends WebPage
     public IndividualsFamilyPage(Individual individual)
     {
         super();
-        elements.put(ElementTypes.PAGE_HEADER, new PageHeader("Individual's family Page"));
+        elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Individual's family Page"));
         PersonLinkElement ie = new PersonLinkElement(individual);
         ie.setLinkIndividual();
-        elements.put(ElementTypes.NAME_ELEMENT, ie);
-        elements.put(ElementTypes.PARENTS_ELEMENT, new CoupleTable(
+        elements.put(ElementTypes.PERSON_LINK_ELEMENT, ie);
+        elements.put(ElementTypes.PARENTS_ELEMENT, new CoupleTableElement(
                 individual.getFamiliesWhereChild() != null? individual.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0]));
-        elements.put(ElementTypes.FAMILIES_ELEMENT, new FamilyTable(
+        elements.put(ElementTypes.FAMILIES_ELEMENT, new FamiliesElement(
                 individual.getFamiliesWhereSpouse() != null? individual.getFamiliesWhereSpouse().stream().map(FamilySpouse::getFamily).toArray(Family[]::new):new Family[0]));
     }
 
@@ -36,7 +36,7 @@ public class IndividualsFamilyPage extends WebPage
     public String render() throws IOException {
         String content = readFile("IndividualsFamiliesPage.html");
         content = content.replace("!HEAD!", elements.get(ElementTypes.PAGE_HEADER).render());
-        content = content.replace("!NAME!", elements.get(ElementTypes.NAME_ELEMENT).render());
+        content = content.replace("!NAME!", elements.get(ElementTypes.PERSON_LINK_ELEMENT).render());
         content = content.replace("!PARENTS!", elements.get(ElementTypes.PARENTS_ELEMENT).render());
         content = content.replace("!FAMILIES_SPOUSE!", elements.get(ElementTypes.FAMILIES_ELEMENT).render());
         return content;
