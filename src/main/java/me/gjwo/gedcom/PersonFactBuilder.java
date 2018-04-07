@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PersonFactBuilder
 {
-    Individual person;
+    private Individual person;
     public PersonFactBuilder(Individual person)
     {
         this.person = person;
@@ -64,7 +64,7 @@ public class PersonFactBuilder
 
     public String getRefNumber()
     {
-        return person.getXref().toString().replace("@I","Ref: ").replace("@","");
+        return person.getXref().toString().replace("@I","").replace("@","");
     }
 
     public String getDateOfBaptism() {

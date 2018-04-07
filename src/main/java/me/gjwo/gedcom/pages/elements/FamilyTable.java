@@ -30,7 +30,7 @@ public class FamilyTable extends WebElement
 
         content = content.replace("!HUSBAND!", husband);
         content = content.replace("!WIFE!", wife);
-        content += lb.buildChildrenLinksTable(family);
+        content += lb.buildChildrenLinksTable(family,Boolean.TRUE);
 
         return content;
     }

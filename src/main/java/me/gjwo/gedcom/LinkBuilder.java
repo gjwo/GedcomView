@@ -16,9 +16,12 @@ public class LinkBuilder
         return "<a href=\""+"/individual/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
     }
 
-    private String buildPersonSummaryLink(Individual person) throws IOException {
+    private String buildPersonSummaryRow(Individual person, Boolean withLables) throws IOException {
         PersonFactBuilder fb = new PersonFactBuilder(person);
-        String content = readFile("personSummaryTableRow.html");
+        String content;
+        if (withLables) content = readFile("personSummaryTableRowLables.html");
+        else content = readFile("personSummaryTableRowNoLables.html");
+        content = content.replace("!REF!", fb.getRefNumber());
         content = content.replace("!ID!", person.getXref());
         content = content.replace("!TEXT!", person.getFormattedName());
         content = content.replace("!DOB!", fb.getDateOfBirth());
@@ -32,16 +35,20 @@ public class LinkBuilder
         return "<a href=\"/family/"+family.getXref()+"\"> "+family.toString()+ "</a><br>";
     }
 
-    public String buildChildrenLinksTable(Family family) throws IOException {
+    public String buildChildrenLinksTable(Family family, Boolean tableHeaders) throws IOException {
         StringBuilder sb = new StringBuilder();
         if(family.getChildren() != null)
         {
             sb.append("<table>");
             sb.append("<th> Children </th>");
+            if(tableHeaders)
+            {
+                sb.append("<tr> <th>Ref</th><th>Name</th><th>Birth Date</th><th>Birth place</th><th>Death date</th><th>Death Place</th></tr>");
+            }
             for(IndividualReference child:family.getChildren())
             {
                 sb.append("<tr>");
-                sb.append(buildPersonSummaryLink(child.getIndividual()));
+                sb.append(buildPersonSummaryRow(child.getIndividual(),Boolean.FALSE));
                 sb.append("</tr>");
             }
             sb.append("</table>");
