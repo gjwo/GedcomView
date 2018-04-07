@@ -2,7 +2,10 @@ package me.gjwo.gedcom;
 import org.gedcom4j.model.*;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
+import java.io.IOException;
 import java.util.List;
+
+import static me.gjwo.gedcom.FileUtil.readFile;
 
 public class PersonFactBuilder
 {
@@ -107,26 +110,56 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getDateOfCensus() {
+    public String getDateOfCensus(IndividualEvent ce)
+    {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> censuses = person.getEventsOfType(IndividualEventType.CENSUS);
-        for (IndividualEvent ce : censuses) {
-            if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
-                sb.append(ce.getDate());
-             }
-          }
+        if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
+            sb.append(ce.getDate());
+         }
         return sb.toString();
     }
 
-    public String getPlaceOfCensus() {
+    public String getPlaceOfCensus(IndividualEvent ce)
+    {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> censuses = person.getEventsOfType(IndividualEventType.CENSUS);
-        for (IndividualEvent ce : censuses) {
-            if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
-                sb.append(ce.getPlace().getPlaceName());
-            }
+        if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
+            sb.append(ce.getPlace().getPlaceName());
         }
         return sb.toString();
     }
+    private String buildCensusRow(IndividualEvent ce) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        String content;
+        Boolean withLables = Boolean.FALSE;
+        if (withLables) content = readFile("personCensusTableRowLables.html");
+        else content = readFile("personCensusTableRowNoLables.html");
+        content = content.replace("!DOC!", getDateOfCensus(ce));
+        content = content.replace("!POC!",getPlaceOfCensus(ce));
+        return content;
+    }
 
+    public String buildCensusTable(Boolean tableHeaders) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        List<IndividualEvent> censuses = person.getEventsOfType(IndividualEventType.CENSUS);
+        if(censuses != null)
+        {
+            sb.append("<table>");
+            if(tableHeaders)
+            {
+                sb.append("<tr> <th>Census Date</th><th>Census Place</th></tr>");
+            }
+            for (IndividualEvent ce : censuses) {
+                sb.append("<tr>");
+                sb.append(buildCensusRow(ce));
+                sb.append("</tr>");
+            }
+            sb.append("</table>");
+        } else
+        {
+            sb.append("<table>");
+            sb.append("<th>"+"No known census entries"+"</th>");
+            sb.append("</table>");
+        }
+        return sb.toString();
+    }
 }

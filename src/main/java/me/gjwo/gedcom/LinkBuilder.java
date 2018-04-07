@@ -30,10 +30,6 @@ public class LinkBuilder
         content = content.replace("!POD!", fb.getPlaceOfDeath());
         return content;
     }
-    public String buildFamilyLink(Family family){
-
-        return "<a href=\"/family/"+family.getXref()+"\"> "+family.toString()+ "</a><br>";
-    }
 
     public String buildChildrenLinksTable(Family family, Boolean tableHeaders) throws IOException {
         StringBuilder sb = new StringBuilder();

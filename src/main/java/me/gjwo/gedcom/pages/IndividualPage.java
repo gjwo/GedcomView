@@ -2,6 +2,7 @@ package me.gjwo.gedcom.pages;
 
 import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebPage;
+import me.gjwo.gedcom.pages.elements.CensusTable;
 import me.gjwo.gedcom.pages.elements.ElementTypes;
 import me.gjwo.gedcom.pages.elements.PersonLinkElement;
 import me.gjwo.gedcom.pages.elements.PageHeader;
@@ -38,7 +39,9 @@ public class IndividualPage extends WebPage {
         content += "Birth: " + pfb.getDateOfBirth()+ " at "+ pfb.getPlaceOfBirth()+"<br>";
         content += "Baptism: "+pfb.getDateOfBaptism()+ " at "+ pfb.getPlaceOfBaptism()+"<br>";
         content += "Death: " + pfb.getDateOfDeath()+ " at "+ pfb.getPlaceOfDeath()+"<br>";
-        content += "Census: "+ pfb.getCensusInfo()+"<br>";
+        content += "Census<br>";
+        CensusTable ct = new CensusTable(individual);
+        content +=  ct.render();
         /*
         if (individual.getEventsOfType(IndividualEventType.CENSUS)!=null)
         {
