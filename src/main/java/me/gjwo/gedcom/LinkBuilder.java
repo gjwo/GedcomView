@@ -17,14 +17,14 @@ public class LinkBuilder
     }
 
     private String buildPersonSummaryLink(Individual person) throws IOException {
-        FactBuilder fb = new FactBuilder();
+        PersonFactBuilder fb = new PersonFactBuilder(person);
         String content = readFile("personSummaryTableRow.html");
         content = content.replace("!ID!", person.getXref());
         content = content.replace("!TEXT!", person.getFormattedName());
-        content = content.replace("!DOB!", fb.getDateOfBirth(person));
-        content = content.replace("!POB!", fb.getPlaceOfBirth(person));
-        content = content.replace("!DOD!", fb.getDateOfDeath(person));
-        content = content.replace("!POD!", fb.getPlaceOfDeath(person));
+        content = content.replace("!DOB!", fb.getDateOfBirth());
+        content = content.replace("!POB!", fb.getPlaceOfBirth());
+        content = content.replace("!DOD!", fb.getDateOfDeath());
+        content = content.replace("!POD!", fb.getPlaceOfDeath());
         return content;
     }
     public String buildFamilyLink(Family family){
