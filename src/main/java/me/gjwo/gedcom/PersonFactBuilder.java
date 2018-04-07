@@ -18,12 +18,7 @@ public class PersonFactBuilder
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> birthDates = person.getEventsOfType(
                 IndividualEventType.BIRTH);
-        for (IndividualEvent bd : birthDates) {
-            if (bd.getDate() != null && bd.getDate().trim()
-                    .length() > 0) {
-                sb.append(bd.getDate());
-            }
-        }
+        for (IndividualEvent ev : birthDates) sb.append(getDateOfEvent(ev));
         return sb.toString();
     }
 
@@ -31,12 +26,7 @@ public class PersonFactBuilder
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> birthDates = person.getEventsOfType(
                 IndividualEventType.BIRTH);
-        for (IndividualEvent bd : birthDates) {
-            if (bd.getPlace() != null && bd.getPlace()
-                    .getPlaceName() != null) {
-                sb.append(bd.getPlace().getPlaceName());
-            }
-        }
+        for (IndividualEvent ev : birthDates) sb.append(getPlaceOfEvent(ev));
         return sb.toString();
     }
 
@@ -44,11 +34,7 @@ public class PersonFactBuilder
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> DeathDates = person.getEventsOfType(
                 IndividualEventType.DEATH);
-        for (IndividualEvent dd : DeathDates) {
-            if (dd.getDate() != null && dd.getDate().trim().length() > 0) {
-                sb.append(dd.getDate());
-            }
-        }
+        for (IndividualEvent ev : DeathDates) sb.append(getDateOfEvent(ev));
         return sb.toString();
     }
 
@@ -56,85 +42,35 @@ public class PersonFactBuilder
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> DeathDates = person.getEventsOfType(
                 IndividualEventType.DEATH);
-        for (IndividualEvent dd : DeathDates) {
-            if (dd.getPlace() != null && dd.getPlace()
-                    .getPlaceName() != null) {
-                sb.append(dd.getPlace().getPlaceName());
-            }
-        }
-            return sb.toString();
+        for (IndividualEvent ev : DeathDates) sb.append(getPlaceOfEvent(ev));
+        return sb.toString();
     }
 
     public String getRefNumber()
     {
-        return person.getXref().toString().replace("@I","").replace("@","");
+        return person.getXref().replace("@I","").replace("@","");
     }
 
     public String getDateOfBaptism() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> baptisms = person.getEventsOfType(IndividualEventType.BAPTISM);
-        for (IndividualEvent be : baptisms) {
-            if (be.getDate() != null && be.getDate().trim().length() > 0) {
-                sb.append(be.getDate());
-            }
-        }
+        for (IndividualEvent ev : baptisms)  sb.append(getDateOfEvent(ev));
         return sb.toString();
     }
 
     public String getPlaceOfBaptism() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> baptisms = person.getEventsOfType(IndividualEventType.BAPTISM);
-        for (IndividualEvent be : baptisms) {
-            if (be.getPlace() != null && be.getPlace().getPlaceName() != null) {
-                sb.append(be.getPlace().getPlaceName());
-            }
-        }
+        for (IndividualEvent ev : baptisms) sb.append(getPlaceOfEvent(ev));
         return sb.toString();
     }
-    public String getCensusInfo() {
-        StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> censuses = person.getEventsOfType(IndividualEventType.CENSUS);
-        for (IndividualEvent ce : censuses) {
-            if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
-                sb.append(ce.getDate());
-                sb.append(" ");
-            }
-            if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
-                sb.append(ce.getPlace().getPlaceName());
-            }/*
-            if (ce.getDescription()!= null){
-                sb.append(ce.getDescription().toString());
-            }*/
-            sb.append("<br>");
-        }
-        return sb.toString();
-    }
-
-    public String getDateOfCensus(IndividualEvent ce)
-    {
-        StringBuilder sb = new StringBuilder();
-        if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
-            sb.append(ce.getDate());
-         }
-        return sb.toString();
-    }
-
-    public String getPlaceOfCensus(IndividualEvent ce)
-    {
-        StringBuilder sb = new StringBuilder();
-        if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
-            sb.append(ce.getPlace().getPlaceName());
-        }
-        return sb.toString();
-    }
-    private String buildCensusRow(IndividualEvent ce) throws IOException {
+    private String buildCensusRow(IndividualEvent ce, Boolean withLables) throws IOException {
         StringBuilder sb = new StringBuilder();
         String content;
-        Boolean withLables = Boolean.FALSE;
         if (withLables) content = readFile("personCensusTableRowLables.html");
-        else content = readFile("personCensusTableRowNoLables.html");
-        content = content.replace("!DOC!", getDateOfCensus(ce));
-        content = content.replace("!POC!",getPlaceOfCensus(ce));
+        else content = readFile("personCensusRowNoLables.html");
+        content = content.replace("!DOC!", getDateOfEvent(ce));
+        content = content.replace("!POC!", getPlaceOfEvent(ce));
         return content;
     }
 
@@ -150,7 +86,7 @@ public class PersonFactBuilder
             }
             for (IndividualEvent ce : censuses) {
                 sb.append("<tr>");
-                sb.append(buildCensusRow(ce));
+                sb.append(buildCensusRow(ce,Boolean.FALSE));
                 sb.append("</tr>");
             }
             sb.append("</table>");
@@ -160,6 +96,81 @@ public class PersonFactBuilder
             sb.append("<th>"+"No known census entries"+"</th>");
             sb.append("</table>");
         }
+        return sb.toString();
+    }
+
+    private String getDateOfEvent(IndividualEvent ce)
+    {
+        StringBuilder sb = new StringBuilder();
+        if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
+            sb.append(ce.getDate());
+        }
+        return sb.toString();
+    }
+
+    private String getPlaceOfEvent(IndividualEvent ce)
+    {
+        StringBuilder sb = new StringBuilder();
+        if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
+            sb.append(ce.getPlace().getPlaceName());
+        }
+        return sb.toString();
+    }
+
+    private String getDetailsOfEvent(IndividualEvent ce)
+    {
+        /*StringBuilder sb = new StringBuilder();
+
+        if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
+            sb.append(ce.getPlace().getPlaceName());
+        }
+        sb.append("something");
+        return sb.toString(); */
+        return "some details tbd";
+    }
+
+    private String buildFactRow(IndividualEvent ce, Boolean withLables, String eventLable) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        String content;
+        if (withLables)
+        {
+            content = readFile("eventRowLables.html");
+            content = content.replace("!LABLE!",eventLable);
+        }
+        else content = readFile("eventRowNoLables.html");
+        content = content.replace("!DATE!", getDateOfEvent(ce));
+        content = content.replace("!PLACE!",getPlaceOfEvent(ce));
+        content = content.replace("!DETAIL!",getDetailsOfEvent(ce));
+        return content;
+    }
+
+    public String buildFactTable(Boolean tableHeaders, Boolean eventLables) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        List<IndividualEvent> events;
+
+        sb.append("<table>");
+        if (tableHeaders) {
+            sb.append("<tr><th>Event</td><th>Date</th><th>Place</th><th>Details</th></tr>");
+        }
+        events = person.getEventsOfType(IndividualEventType.BIRTH);
+        for (IndividualEvent ce : events) {
+            sb.append("<tr>");
+            sb.append(buildFactRow(ce, eventLables, "Birth:"));
+            sb.append("</tr>");
+        }
+        events = person.getEventsOfType(IndividualEventType.BAPTISM);
+        for (IndividualEvent ce : events) {
+            sb.append("<tr>");
+            sb.append(buildFactRow(ce, eventLables, "Baptism:"));
+            sb.append("</tr>");
+        }
+        events = person.getEventsOfType(IndividualEventType.DEATH);
+        for (IndividualEvent ce : events) {
+            sb.append("<tr>");
+            sb.append(buildFactRow(ce, eventLables, "Death:"));
+            sb.append("</tr>");
+        }
+        sb.append("</table>");
         return sb.toString();
     }
 }
