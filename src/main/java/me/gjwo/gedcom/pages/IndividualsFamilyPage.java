@@ -23,9 +23,9 @@ public class IndividualsFamilyPage extends WebPage
     {
         super();
         elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Individual's family Page"));
-        PersonLinkElement ie = new PersonLinkElement(individual);
-        ie.setLinkIndividual();
-        elements.put(ElementTypes.PERSON_LINK_ELEMENT, ie);
+        PersonLinkElement ple = new PersonLinkElement(individual);
+        ple.setLinkIndividual();
+        elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
         elements.put(ElementTypes.PARENTS_ELEMENT, new CoupleTableElement(
                 individual.getFamiliesWhereChild() != null? individual.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0]));
         elements.put(ElementTypes.FAMILIES_ELEMENT, new FamiliesElement(

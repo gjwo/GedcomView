@@ -9,17 +9,19 @@ import java.io.IOException;
 
 public class PersonLinkElement extends WebElement
 {
-    private final Individual individual;
+    private final Individual person;
     private boolean linkToFamily;
     private boolean includeRef;
     private boolean includeShortDates;
 
     public void setLinkIndividual(){linkToFamily=false;}
     public void setlinkFamily(){linkToFamily=true;}
+    public void setRef(Boolean includeRef){this.includeRef=includeRef;}
+    public void setDates(Boolean includeShortDates){this.includeShortDates = includeShortDates;}
 
-    public PersonLinkElement(Individual individual)
+    public PersonLinkElement(Individual person)
     {
-        this.individual = individual;
+        this.person = person;
         this.linkToFamily = true;
         this.includeRef = true;
         this.includeShortDates = true;
@@ -28,9 +30,22 @@ public class PersonLinkElement extends WebElement
     @Override
     public String render() throws IOException {
         LinkBuilder lb = new LinkBuilder();
-        PersonFactBuilder fb = new PersonFactBuilder(individual);
+        PersonFactBuilder fb = new PersonFactBuilder(person);
         StringBuilder sb = new StringBuilder();
-        if(includeRef) sb.append(fb.getRefNumber());
-        return linkToFamily?lb.buildPersonFamilyLink(individual):lb.buildPersonIndividualLink(individual);
+        sb.append(linkToFamily?lb.buildPersonFamilyLink(person):lb.buildPersonIndividualLink(person));
+        if(includeRef)
+        {
+            sb.append(" #");
+            sb.append(fb.getRefNumber());
+            sb.append(" ");
+        }
+        if(includeShortDates)
+        {   sb.append(" (");
+            sb.append(fb.getDateOfBirth());
+            sb.append(" - ");
+            sb.append(fb.getDateOfDeath());
+            sb.append(")");
+        }
+        return sb.toString();
     }
 }

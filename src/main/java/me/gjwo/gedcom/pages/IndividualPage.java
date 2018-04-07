@@ -22,9 +22,12 @@ public class IndividualPage extends WebPage {
         super();
         this.individual = individual;
         elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Individual Page"));
-        PersonLinkElement ie = new PersonLinkElement(individual);
-        ie.setlinkFamily();
-        elements.put(ElementTypes.PERSON_LINK_ELEMENT, ie);
+        PersonLinkElement ple = new PersonLinkElement(individual);
+
+        ple.setlinkFamily();
+        elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
+        CensusTableElement cte = new CensusTableElement(individual);
+        elements.put(ElementTypes.CENSUS_TABLE_ELEMENT,cte);
 
     }
 
@@ -38,9 +41,7 @@ public class IndividualPage extends WebPage {
         content += "Birth: " + pfb.getDateOfBirth()+ " at "+ pfb.getPlaceOfBirth()+"<br>";
         content += "Baptism: "+pfb.getDateOfBaptism()+ " at "+ pfb.getPlaceOfBaptism()+"<br>";
         content += "Death: " + pfb.getDateOfDeath()+ " at "+ pfb.getPlaceOfDeath()+"<br>";
-        content += "Census<br>";
-        CensusTableElement ct = new CensusTableElement(individual);
-        content +=  ct.render();
+        content= content.replace("!CENSUSTAB!",elements.get(ElementTypes.CENSUS_TABLE_ELEMENT).render());
         /*
         if (individual.getEventsOfType(IndividualEventType.CENSUS)!=null)
         {
