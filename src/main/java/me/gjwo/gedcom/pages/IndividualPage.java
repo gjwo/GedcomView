@@ -25,6 +25,8 @@ public class IndividualPage extends WebPage {
         elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
         PersonKeyEventsElement pkfe= new PersonKeyEventsElement(individual);
         elements.put(ElementTypes.PERSON_KEY_EVENTS_ELEMENT,pkfe);
+        PersonAttributesElement pae = new PersonAttributesElement(individual);
+        elements.put(ElementTypes.PERSON_ATTRIBUTES_ELEMENT,pae);
         CensusTableElement cte = new CensusTableElement(individual);
         elements.put(ElementTypes.CENSUS_TABLE_ELEMENT,cte);
 
@@ -37,6 +39,7 @@ public class IndividualPage extends WebPage {
         content = content.replace("!HEAD!", elements.get(ElementTypes.PAGE_HEADER).render());
         content = content.replace("!NAME!", elements.get(ElementTypes.PERSON_LINK_ELEMENT).render());
         content = content.replace("!KEYFACTS!", elements.get(ElementTypes.PERSON_KEY_EVENTS_ELEMENT).render());
+        content = content.replace("!ATTRIBUTES!", elements.get(ElementTypes.PERSON_ATTRIBUTES_ELEMENT).render());
         content= content.replace("!CENSUSTAB!",elements.get(ElementTypes.CENSUS_TABLE_ELEMENT).render());
          return content;
     }

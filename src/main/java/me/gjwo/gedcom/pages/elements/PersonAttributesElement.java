@@ -6,9 +6,7 @@ import org.gedcom4j.model.Individual;
 
 import java.io.IOException;
 
-import static me.gjwo.gedcom.FileUtil.readFile;
-
-public class PersonKeyEventsElement extends WebElement
+public class PersonAttributesElement extends WebElement
 {
     private final Individual person;
     private boolean includeLables;
@@ -17,7 +15,7 @@ public class PersonKeyEventsElement extends WebElement
     public void setLables(Boolean includeLables){this.includeLables = includeLables;}
     public void setDates(Boolean includeTitles){this.includeTitles = includeTitles;}
 
-    public PersonKeyEventsElement(Individual person)
+    public PersonAttributesElement(Individual person)
     {
         this.person = person;
         this.includeLables = true;
@@ -28,6 +26,6 @@ public class PersonKeyEventsElement extends WebElement
     public String render() throws IOException {
         String content;
         PersonFactBuilder fb = new PersonFactBuilder(person);
-        return fb.buildKeyEventsTable(includeTitles,includeLables);
+        return fb.buildAttributesTable(includeTitles,includeLables);
     }
 }

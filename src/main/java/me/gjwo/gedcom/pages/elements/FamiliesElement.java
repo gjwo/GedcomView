@@ -33,7 +33,7 @@ public class FamiliesElement extends WebElement
 
         content = content.replace("!HUSBAND!", husband);
         content = content.replace("!WIFE!", wife);
-        content += fb.buildFactTable(Boolean.TRUE,Boolean.TRUE);
+        content += fb.buildFactTable(Boolean.FALSE,Boolean.TRUE);
         content += lb.buildChildrenLinksTable(family,Boolean.TRUE);
 
         return content;
