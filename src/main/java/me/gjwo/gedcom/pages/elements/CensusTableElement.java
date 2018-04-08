@@ -1,9 +1,7 @@
 package me.gjwo.gedcom.pages.elements;
 
-import me.gjwo.gedcom.LinkBuilder;
 import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
-import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
 
 import java.io.IOException;

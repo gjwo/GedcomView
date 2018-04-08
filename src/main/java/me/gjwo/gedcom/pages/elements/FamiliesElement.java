@@ -1,7 +1,7 @@
 package me.gjwo.gedcom.pages.elements;
 
 import me.gjwo.gedcom.FamilyFactBuilder;
-import me.gjwo.gedcom.LinkBuilder;
+import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Family;
 
@@ -19,22 +19,37 @@ public class FamiliesElement extends WebElement
         this.families = families;
     }
 
-    private String buildSingleFamilyTable(Family family) throws IOException {
-        LinkBuilder lb = new LinkBuilder();
-        if(family==null) return "";
-        FamilyFactBuilder fb = new FamilyFactBuilder(family);
+    private String buildSingleCoupleTable(Family family) throws IOException {
         String content = readFile("coupleNamesTable.html");
 
         String husband = "No Husband Present";
         String wife = "No Wife Present";
 
-        if(family.getHusband() != null) husband = lb.buildPersonFamilyLink(family.getHusband().getIndividual());
-        if(family.getWife() != null) wife = lb.buildPersonFamilyLink(family.getWife().getIndividual());
+        PersonFactBuilder husbandFB, wifeFB;
+
+        if(family.getHusband() != null)
+        {
+            husbandFB = new PersonFactBuilder(family.getHusband().getIndividual());
+            husband = husbandFB.buildPersonFamilyLink(family.getHusband().getIndividual());
+        }
+        if(family.getWife() != null)
+        {
+            wifeFB = new PersonFactBuilder(family.getWife().getIndividual());
+            wife = wifeFB.buildPersonFamilyLink(family.getWife().getIndividual());
+        }
 
         content = content.replace("!HUSBAND!", husband);
         content = content.replace("!WIFE!", wife);
-        content += fb.buildFactTable(Boolean.FALSE,Boolean.TRUE);
-        content += lb.buildChildrenLinksTable(family,Boolean.TRUE);
+
+        return content;
+    }
+
+    private String buildSingleFamilyTable(Family family, boolean showChildren, boolean showEvents) throws IOException {
+        if(family==null) return "";
+        FamilyFactBuilder ffb = new FamilyFactBuilder(family);
+        String content = buildSingleCoupleTable(family);
+        if (showEvents) content += ffb.buildEventTable(Boolean.FALSE,Boolean.TRUE);
+        if (showChildren) content += ffb.buildChildrenLinksTable(Boolean.TRUE);
 
         return content;
     }
@@ -43,7 +58,10 @@ public class FamiliesElement extends WebElement
     public String render() throws IOException
     {
         StringBuilder sb = new StringBuilder();
-        for(Family f:families) sb.append(buildSingleFamilyTable(f));
+        for(Family f:families)
+        {
+            sb.append(buildSingleFamilyTable(f,true,true));
+        }
         return sb.toString();
     }
 }

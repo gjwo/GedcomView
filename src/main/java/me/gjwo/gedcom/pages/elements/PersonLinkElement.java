@@ -1,7 +1,6 @@
 package me.gjwo.gedcom.pages.elements;
 
 import me.gjwo.gedcom.PersonFactBuilder;
-import me.gjwo.gedcom.LinkBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Individual;
 
@@ -29,21 +28,20 @@ public class PersonLinkElement extends WebElement
 
     @Override
     public String render() throws IOException {
-        LinkBuilder lb = new LinkBuilder();
-        PersonFactBuilder fb = new PersonFactBuilder(person);
+        PersonFactBuilder pfb = new PersonFactBuilder(person);
         StringBuilder sb = new StringBuilder();
-        sb.append(linkToFamily?lb.buildPersonFamilyLink(person):lb.buildPersonIndividualLink(person));
+        sb.append(linkToFamily?pfb.buildPersonFamilyLink(person):pfb.buildPersonIndividualLink(person));
         if(includeRef)
         {
             sb.append(" #");
-            sb.append(fb.getRefNumber());
+            sb.append(pfb.getRefNumber());
             sb.append(" ");
         }
         if(includeShortDates)
         {   sb.append(" (");
-            sb.append(fb.getDateOfBirth());
+            sb.append(pfb.getDateOfBirth());
             sb.append(" - ");
-            sb.append(fb.getDateOfDeath());
+            sb.append(pfb.getDateOfDeath());
             sb.append(")");
         }
         return sb.toString();

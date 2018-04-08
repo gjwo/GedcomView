@@ -2,6 +2,7 @@ package me.gjwo.gedcom;
 
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.FamilyEvent;
+import org.gedcom4j.model.IndividualReference;
 import org.gedcom4j.model.enumerations.FamilyEventType;
 
 import java.io.IOException;
@@ -11,6 +12,12 @@ import java.util.List;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 
+/**
+ * FamilyFactBuilder    -   Build strings and html fragments from a family's data including
+ *                          Event data Marriage, Divorce etc
+ *                          Relationship data  Spouce, Children etc.
+ *                          Data is often formatted into tables for use as an element of a page
+ */
 public class FamilyFactBuilder
 {
     private Family family;
@@ -38,25 +45,53 @@ public class FamilyFactBuilder
         return family.getXref().replace("@F","").replace("@","");
     }
 
-     private String getDateOfEvent(FamilyEvent ce)
+    public String buildChildrenLinksTable(Boolean tableHeaders) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        if(family.getChildren() != null)
+        {
+            sb.append("<table>");
+            sb.append("<th> Children </th>");
+            if(tableHeaders)
+            {
+                sb.append("<tr> <th>Ref</th><th>Name</th><th>Birth Date</th><th>Birth place</th><th>Death date</th><th>Death Place</th></tr>");
+            }
+            for(IndividualReference child:family.getChildren())
+            {
+                PersonFactBuilder pfb = new PersonFactBuilder(child.getIndividual());
+                sb.append("<tr>");
+                sb.append(pfb.buildPersonSummaryRow(Boolean.FALSE));
+                sb.append("</tr>");
+            }
+            sb.append("</table>");
+        } else
+        {
+            sb.append("<table>");
+            sb.append("<th>"+"No known children"+"</th>");
+            sb.append("</table>");
+        }
+
+        return sb.toString();
+    }
+
+     private String getDateOfEvent(FamilyEvent fe)
     {
         StringBuilder sb = new StringBuilder();
-        if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
-            sb.append(ce.getDate());
+        if (fe.getDate() != null && fe.getDate().trim().length() > 0) {
+            sb.append(fe.getDate());
         }
         return sb.toString();
     }
 
-    private String getPlaceOfEvent(FamilyEvent ce)
+    private String getPlaceOfEvent(FamilyEvent fe)
     {
         StringBuilder sb = new StringBuilder();
-        if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
-            sb.append(ce.getPlace().getPlaceName());
+        if (fe.getPlace() != null && fe.getPlace().getPlaceName() != null) {
+            sb.append(fe.getPlace().getPlaceName());
         }
         return sb.toString();
     }
 
-    private String getDetailsOfEvent(FamilyEvent ce)
+    private String getDetailsOfEvent(FamilyEvent fe)
     {
         /*StringBuilder sb = new StringBuilder();
 
@@ -68,7 +103,7 @@ public class FamilyFactBuilder
         return "some details tbd";
     }
 
-    private String buildFactRow(FamilyEvent ev, Boolean withLables, String eventLable) throws IOException {
+    private String buildEventRow(FamilyEvent fe, Boolean withLables, String eventLable) throws IOException {
         StringBuilder sb = new StringBuilder();
         String content;
         if (withLables)
@@ -77,13 +112,13 @@ public class FamilyFactBuilder
             content = content.replace("!LABLE!",eventLable);
         }
         else content = readFile("eventRowNoLables.html");
-        content = content.replace("!DATE!", getDateOfEvent(ev));
-        content = content.replace("!PLACE!",getPlaceOfEvent(ev));
-        content = content.replace("!DETAIL!",getDetailsOfEvent(ev));
+        content = content.replace("!DATE!", getDateOfEvent(fe));
+        content = content.replace("!PLACE!",getPlaceOfEvent(fe));
+        content = content.replace("!DETAIL!",getDetailsOfEvent(fe));
         return content;
     }
 
-    public String buildFactTable(Boolean tableHeaders, Boolean eventLables) throws IOException {
+    public String buildEventTable(Boolean tableHeaders, Boolean eventLables) throws IOException {
         StringBuilder sb = new StringBuilder();
         List<FamilyEvent> events;
 
@@ -94,13 +129,13 @@ public class FamilyFactBuilder
         events = getEventsOfType(family,FamilyEventType.MARRIAGE);
         for (FamilyEvent fe : events) {
             sb.append("<tr>");
-            sb.append(buildFactRow(fe, eventLables, "Married:"));
+            sb.append(buildEventRow(fe, eventLables, "Married:"));
             sb.append("</tr>");
         }
         events = getEventsOfType(family,FamilyEventType.DIVORCE);
         for (FamilyEvent fe : events) {
             sb.append("<tr>");
-            sb.append(buildFactRow(fe, eventLables, "Divorced:"));
+            sb.append(buildEventRow(fe, eventLables, "Divorced:"));
             sb.append("</tr>");
         }
         sb.append("</table>");

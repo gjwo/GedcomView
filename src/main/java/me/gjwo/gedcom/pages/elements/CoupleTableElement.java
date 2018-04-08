@@ -1,6 +1,6 @@
 package me.gjwo.gedcom.pages.elements;
 
-import me.gjwo.gedcom.LinkBuilder;
+import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Family;
 
@@ -19,14 +19,23 @@ public class CoupleTableElement extends WebElement
     }
 
     private String buildSingleCoupleTable(Family family) throws IOException {
-        LinkBuilder lb = new LinkBuilder();
         String content = readFile("coupleNamesTable.html");
 
         String husband = "No Husband Present";
         String wife = "No Wife Present";
 
-        if(family.getHusband() != null) husband = lb.buildPersonFamilyLink(family.getHusband().getIndividual());
-        if(family.getWife() != null) wife = lb.buildPersonFamilyLink(family.getWife().getIndividual());
+        PersonFactBuilder husbandFB, wifeFB;
+
+        if(family.getHusband() != null)
+        {
+            husbandFB = new PersonFactBuilder(family.getHusband().getIndividual());
+            husband = husbandFB.buildPersonFamilyLink(family.getHusband().getIndividual());
+        }
+        if(family.getWife() != null)
+        {
+            wifeFB = new PersonFactBuilder(family.getWife().getIndividual());
+            wife = wifeFB.buildPersonFamilyLink(family.getWife().getIndividual());
+        }
 
         content = content.replace("!HUSBAND!", husband);
         content = content.replace("!WIFE!", wife);

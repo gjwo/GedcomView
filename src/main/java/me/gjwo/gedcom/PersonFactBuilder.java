@@ -10,6 +10,13 @@ import java.util.Map;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 
+/**
+ * PersonFactBuilder    -   Build strings and html fragments from an individual's data including
+ *                          Event data (birth, death etc.
+ *                          Attribute data  Occupation, Residence etc.
+ *                          Reference Number
+ *                          Data is often formatted into tables for use as an element of a page
+ */
 public class PersonFactBuilder
 {
     private final Individual person;
@@ -29,10 +36,31 @@ public class PersonFactBuilder
             eventMap.put(ie,s);
         }
     }
+    public String buildPersonFamilyLink(Individual person) {
+        return "<a href=\""+"/individualsfamily/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
+    }
+
+    public String buildPersonIndividualLink(Individual person) {
+        return "<a href=\""+"/individual/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
+    }
 
     public String getRefNumber()
     {
         return person.getXref().replace("@I","").replace("@","");
+    }
+
+    public String buildPersonSummaryRow( Boolean withLables) throws IOException {
+        String content;
+        if (withLables) content = readFile("personSummaryTableRowLables.html");
+        else content = readFile("personSummaryTableRowNoLables.html");
+        content = content.replace("!REF!", getRefNumber());
+        content = content.replace("!ID!", person.getXref());
+        content = content.replace("!TEXT!", person.getFormattedName());
+        content = content.replace("!DOB!", getDateOfBirth());
+        content = content.replace("!POB!", getPlaceOfBirth());
+        content = content.replace("!DOD!", getDateOfDeath());
+        content = content.replace("!POD!", getPlaceOfDeath());
+        return content;
     }
 
     public String buildKeyEventsTable(Boolean tableHeaders, Boolean eventLables) throws IOException {
