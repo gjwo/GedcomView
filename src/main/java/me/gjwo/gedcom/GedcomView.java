@@ -22,6 +22,7 @@ public class GedcomView
         get("/hello", (req, res) -> "Hello World");
         get("/individualsfamily/:id", (req, res) ->
         {
+            //example call from browser http://localhost:4567/individualsfamily/@I12@
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {
@@ -31,6 +32,7 @@ public class GedcomView
         });
         get("/individual/:id", (req, res) ->
         {
+            //example call from browser http://localhost:4567/individual/@I12@
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {
