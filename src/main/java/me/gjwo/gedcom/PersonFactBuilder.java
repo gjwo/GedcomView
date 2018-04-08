@@ -4,14 +4,16 @@ import org.gedcom4j.model.enumerations.IndividualAttributeType;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 
 public class PersonFactBuilder
 {
-    private Individual person;
-
+    private final Individual person;
+    private final Map<IndividualEventType,String> eventMap; // Events with lables
     /**
      * Constructor
      * @param person    Individual who holds the information
@@ -19,6 +21,13 @@ public class PersonFactBuilder
     public PersonFactBuilder(Individual person)
     {
         this.person = person;
+        eventMap = new HashMap<>();
+        for(IndividualEventType ie:IndividualEventType.values())
+        {
+            String s = ie.toString().toLowerCase();
+            s = s.substring(0, 1).toUpperCase() + s.substring(1);
+            eventMap.put(ie,s);
+        }
     }
 
     public String getRefNumber()
@@ -37,19 +46,19 @@ public class PersonFactBuilder
         events = person.getEventsOfType(IndividualEventType.BIRTH);
         for (IndividualEvent ce : events) {
             sb.append("<tr>");
-            sb.append(buildEventRow(ce, eventLables, "Birth:"));
+            sb.append(buildEventRow(ce, eventLables));
             sb.append("</tr>");
         }
         events = person.getEventsOfType(IndividualEventType.BAPTISM);
         for (IndividualEvent ce : events) {
             sb.append("<tr>");
-            sb.append(buildEventRow(ce, eventLables, "Baptism:"));
+            sb.append(buildEventRow(ce, eventLables));
             sb.append("</tr>");
         }
         events = person.getEventsOfType(IndividualEventType.DEATH);
         for (IndividualEvent ce : events) {
             sb.append("<tr>");
-            sb.append(buildEventRow(ce, eventLables, "Death:"));
+            sb.append(buildEventRow(ce, eventLables));
             sb.append("</tr>");
         }
         sb.append("</table>");
@@ -57,18 +66,18 @@ public class PersonFactBuilder
     }
 
     public String buildCensusTable(Boolean tableHeaders) throws IOException{
-        return buildEventsOfTypeTable(IndividualEventType.CENSUS,"Census",Boolean.TRUE,Boolean.TRUE);
+        return buildEventsOfTypeTable(IndividualEventType.CENSUS,Boolean.TRUE,Boolean.TRUE);
     }
 
     public String buildKeyEventsTable2(Boolean tableHeaders, Boolean eventLables) throws IOException {
         StringBuilder sb = new StringBuilder();
-        sb.append(buildEventsOfTypeTable(IndividualEventType.BIRTH,"Birth",tableHeaders,Boolean.TRUE));
-        sb.append(buildEventsOfTypeTable(IndividualEventType.BAPTISM,"Baptism",Boolean.FALSE,Boolean.TRUE));
-        sb.append(buildEventsOfTypeTable(IndividualEventType.DEATH,"Death",Boolean.FALSE,Boolean.TRUE));
+        sb.append(buildEventsOfTypeTable(IndividualEventType.BIRTH,tableHeaders,Boolean.TRUE));
+        sb.append(buildEventsOfTypeTable(IndividualEventType.BAPTISM,Boolean.FALSE,Boolean.TRUE));
+        sb.append(buildEventsOfTypeTable(IndividualEventType.DEATH,Boolean.FALSE,Boolean.TRUE));
         return sb.toString();
     }
 
-    public String buildEventsOfTypeTable(IndividualEventType eventType, String eventLable, Boolean tableHeaders, Boolean eventLables) throws IOException {
+    public String buildEventsOfTypeTable(IndividualEventType eventType, Boolean tableHeaders, Boolean eventLables) throws IOException {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> events;
 
@@ -80,7 +89,7 @@ public class PersonFactBuilder
             }
             for (IndividualEvent ce : events) {
                 sb.append("<tr>");
-                sb.append(buildEventRow(ce, eventLables, eventLable));
+                sb.append(buildEventRow(ce, eventLables));
                 sb.append("</tr>");
             }
             sb.append("</table>");
@@ -88,18 +97,18 @@ public class PersonFactBuilder
         else
         {
             sb.append("no ");
-            sb.append(eventLable);
+            sb.append(eventMap.get(eventType));
             sb.append(" events");
         }
         return sb.toString();
     }
 
-    private String buildEventRow(IndividualEvent ce, Boolean withLables, String eventLable) throws IOException {
+    private String buildEventRow(IndividualEvent ce, Boolean withLables) throws IOException {
         String content;
         if (withLables)
         {
             content = readFile("eventRowLables.html");
-            content = content.replace("!LABLE!",eventLable);
+            content = content.replace("!LABLE!",eventMap.get(ce.getType()));
         }
         else content = readFile("eventRowNoLables.html");
         content = content.replace("!DATE!", getDateOfEvent(ce));
