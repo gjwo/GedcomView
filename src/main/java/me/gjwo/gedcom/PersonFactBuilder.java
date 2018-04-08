@@ -1,8 +1,11 @@
 package me.gjwo.gedcom;
 import org.gedcom4j.model.*;
+import org.gedcom4j.model.enumerations.FamilyEventType;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
@@ -173,4 +176,5 @@ public class PersonFactBuilder
         sb.append("</table>");
         return sb.toString();
     }
+
 }
