@@ -19,17 +19,20 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 public class IndividualsFamilyPage extends WebPage
 {
 
-    public IndividualsFamilyPage(Individual individual)
+    public IndividualsFamilyPage(Individual person)
     {
         super();
         elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Individual's family Page"));
-        PersonLinkElement ple = new PersonLinkElement(individual);
+        PersonLinkElement ple = new PersonLinkElement(person);
         ple.setLinkIndividual();
         elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
-        elements.put(ElementTypes.PARENTS_ELEMENT, new CoupleTableElement(
-                individual.getFamiliesWhereChild() != null? individual.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0]));
-        elements.put(ElementTypes.FAMILIES_ELEMENT, new FamiliesElement(
-                individual.getFamiliesWhereSpouse() != null? individual.getFamiliesWhereSpouse().stream().map(FamilySpouse::getFamily).toArray(Family[]::new):new Family[0]));
+        Family fa[];
+        fa = person.getFamiliesWhereChild() != null? person.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0];
+        FamiliesElement pfe = new FamiliesElement(person,false,fa);
+        elements.put(ElementTypes.PARENTS_ELEMENT, pfe);
+        fa = person.getFamiliesWhereSpouse() != null? person.getFamiliesWhereSpouse().stream().map(FamilySpouse::getFamily).toArray(Family[]::new):new Family[0];
+        FamiliesElement fe =  new FamiliesElement(person,true,fa);
+        elements.put(ElementTypes.FAMILIES_ELEMENT,fe);
     }
 
     @Override

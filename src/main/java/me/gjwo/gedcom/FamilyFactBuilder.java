@@ -1,8 +1,6 @@
 package me.gjwo.gedcom;
 
-import org.gedcom4j.model.Family;
-import org.gedcom4j.model.FamilyEvent;
-import org.gedcom4j.model.IndividualReference;
+import org.gedcom4j.model.*;
 import org.gedcom4j.model.enumerations.FamilyEventType;
 
 import java.io.IOException;
@@ -21,25 +19,35 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 public class FamilyFactBuilder
 {
     private Family family;
+    private Individual FocusPerson;
+
     public FamilyFactBuilder(Family family)
     {
         this.family = family;
     }
-    /*
-    public String getDateOfMarriage() {
-        StringBuilder sb = new StringBuilder();
-        List<FamilyEvent> birthDates = family.getEvents().getEventsOfType(FamilyEventType.MARRIAGE);
-        for (FamilyEvent ev : birthDates) sb.append(getDateOfEvent(ev));
-        return sb.toString();
-    }
 
-    public String getPlaceOfMarriage() {
-        StringBuilder sb = new StringBuilder();
-        List<FamilyEvent> birthDates = family.getEventsOfType(FamilyEventType.MARRIAGE);
-        for (FamilyEvent ev : birthDates) sb.append(getPlaceOfEvent(ev));
-        return sb.toString();
+    public static Family getSpousalFamily(Individual person, Individual spouse)
+    {
+        Family fa[];
+        Family f;
+        if (person.getFamiliesWhereSpouse() != null)
+        {
+            //fa = person.getFamiliesWhereSpouse().stream().map(FamilySpouse::getFamily).toArray(Family[]::new);
+            for( FamilySpouse fs: person.getFamiliesWhereSpouse())
+            {
+                f = fs.getFamily();
+                if(f.getHusband().getIndividual().equals(spouse))return f;
+                else if(f.getWife().getIndividual().equals(spouse)) return f;
+            }
+        }
+        else return (new Family[0])[0];
+        System.out.print("no spousal match");
+        return (new Family[0])[0]; //shouldn't app
     }
-    */
+    public static Family getParentalFamily(Individual person)
+    {
+        return person.getFamiliesWhereChild().get(0).getFamily();
+    }
     public String getRefNumber()
     {
         return family.getXref().replace("@F","").replace("@","");

@@ -4,6 +4,7 @@ import me.gjwo.gedcom.FamilyFactBuilder;
 import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Family;
+import org.gedcom4j.model.Individual;
 
 import java.io.IOException;
 
@@ -13,17 +14,21 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 public class FamiliesElement extends WebElement
 {
     private final Family[] families;
+    private final Individual focusPerson;
+    private boolean showChildren;
 
-    public FamiliesElement(Family... families)
+    public FamiliesElement( Individual person, boolean showChildren, Family... families)
     {
         this.families = families;
+        this.focusPerson = person;
+        this.showChildren = showChildren;
     }
 
     private String buildSingleCoupleTable(Family family) throws IOException {
         String content = readFile("coupleNamesTable.html");
 
-        String husband = "No Husband Present";
-        String wife = "No Wife Present";
+        String husband = "No Husband recorded";
+        String wife = "No Wife recorded";
 
         PersonFactBuilder husbandFB, wifeFB;
 
@@ -60,7 +65,7 @@ public class FamiliesElement extends WebElement
         StringBuilder sb = new StringBuilder();
         for(Family f:families)
         {
-            sb.append(buildSingleFamilyTable(f,true,true));
+            sb.append(buildSingleFamilyTable(f,showChildren,true));
         }
         return sb.toString();
     }

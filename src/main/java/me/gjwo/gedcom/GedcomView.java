@@ -26,8 +26,8 @@ public class GedcomView
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {
-                IndividualsFamilyPage pp = new IndividualsFamilyPage(g.getIndividuals().get(id));
-                return pp.render();
+                IndividualsFamilyPage ifp = new IndividualsFamilyPage(g.getIndividuals().get(id));
+                return ifp.render();
             } else return "Unknown person";
         });
         get("/individual/:id", (req, res) ->
@@ -36,8 +36,8 @@ public class GedcomView
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {
-                IndividualPage pp = new IndividualPage(g.getIndividuals().get(id));
-                return pp.render();
+                IndividualPage ip = new IndividualPage(g.getIndividuals().get(id));
+                return ip.render();
             } else return "Unknown person";
         });
     }
