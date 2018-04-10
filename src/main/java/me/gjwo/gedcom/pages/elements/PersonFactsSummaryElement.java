@@ -6,7 +6,7 @@ import org.gedcom4j.model.Individual;
 
 import java.io.IOException;
 
-public class PersonKeyEventsElement extends WebElement
+public class PersonFactsSummaryElement extends WebElement
 {
     private final Individual person;
     private boolean includeLables;
@@ -15,11 +15,11 @@ public class PersonKeyEventsElement extends WebElement
     public void setLables(Boolean includeLables){this.includeLables = includeLables;}
     public void setDates(Boolean includeTitles){this.includeTitles = includeTitles;}
 
-    public PersonKeyEventsElement(Individual person)
+    public PersonFactsSummaryElement(Individual person)
     {
         this.person = person;
         this.includeLables = true;
-        this.includeTitles = true;
+        this.includeTitles = false;
     }
 
     @Override

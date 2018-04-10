@@ -12,8 +12,9 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 /**
  * IndividualPage   -   The page displays facts/events for an individual
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class IndividualPage extends WebPage {
-    private Individual individual;
+    private final Individual individual;
     public IndividualPage(Individual individual)
     {
         super();

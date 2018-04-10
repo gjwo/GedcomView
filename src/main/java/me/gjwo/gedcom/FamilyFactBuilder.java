@@ -13,12 +13,12 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 /**
  * FamilyFactBuilder    -   Build strings and html fragments from a family's data including
  *                          Event data Marriage, Divorce etc
- *                          Relationship data  Spouce, Children etc.
+ *                          Relationship data  Spouse, Children etc.
  *                          Data is often formatted into tables for use as an element of a page
  */
 public class FamilyFactBuilder
 {
-    private Family family;
+    private final Family family;
     private Individual FocusPerson;
 
     public FamilyFactBuilder(Family family)
@@ -111,18 +111,13 @@ public class FamilyFactBuilder
         return "some details tbd";
     }
 
-    private String buildEventRow(FamilyEvent fe, Boolean withLables, String eventLable) throws IOException {
+    private String buildEventRow(FamilyEvent fe, Boolean withLables, String eventLable){
         StringBuilder sb = new StringBuilder();
-        String content;
-        if (withLables)
-        {
-            content = readFile("eventRowLables.html");
-            content = content.replace("!LABLE!",eventLable);
-        }
-        else content = readFile("eventRowNoLables.html");
-        content = content.replace("!DATE!", getDateOfEvent(fe));
-        content = content.replace("!PLACE!",getPlaceOfEvent(fe));
-        content = content.replace("!DETAIL!",getDetailsOfEvent(fe));
+        String content = "";
+        if (withLables) content = "<td>"+eventLable+"</td>";
+        content += "<td>"+getDateOfEvent(fe)+"</td>";
+        content += "<td>"+getPlaceOfEvent(fe)+"</td>";
+        content += "<td>"+getDetailsOfEvent(fe)+"</td>";
         return content;
     }
 

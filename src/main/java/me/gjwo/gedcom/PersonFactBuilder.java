@@ -17,6 +17,7 @@ import static me.gjwo.gedcom.FileUtil.readFile;
  *                          Reference Number
  *                          Data is often formatted into tables for use as an element of a page
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class PersonFactBuilder
 {
     private final Individual person;
@@ -49,8 +50,18 @@ public class PersonFactBuilder
         return person.getXref().replace("@I","").replace("@","");
     }
 
-    public String buildPersonSummaryRow( Boolean withLables) throws IOException {
+    public String buildPersonSummaryRow( boolean withLables) throws IOException {
         String content;
+        /*
+        <tr>
+            <td>Ref:&nbsp; !REF!</td>
+            <td><a href="/individualsfamily/!ID!"> !TEXT! </a></td>
+            <td>Born:&nbsp; !DOB!</td>
+            <td>in:&nbsp; !POB!</td>
+            <td>Died:&nbsp; !DOD!</td>
+            <td>in:&nbsp; !POD!</td>
+        </tr>
+         */
         if (withLables) content = readFile("personSummaryTableRowLables.html");
         else content = readFile("personSummaryTableRowNoLables.html");
         content = content.replace("!REF!", getRefNumber());
@@ -63,7 +74,14 @@ public class PersonFactBuilder
         return content;
     }
 
-    public String buildKeyEventsTable(Boolean tableHeaders, Boolean eventLables) throws IOException {
+
+    /**
+     * buildKeyEventsTable  -   Builds a html table for key personal events
+     * @param tableHeaders  true shows header row in table
+     * @param eventLables   true shows event type lables for each event
+     * @return              The html string for insertion in a page template
+     */
+    public String buildKeyEventsTable(boolean tableHeaders, boolean eventLables) throws IOException {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> events;
 
@@ -93,19 +111,23 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String buildCensusTable(Boolean tableHeaders) throws IOException{
-        return buildEventsOfTypeTable(IndividualEventType.CENSUS,Boolean.TRUE,Boolean.TRUE);
+    public String buildCensusTable(boolean tableHeaders) throws IOException{
+        return buildEventsOfTypeTable(IndividualEventType.CENSUS,tableHeaders,true);
     }
 
     public String buildKeyEventsTable2(Boolean tableHeaders, Boolean eventLables) throws IOException {
         StringBuilder sb = new StringBuilder();
-        sb.append(buildEventsOfTypeTable(IndividualEventType.BIRTH,tableHeaders,Boolean.TRUE));
-        sb.append(buildEventsOfTypeTable(IndividualEventType.BAPTISM,Boolean.FALSE,Boolean.TRUE));
-        sb.append(buildEventsOfTypeTable(IndividualEventType.DEATH,Boolean.FALSE,Boolean.TRUE));
+        sb.append(buildEventsOfTypeTable(IndividualEventType.BIRTH,tableHeaders,true));
+        sb.append(buildEventsOfTypeTable(IndividualEventType.BAPTISM,Boolean.FALSE,true));
+        sb.append(buildEventsOfTypeTable(IndividualEventType.DEATH,Boolean.FALSE,true));
         return sb.toString();
     }
 
-    public String buildEventsOfTypeTable(IndividualEventType eventType, Boolean tableHeaders, Boolean eventLables) throws IOException {
+    //
+    // General methods for handling and presenting Personal Events
+    //
+
+    public String buildEventsOfTypeTable(IndividualEventType eventType, boolean tableHeaders, boolean eventLables) throws IOException {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> events;
 
@@ -131,17 +153,12 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    private String buildEventRow(IndividualEvent ce, Boolean withLables) throws IOException {
-        String content;
-        if (withLables)
-        {
-            content = readFile("eventRowLables.html");
-            content = content.replace("!LABLE!",eventMap.get(ce.getType()));
-        }
-        else content = readFile("eventRowNoLables.html");
-        content = content.replace("!DATE!", getDateOfEvent(ce));
-        content = content.replace("!PLACE!",getPlaceOfEvent(ce));
-        content = content.replace("!DETAIL!",getDetailsOfEvent(ce));
+    private String buildEventRow(IndividualEvent ce, boolean withLables) throws IOException {
+        String content = "";
+        if (withLables) content = "<td>"+eventMap.get(ce.getType())+"</td>";
+        content += "<td>"+getDateOfEvent(ce)+"</td>";
+        content += "<td>"+getPlaceOfEvent(ce)+"</td>";
+        content += "<td>"+getDetailsOfEvent(ce)+"</td>";
         return content;
     }
 
@@ -179,10 +196,12 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    //------------------------------------------------------------------
+    //
+    // Methods to handle personal attributes
+    //
 
 
-    public String buildAttributesTable(Boolean tableHeaders, Boolean attributeLables) throws IOException {
+    public String buildAttributesTable(Boolean tableHeaders, boolean attributeLables) throws IOException {
         StringBuilder sb = new StringBuilder();
         List<IndividualAttribute> attributes;
 
@@ -204,7 +223,7 @@ public class PersonFactBuilder
     }
 
 
-    public String buildAttributesOfTypeTable(IndividualAttributeType attributeType, String attributeLable, Boolean tableHeaders, Boolean attributeLables) throws IOException {
+    public String buildAttributesOfTypeTable(IndividualAttributeType attributeType, String attributeLable, boolean tableHeaders, boolean attributeLables) throws IOException {
         StringBuilder sb = new StringBuilder();
         List<IndividualAttribute> attributes;
 
@@ -232,11 +251,10 @@ public class PersonFactBuilder
 
     private String buildAttributeRow(IndividualAttribute ia, String attributeLable) throws IOException {
         String content;
-        content = readFile("eventRowLables.html");
-        content = content.replace("!LABLE!",attributeLable);
-        content = content.replace("!DATE!", getDateOfAttribute(ia));
-        content = content.replace("!PLACE!",getPlaceOfAttribute(ia));
-        content = content.replace("!DETAIL!",getDescriptionOfAttribute(ia));
+        content = "<td>"+attributeLable+"</td>";
+        content += "<td>"+getDateOfAttribute(ia)+"</td>";
+        content += "<td>"+getPlaceOfAttribute(ia)+"</td>";
+        content += "<td>"+getDescriptionOfAttribute(ia)+"</td>";
         return content;
     }
 
@@ -267,9 +285,9 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-
-
-
+//
+// getters for specific types of key events
+//
 
     public String getDateOfBirth() {
         StringBuilder sb = new StringBuilder();

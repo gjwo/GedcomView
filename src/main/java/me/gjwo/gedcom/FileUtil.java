@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 public class FileUtil
 {
-    public static final String BASE_RESOURCE_PATH = "src/main/resources/";
+    private static final String BASE_RESOURCE_PATH = "src/main/resources/";
 
     public static String readFile(String path) throws IOException {
         return readFile(path, Charset.defaultCharset());

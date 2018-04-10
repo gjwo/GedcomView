@@ -6,8 +6,6 @@ import org.gedcom4j.model.Individual;
 
 import java.io.IOException;
 
-import static me.gjwo.gedcom.FileUtil.readFile;
-
 
 public class CensusTableElement extends WebElement
 {

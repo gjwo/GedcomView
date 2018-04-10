@@ -26,6 +26,8 @@ public class IndividualsFamilyPage extends WebPage
         PersonLinkElement ple = new PersonLinkElement(person);
         ple.setLinkIndividual();
         elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
+        PersonFactsSummaryElement psfe = new PersonFactsSummaryElement(person);
+        elements.put(ElementTypes.PERSON_FACTS_SUMMARY_ELEMENT,psfe);
         Family fa[];
         fa = person.getFamiliesWhereChild() != null? person.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0];
         FamiliesElement pfe = new FamiliesElement(person,false,fa);
@@ -40,6 +42,7 @@ public class IndividualsFamilyPage extends WebPage
         String content = readFile("IndividualsFamiliesPage.html");
         content = content.replace("!HEAD!", elements.get(ElementTypes.PAGE_HEADER).render());
         content = content.replace("!NAME!", elements.get(ElementTypes.PERSON_LINK_ELEMENT).render());
+        content = content.replace("!FACTS!",elements.get(ElementTypes.PERSON_FACTS_SUMMARY_ELEMENT).render());
         content = content.replace("!PARENTS!", elements.get(ElementTypes.PARENTS_ELEMENT).render());
         content = content.replace("!FAMILIES_SPOUSE!", elements.get(ElementTypes.FAMILIES_ELEMENT).render());
         return content;

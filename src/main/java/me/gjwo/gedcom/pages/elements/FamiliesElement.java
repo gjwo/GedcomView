@@ -15,7 +15,7 @@ public class FamiliesElement extends WebElement
 {
     private final Family[] families;
     private final Individual focusPerson;
-    private boolean showChildren;
+    private final boolean showChildren;
 
     public FamiliesElement( Individual person, boolean showChildren, Family... families)
     {
@@ -25,11 +25,22 @@ public class FamiliesElement extends WebElement
     }
 
     private String buildSingleCoupleTable(Family family) throws IOException {
-        String content = readFile("coupleNamesTable.html");
 
+        /*
+        <table>
+            <tr>
+                <th>Husband</th>
+                <th>Wife</th>
+            </tr>
+            <tr>
+                <td>!HUSBAND!</td>
+                <td>!WIFE!</td>
+            </tr>
+        </table>
+         */
+        String content = "<table><tr><th>Husband</th><th>Wife</th></tr>";
         String husband = "No Husband recorded";
         String wife = "No Wife recorded";
-
         PersonFactBuilder husbandFB, wifeFB;
 
         if(family.getHusband() != null)
@@ -42,9 +53,10 @@ public class FamiliesElement extends WebElement
             wifeFB = new PersonFactBuilder(family.getWife().getIndividual());
             wife = wifeFB.buildPersonFamilyLink(family.getWife().getIndividual());
         }
-
-        content = content.replace("!HUSBAND!", husband);
-        content = content.replace("!WIFE!", wife);
+        content +="<tr>";
+        content += "<td>"+husband+"</td>";
+        content += "<td>"+wife+"</td>";
+        content += "</tr></table>";
 
         return content;
     }
@@ -52,7 +64,8 @@ public class FamiliesElement extends WebElement
     private String buildSingleFamilyTable(Family family, boolean showChildren, boolean showEvents) throws IOException {
         if(family==null) return "";
         FamilyFactBuilder ffb = new FamilyFactBuilder(family);
-        String content = buildSingleCoupleTable(family);
+        String content = "";
+        content += buildSingleCoupleTable(family);
         if (showEvents) content += ffb.buildEventTable(Boolean.FALSE,Boolean.TRUE);
         if (showChildren) content += ffb.buildChildrenLinksTable(Boolean.TRUE);
 
