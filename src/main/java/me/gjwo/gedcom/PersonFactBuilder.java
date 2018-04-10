@@ -66,7 +66,7 @@ public class PersonFactBuilder
         else content = readFile("personSummaryTableRowNoLables.html");
         content = content.replace("!REF!", getRefNumber());
         content = content.replace("!ID!", person.getXref());
-        content = content.replace("!TEXT!", person.getFormattedName());
+        content = content.replace("!FNAME!", person.getFormattedName());
         content = content.replace("!DOB!", getDateOfBirth());
         content = content.replace("!POB!", getPlaceOfBirth());
         content = content.replace("!DOD!", getDateOfDeath());
