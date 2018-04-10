@@ -24,6 +24,7 @@ public class IndividualPage extends WebPage {
 
         ple.setlinkFamily();
         elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
+        ple.setDates(false);
         PersonKeyEventsElement pkfe= new PersonKeyEventsElement(individual);
         elements.put(ElementTypes.PERSON_KEY_EVENTS_ELEMENT,pkfe);
         PersonAttributesElement pae = new PersonAttributesElement(individual);

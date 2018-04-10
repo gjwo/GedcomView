@@ -25,6 +25,7 @@ public class IndividualsFamilyPage extends WebPage
         elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Individual's family Page"));
         PersonLinkElement ple = new PersonLinkElement(person);
         ple.setLinkIndividual();
+        ple.setDates(false);
         elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
         PersonFactsSummaryElement psfe = new PersonFactsSummaryElement(person);
         elements.put(ElementTypes.PERSON_FACTS_SUMMARY_ELEMENT,psfe);
