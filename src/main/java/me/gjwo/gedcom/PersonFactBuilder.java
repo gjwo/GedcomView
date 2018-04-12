@@ -22,6 +22,7 @@ public class PersonFactBuilder
 {
     private final Individual focusPerson;
     private final Map<IndividualEventType,String> eventMap; // Events with lables
+    private final Map<IndividualAttributeType,String> attributeMap; // Events with lables
     /**
      * Constructor
      * @param person    Individual who holds the information
@@ -35,6 +36,13 @@ public class PersonFactBuilder
             String s = ie.toString().toLowerCase();
             s = s.substring(0, 1).toUpperCase() + s.substring(1);
             eventMap.put(ie,s);
+        }
+        attributeMap = new HashMap<>();
+        for(IndividualAttributeType ia:IndividualAttributeType.values())
+        {
+            String s = ia.toString().toLowerCase();
+            s = s.substring(0, 1).toUpperCase() + s.substring(1);
+            attributeMap.put(ia,s);
         }
     }
     public String getIndividualEventLable(IndividualEventType iet)
@@ -206,64 +214,11 @@ public class PersonFactBuilder
     //
 
 
-    public String buildAttributesTable(Boolean tableHeaders, boolean attributeLables) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        List<IndividualAttribute> attributes;
-
-        attributes = focusPerson.getAttributes();
-        if (attributes != null) {
-            sb.append("<table>");
-            if (tableHeaders) {
-                sb.append("<tr><th>Attribute</td><th>Date</th><th>Place</th><th>Details</th></tr>");
-            }
-            for (IndividualAttribute ia : attributes) {
-                sb.append("<tr>");
-                sb.append(buildAttributeRow(ia,ia.getType().toString()));
-                sb.append("</tr>");
-            }
-            sb.append("</table>");
-        }
-        else sb.append("no attributes found");
-        return sb.toString();
+     public String getIndividualAttributeLable(IndividualAttributeType iat)
+    {
+        return attributeMap.get(iat);
     }
-
-
-    public String buildAttributesOfTypeTable(IndividualAttributeType attributeType, String attributeLable, boolean tableHeaders, boolean attributeLables) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        List<IndividualAttribute> attributes;
-
-        attributes = focusPerson.getAttributesOfType(attributeType);
-        if (attributes != null) {
-            sb.append("<table>");
-            if (tableHeaders) {
-                sb.append("<tr><th>Attribute</td><th>Date</th><th>Place</th><th>Details</th></tr>");
-            }
-            for (IndividualAttribute ia : attributes) {
-                sb.append("<tr>");
-                sb.append(buildAttributeRow(ia, attributeLable));
-                sb.append("</tr>");
-            }
-            sb.append("</table>");
-        }
-        else
-        {
-            sb.append("no ");
-            sb.append(attributeLable);
-            sb.append(" attributes");
-        }
-        return sb.toString();
-    }
-
-    private String buildAttributeRow(IndividualAttribute ia, String attributeLable) throws IOException {
-        String content;
-        content = "<td>"+attributeLable+"</td>";
-        content += "<td>"+getDateOfAttribute(ia)+"</td>";
-        content += "<td>"+getPlaceOfAttribute(ia)+"</td>";
-        content += "<td>"+getDescriptionOfAttribute(ia)+"</td>";
-        return content;
-    }
-
-    private String getDateOfAttribute(IndividualAttribute ia)
+    public String getDateOfAttribute(IndividualAttribute ia)
     {
         StringBuilder sb = new StringBuilder();
         if (ia.getDate() != null && ia.getDate().trim().length() > 0) {
@@ -272,7 +227,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    private String getPlaceOfAttribute(IndividualAttribute ia)
+    public String getPlaceOfAttribute(IndividualAttribute ia)
     {
         StringBuilder sb = new StringBuilder();
         if (ia.getPlace() != null && ia.getPlace().getPlaceName() != null) {
@@ -281,7 +236,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    private String getDescriptionOfAttribute(IndividualAttribute ia)
+    public String getDescriptionOfAttribute(IndividualAttribute ia)
     {
         StringBuilder sb = new StringBuilder();
         if (ia.getDescription() != null) {

@@ -5,21 +5,21 @@ import java.util.List;
 
 public class TableBuilder {
 
-    private String buildTableRow(List<String> rowData)
+    private static String buildTableRow(List<String> rowData)
     {
         StringBuilder content = new StringBuilder("<tr>");
         for (String cell : rowData) content.append("<td>").append(cell).append("</td>");
         content.append("</tr>");
         return content.toString();
     }
-    private String buildTableHeaderRow(List<String> rowData)
+    private static String buildTableHeaderRow(List<String> rowData)
     {
-        StringBuilder content = new StringBuilder("<th>");
-        for (String cell : rowData) content.append("<td>").append(cell).append("</td>");
-        content.append("</th>");
+        StringBuilder content = new StringBuilder("<tr>");
+        for (String cell : rowData) content.append("<th>").append(cell).append("</th>");
+        content.append("</tr>");
         return content.toString();
     }
-    public String buildTable(List<List<String>> tableRows, List<String> columnLables)
+    public static String buildTable(List<List<String>> tableRows, List<String> columnLables)
     {
         StringBuilder content;
         Iterator tableItr = tableRows.iterator();

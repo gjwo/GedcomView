@@ -2,7 +2,9 @@ package me.gjwo.gedcom;
 
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
+import org.gedcom4j.model.IndividualAttribute;
 import org.gedcom4j.model.IndividualEvent;
+import org.gedcom4j.model.enumerations.IndividualAttributeType;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
 import java.util.ArrayList;
@@ -72,11 +74,38 @@ public class FactPicker {
     {
         List <List <String>> results = new ArrayList<>();
         for (IndividualEventType type:eventTypes) {
-             List<IndividualEvent> events = person.getEventsOfType((type));
-             for (IndividualEvent event : events) {
-                 results.add(PickEventRow(event, true));
-             }
+            List<IndividualEvent> events = person.getEventsOfType((type));
+            for (IndividualEvent event : events) {
+                results.add(PickEventRow(event, true));
+            }
         }
         return results;
     }
+    /**
+     *  getIndEventTableData    -   extracts individual event data as string arrays
+     * @param eventTypes    List of events types to be included in table data
+     * @return  A list of lable rows each of which is a list of strings
+     */
+    public List <List<String>> getIndAttributeTableData(List <IndividualAttributeType> eventTypes)
+    {
+
+        List <List <String>> results = new ArrayList<>();
+        for (IndividualAttributeType type:eventTypes) {
+            List<IndividualAttribute> attributes = person.getAttributesOfType((type));
+            for (IndividualAttribute attribute : attributes) {
+                results.add(pickAttributeRow(attribute, true));
+            }
+        }
+        return results;
+    }
+    private List<String> pickAttributeRow(IndividualAttribute ia, boolean withAttributeLable)
+    {
+        List <String> content = new ArrayList<>();
+        if (withAttributeLable) content.add(pfb.getIndividualAttributeLable(ia.getType()));
+        content.add(pfb.getDateOfAttribute(ia));
+        content.add(pfb.getPlaceOfAttribute(ia));
+        content.add(pfb.getDescriptionOfAttribute(ia));
+        return content;
+    }
+
 }
