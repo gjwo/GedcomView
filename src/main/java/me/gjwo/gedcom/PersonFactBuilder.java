@@ -37,6 +37,10 @@ public class PersonFactBuilder
             eventMap.put(ie,s);
         }
     }
+    public String getIndividualEventLable(IndividualEventType iet)
+    {
+        return eventMap.get(iet);
+    }
     public String buildPersonFamilyLink(Individual person) {
         return "<a href=\""+"/individualsfamily/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
     }
@@ -162,7 +166,7 @@ public class PersonFactBuilder
         return content;
     }
 
-    private String getDateOfEvent(IndividualEvent ce)
+    public String getDateOfEvent(IndividualEvent ce)
     {
         StringBuilder sb = new StringBuilder();
         if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
@@ -171,7 +175,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    private String getPlaceOfEvent(IndividualEvent ce)
+    public String getPlaceOfEvent(IndividualEvent ce)
     {
         StringBuilder sb = new StringBuilder();
         if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
@@ -180,7 +184,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    private String getDetailsOfEvent(IndividualEvent ce)
+    public String getDetailsOfEvent(IndividualEvent ce)
     {
         StringBuilder sb = new StringBuilder();
 
