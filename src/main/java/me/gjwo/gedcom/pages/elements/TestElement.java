@@ -1,16 +1,12 @@
 package me.gjwo.gedcom.pages.elements;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import me.gjwo.gedcom.FactPicker;
-import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Individual;
 import me.gjwo.gedcom.TableBuilder;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class TestElement extends WebElement
@@ -32,7 +28,11 @@ public class TestElement extends WebElement
     }
 
     @Override
-    public String render() throws IOException {
-        return testTable.buildTable( factPicker.getTableData(IndividualEventType.CENSUS),List.of("Date","Place"));
+    public String render()  {
+        return testTable.buildTable(
+                factPicker.getTableData(List.of(IndividualEventType.BIRTH,
+                                                IndividualEventType.DEATH,
+                                                IndividualEventType.CENSUS)),
+                                        List.of("Date","Place"));
     }
 }

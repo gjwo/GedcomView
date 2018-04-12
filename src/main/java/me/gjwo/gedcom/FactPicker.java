@@ -20,11 +20,11 @@ public class FactPicker {
     private List<String> columnLables = new ArrayList<>();
     private List<List<String>> tableData = new ArrayList<>();
 
-    enum linker{ fred};
+    enum linker{ fred}
     /**
      * FactPicker   -   Constructor
-     * @param person
-     * @param family
+     * @param person    The focus person
+     * @param family    The focus Family
      */
     public FactPicker(Individual person,Family family)
     {
@@ -65,13 +65,14 @@ public class FactPicker {
         return columnLables;
     }
 
-    public List <List<String>> getTableData(IndividualEventType et)
+    public List <List<String>> getTableData(List <IndividualEventType> et)
     {
         List <List <String>> results = new ArrayList();
-        List <IndividualEvent> events  = person.getEventsOfType((et));
-        for (IndividualEvent event :events)
-        {
-            results.add(PickEventRow(event,true));
+        for (IndividualEventType type:et) {
+             List<IndividualEvent> events = person.getEventsOfType((type));
+             for (IndividualEvent event : events) {
+                 results.add(PickEventRow(event, true));
+             }
         }
         return results;
     }
