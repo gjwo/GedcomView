@@ -4,41 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TableBuilder {
-    private String buildTableRow(String[] rowData, String rowLable)
-    {
-        StringBuilder content = new StringBuilder();
-        if (rowData != null)
-        {
-            content = new StringBuilder("<tr>");
-            if(rowLable!=null)
-            {
-                content.append("<td").append(rowLable).append("</td>");
-            }
-            for (String data:rowData) content.append("<td>").append(data).append("\td");
-            content.append("/tr>");
-        }
-        return content.toString();
-    }
-    public String buildTable(String[][] tableRows, String[] ColumnLables, String[] rowLables )
-    {
-        StringBuilder content;
-        content = new StringBuilder("<table>");
-        if (tableRows != null) {
-            if (ColumnLables != null) {
-                content.append("<tr>");
-                if (rowLables != null) content.append("<th></th>"); //shift columns left by one;
-                for (String columnLable : ColumnLables) content.append("<th>").append(columnLable).append("</th>");
-                content.append("</tr>");
-            }
-            if ((rowLables != null) && (rowLables.length == tableRows[0].length))
-                for (int i = 0; i < tableRows.length; i++)
-                    content.append(buildTableRow(tableRows[i], rowLables[i]));
-            else
-                for (String[] tableRow : tableRows) content.append(buildTableRow(tableRow, null));
-          }
-        content.append("</table>");
-        return content.toString();
-    }
 
     private String buildTableRow(List<String> rowData)
     {

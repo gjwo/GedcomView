@@ -6,7 +6,6 @@ import org.gedcom4j.model.Individual;
 import me.gjwo.gedcom.TableBuilder;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
-import java.io.IOException;
 import java.util.List;
 
 public class TestElement extends WebElement
@@ -30,7 +29,8 @@ public class TestElement extends WebElement
     @Override
     public String render()  {
         return testTable.buildTable(
-                factPicker.getTableData(List.of(IndividualEventType.BIRTH,
+                factPicker.getIndEventTableData(List.of(IndividualEventType.BIRTH,
+                                                IndividualEventType.BAPTISM,
                                                 IndividualEventType.DEATH,
                                                 IndividualEventType.CENSUS)),
                                         List.of("Date","Place"));

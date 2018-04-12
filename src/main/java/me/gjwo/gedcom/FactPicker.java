@@ -1,12 +1,10 @@
 package me.gjwo.gedcom;
 
-import me.gjwo.gedcom.pages.elements.PersonKeyEventsElement;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.IndividualEvent;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,19 +54,24 @@ public class FactPicker {
         return content;
     }
 
-    List <String> getRowLables()
+    public List <String> getRowLables()
     {
         return rowLables;
     }
-    List <String> getColumnLables()
+    public List <String> getColumnLables()
     {
         return columnLables;
     }
 
-    public List <List<String>> getTableData(List <IndividualEventType> et)
+    /**
+     *  getIndEventTableData    -   extracts individual event data as string arrays
+     * @param eventTypes    List of events types to be included in table data
+     * @return  A list of lable rows each of which is a list of strings
+     */
+    public List <List<String>> getIndEventTableData(List <IndividualEventType> eventTypes)
     {
-        List <List <String>> results = new ArrayList();
-        for (IndividualEventType type:et) {
+        List <List <String>> results = new ArrayList<>();
+        for (IndividualEventType type:eventTypes) {
              List<IndividualEvent> events = person.getEventsOfType((type));
              for (IndividualEvent event : events) {
                  results.add(PickEventRow(event, true));
