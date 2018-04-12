@@ -50,6 +50,7 @@ public class PersonFactBuilder
         return eventMap.get(iet);
     }
     public Individual getFocusPerson() {return this.focusPerson;}
+
     public String buildPersonFamilyLink(Individual person) {
         return "<a href=\""+"/individualsfamily/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
     }
@@ -88,92 +89,9 @@ public class PersonFactBuilder
     }
 
 
-    /**
-     * buildKeyEventsTable  -   Builds a html table for key personal events
-     * @param tableHeaders  true shows header row in table
-     * @param eventLables   true shows event type lables for each event
-     * @return              The html string for insertion in a page template
-     */
-    public String buildKeyEventsTable(boolean tableHeaders, boolean eventLables) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> events;
-
-        sb.append("<table>");
-        if (tableHeaders) {
-            sb.append("<tr><th>Event</td><th>Date</th><th>Place</th><th>Details</th></tr>");
-        }
-        events = focusPerson.getEventsOfType(IndividualEventType.BIRTH);
-        for (IndividualEvent ce : events) {
-            sb.append("<tr>");
-            sb.append(buildEventRow(ce, eventLables));
-            sb.append("</tr>");
-        }
-        events = focusPerson.getEventsOfType(IndividualEventType.BAPTISM);
-        for (IndividualEvent ce : events) {
-            sb.append("<tr>");
-            sb.append(buildEventRow(ce, eventLables));
-            sb.append("</tr>");
-        }
-        events = focusPerson.getEventsOfType(IndividualEventType.DEATH);
-        for (IndividualEvent ce : events) {
-            sb.append("<tr>");
-            sb.append(buildEventRow(ce, eventLables));
-            sb.append("</tr>");
-        }
-        sb.append("</table>");
-        return sb.toString();
-    }
-
-    public String buildCensusTable(boolean tableHeaders) throws IOException{
-        return buildEventsOfTypeTable(IndividualEventType.CENSUS,tableHeaders,true);
-    }
-
-    public String buildKeyEventsTable2(Boolean tableHeaders, Boolean eventLables) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        sb.append(buildEventsOfTypeTable(IndividualEventType.BIRTH,tableHeaders,true));
-        sb.append(buildEventsOfTypeTable(IndividualEventType.BAPTISM,Boolean.FALSE,true));
-        sb.append(buildEventsOfTypeTable(IndividualEventType.DEATH,Boolean.FALSE,true));
-        return sb.toString();
-    }
-
     //
     // General methods for handling and presenting Personal Events
     //
-
-    public String buildEventsOfTypeTable(IndividualEventType eventType, boolean tableHeaders, boolean eventLables) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> events;
-
-        events = focusPerson.getEventsOfType(eventType);
-        if (events != null) {
-            sb.append("<table>");
-            if (tableHeaders) {
-                sb.append("<tr><th>Event</td><th>Date</th><th>Place</th><th>Details</th></tr>");
-            }
-            for (IndividualEvent ce : events) {
-                sb.append("<tr>");
-                sb.append(buildEventRow(ce, eventLables));
-                sb.append("</tr>");
-            }
-            sb.append("</table>");
-        }
-        else
-        {
-            sb.append("no ");
-            sb.append(eventMap.get(eventType));
-            sb.append(" events");
-        }
-        return sb.toString();
-    }
-
-    private String buildEventRow(IndividualEvent ce, boolean withLables) throws IOException {
-        String content = "";
-        if (withLables) content = "<td>"+eventMap.get(ce.getType())+"</td>";
-        content += "<td>"+getDateOfEvent(ce)+"</td>";
-        content += "<td>"+getPlaceOfEvent(ce)+"</td>";
-        content += "<td>"+getDetailsOfEvent(ce)+"</td>";
-        return content;
-    }
 
     public String getDateOfEvent(IndividualEvent ce)
     {
@@ -200,12 +118,6 @@ public class PersonFactBuilder
         if (ce.getDescription() != null ) {
             sb.append(ce.getDescription());
         }
-        return sb.toString();
-    }
-    public String getDatesOfEvent(IndividualEventType et) {
-        StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> birthDates = focusPerson.getEventsOfType(et);
-        for (IndividualEvent ev : birthDates) sb.append(getDateOfEvent(ev));
         return sb.toString();
     }
 

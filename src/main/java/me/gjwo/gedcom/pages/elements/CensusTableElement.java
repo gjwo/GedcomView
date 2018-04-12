@@ -20,15 +20,11 @@ public class CensusTableElement extends WebElement
         this.factPicker = new FactPicker(person,null);
     }
 
-    private String buildPersonsCensusTable() throws IOException {
-        return TableBuilder.buildTable(
-                factPicker.getIndEventTableData(List.of(IndividualEventType.CENSUS)),
-                List.of("Event","Date","Place"));
-    }
-
     @Override
     public String render() throws IOException
     {
-        return buildPersonsCensusTable();
+        return TableBuilder.buildTable(
+                factPicker.getIndEventTableData(List.of(IndividualEventType.CENSUS)),
+                List.of("Event","Date","Place"));
     }
 }
