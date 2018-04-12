@@ -2,6 +2,7 @@ package me.gjwo.gedcom;
 
 import me.gjwo.gedcom.pages.IndividualPage;
 import me.gjwo.gedcom.pages.IndividualsFamilyPage;
+import me.gjwo.gedcom.pages.TestPage;
 import org.gedcom4j.exception.GedcomParserException;
 import org.gedcom4j.model.*;
 import org.gedcom4j.parser.GedcomParser;
@@ -38,6 +39,16 @@ public class GedcomView
             {
                 IndividualPage ip = new IndividualPage(g.getIndividuals().get(id));
                 return ip.render();
+            } else return "Unknown person";
+        });
+        get("/test/:id", (req, res) ->
+        {
+            //example call from browser http://localhost:4567/test/@I12@
+            String id = req.params(":id");
+            if(g.getIndividuals().containsKey(id))
+            {
+                TestPage tp = new TestPage(g.getIndividuals().get(id));
+                return tp.render();
             } else return "Unknown person";
         });
     }

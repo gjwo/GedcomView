@@ -20,7 +20,7 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 @SuppressWarnings("SpellCheckingInspection")
 public class PersonFactBuilder
 {
-    private final Individual person;
+    private final Individual focusPerson;
     private final Map<IndividualEventType,String> eventMap; // Events with lables
     /**
      * Constructor
@@ -28,7 +28,7 @@ public class PersonFactBuilder
      */
     public PersonFactBuilder(Individual person)
     {
-        this.person = person;
+        this.focusPerson = person;
         eventMap = new HashMap<>();
         for(IndividualEventType ie:IndividualEventType.values())
         {
@@ -41,6 +41,7 @@ public class PersonFactBuilder
     {
         return eventMap.get(iet);
     }
+    public Individual getFocusPerson() {return this.focusPerson;}
     public String buildPersonFamilyLink(Individual person) {
         return "<a href=\""+"/individualsfamily/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
     }
@@ -51,7 +52,7 @@ public class PersonFactBuilder
 
     public String getRefNumber()
     {
-        return person.getXref().replace("@I","").replace("@","");
+        return focusPerson.getXref().replace("@I","").replace("@","");
     }
 
     public String buildPersonSummaryRow( boolean withLables) throws IOException {
@@ -69,8 +70,8 @@ public class PersonFactBuilder
         if (withLables) content = readFile("personSummaryTableRowLables.html");
         else content = readFile("personSummaryTableRowNoLables.html");
         content = content.replace("!REF!", getRefNumber());
-        content = content.replace("!ID!", person.getXref());
-        content = content.replace("!FNAME!", person.getFormattedName());
+        content = content.replace("!ID!", focusPerson.getXref());
+        content = content.replace("!FNAME!", focusPerson.getFormattedName());
         content = content.replace("!DOB!", getDateOfBirth());
         content = content.replace("!POB!", getPlaceOfBirth());
         content = content.replace("!DOD!", getDateOfDeath());
@@ -93,19 +94,19 @@ public class PersonFactBuilder
         if (tableHeaders) {
             sb.append("<tr><th>Event</td><th>Date</th><th>Place</th><th>Details</th></tr>");
         }
-        events = person.getEventsOfType(IndividualEventType.BIRTH);
+        events = focusPerson.getEventsOfType(IndividualEventType.BIRTH);
         for (IndividualEvent ce : events) {
             sb.append("<tr>");
             sb.append(buildEventRow(ce, eventLables));
             sb.append("</tr>");
         }
-        events = person.getEventsOfType(IndividualEventType.BAPTISM);
+        events = focusPerson.getEventsOfType(IndividualEventType.BAPTISM);
         for (IndividualEvent ce : events) {
             sb.append("<tr>");
             sb.append(buildEventRow(ce, eventLables));
             sb.append("</tr>");
         }
-        events = person.getEventsOfType(IndividualEventType.DEATH);
+        events = focusPerson.getEventsOfType(IndividualEventType.DEATH);
         for (IndividualEvent ce : events) {
             sb.append("<tr>");
             sb.append(buildEventRow(ce, eventLables));
@@ -135,7 +136,7 @@ public class PersonFactBuilder
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> events;
 
-        events = person.getEventsOfType(eventType);
+        events = focusPerson.getEventsOfType(eventType);
         if (events != null) {
             sb.append("<table>");
             if (tableHeaders) {
@@ -195,7 +196,7 @@ public class PersonFactBuilder
     }
     public String getDatesOfEvent(IndividualEventType et) {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> birthDates = person.getEventsOfType(et);
+        List<IndividualEvent> birthDates = focusPerson.getEventsOfType(et);
         for (IndividualEvent ev : birthDates) sb.append(getDateOfEvent(ev));
         return sb.toString();
     }
@@ -209,7 +210,7 @@ public class PersonFactBuilder
         StringBuilder sb = new StringBuilder();
         List<IndividualAttribute> attributes;
 
-        attributes = person.getAttributes();
+        attributes = focusPerson.getAttributes();
         if (attributes != null) {
             sb.append("<table>");
             if (tableHeaders) {
@@ -231,7 +232,7 @@ public class PersonFactBuilder
         StringBuilder sb = new StringBuilder();
         List<IndividualAttribute> attributes;
 
-        attributes = person.getAttributesOfType(attributeType);
+        attributes = focusPerson.getAttributesOfType(attributeType);
         if (attributes != null) {
             sb.append("<table>");
             if (tableHeaders) {
@@ -295,7 +296,7 @@ public class PersonFactBuilder
 
     public String getDateOfBirth() {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> birthDates = person.getEventsOfType(
+        List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
         for (IndividualEvent ev : birthDates) sb.append(getDateOfEvent(ev));
         return sb.toString();
@@ -303,7 +304,7 @@ public class PersonFactBuilder
 
     public String getPlaceOfBirth() {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> birthDates = person.getEventsOfType(
+        List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
         for (IndividualEvent ev : birthDates) sb.append(getPlaceOfEvent(ev));
         return sb.toString();
@@ -311,7 +312,7 @@ public class PersonFactBuilder
 
     public String getDateOfDeath() {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> DeathDates = person.getEventsOfType(
+        List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
         for (IndividualEvent ev : DeathDates) sb.append(getDateOfEvent(ev));
         return sb.toString();
@@ -319,7 +320,7 @@ public class PersonFactBuilder
 
     public String getPlaceOfDeath() {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> DeathDates = person.getEventsOfType(
+        List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
         for (IndividualEvent ev : DeathDates) sb.append(getPlaceOfEvent(ev));
         return sb.toString();
@@ -327,14 +328,14 @@ public class PersonFactBuilder
 
     public String getDateOfBaptism() {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> baptisms = person.getEventsOfType(IndividualEventType.BAPTISM);
+        List<IndividualEvent> baptisms = focusPerson.getEventsOfType(IndividualEventType.BAPTISM);
         for (IndividualEvent ev : baptisms)  sb.append(getDateOfEvent(ev));
         return sb.toString();
     }
 
     public String getPlaceOfBaptism() {
         StringBuilder sb = new StringBuilder();
-        List<IndividualEvent> baptisms = person.getEventsOfType(IndividualEventType.BAPTISM);
+        List<IndividualEvent> baptisms = focusPerson.getEventsOfType(IndividualEventType.BAPTISM);
         for (IndividualEvent ev : baptisms) sb.append(getPlaceOfEvent(ev));
         return sb.toString();
     }

@@ -24,7 +24,6 @@ public class PersonKeyEventsElement extends WebElement
 
     @Override
     public String render() throws IOException {
-        String content;
         PersonFactBuilder fb = new PersonFactBuilder(person);
         return fb.buildKeyEventsTable(includeTitles,includeLables);
     }

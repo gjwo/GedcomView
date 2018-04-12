@@ -4,6 +4,7 @@ import me.gjwo.gedcom.pages.elements.PersonKeyEventsElement;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.IndividualEvent;
+import org.gedcom4j.model.enumerations.IndividualEventType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class FactPicker {
         }
         return null;
     }
-    private List<String> PickEventRow(IndividualEvent ce, boolean withEventLable) throws IOException
+    private List<String> PickEventRow(IndividualEvent ce, boolean withEventLable)
     {
         List <String> content = new ArrayList<>();
         if (withEventLable) content.add(pfb.getIndividualEventLable(ce.getType()));
@@ -55,20 +56,23 @@ public class FactPicker {
         return content;
     }
 
-    List getRowLables()
+    List <String> getRowLables()
     {
         return rowLables;
     }
-    List getColumnLables()
+    List <String> getColumnLables()
     {
         return columnLables;
     }
-    boolean hasRow()
+
+    public List <List<String>> getTableData(IndividualEventType et)
     {
-        return true;
-    }
-    List nextRow()
-    {
-        return null;
+        List <List <String>> results = new ArrayList();
+        List <IndividualEvent> events  = person.getEventsOfType((et));
+        for (IndividualEvent event :events)
+        {
+            results.add(PickEventRow(event,true));
+        }
+        return results;
     }
 }
