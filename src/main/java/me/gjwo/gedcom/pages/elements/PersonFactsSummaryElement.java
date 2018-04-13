@@ -13,7 +13,7 @@ public class PersonFactsSummaryElement extends WebElement
     private final Individual person;
     private boolean includeLables;
     private boolean includeTitles;
-    private FactPicker factPicker;
+    private final FactPicker factPicker;
 
     public void setLables(Boolean includeLables){this.includeLables = includeLables;}
     public void setDates(Boolean includeTitles){this.includeTitles = includeTitles;}

@@ -1,27 +1,21 @@
 package me.gjwo.gedcom;
 
-import org.gedcom4j.model.Family;
-import org.gedcom4j.model.Individual;
-import org.gedcom4j.model.IndividualAttribute;
-import org.gedcom4j.model.IndividualEvent;
+import org.gedcom4j.model.*;
+import org.gedcom4j.model.enumerations.FamilyEventType;
 import org.gedcom4j.model.enumerations.IndividualAttributeType;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import static me.gjwo.gedcom.FileUtil.readFile;
 
 public class FactPicker {
     private final Individual person;
     private final Family family;
     private final PersonFactBuilder pfb;
+    private final FamilyFactBuilder ffb;
     private DataViews dataView;
-    private List<String> cellLables = new ArrayList<>();
-    private List<String> rowData = new ArrayList<>();
-    private List<String> columnLables = new ArrayList<>();
+    private final List<String> cellLables = new ArrayList<>();
+    private final List<String> columnLables = new ArrayList<>();
 
     /**
      * FactPicker   -   Constructor
@@ -31,8 +25,11 @@ public class FactPicker {
     public FactPicker(Individual person,Family family)
     {
         this.person = person;
-        this.pfb = new PersonFactBuilder(person);
+        if (person != null)this.pfb = new PersonFactBuilder(person);
+        else this.pfb = null;
         this.family = family;
+        if (family != null) this.ffb = new FamilyFactBuilder(family);
+        else this.ffb = null;
     }
 
     //getters and setters
@@ -44,12 +41,12 @@ public class FactPicker {
     // data based on Individual Events
 
     /**
-     * PickEventRow         -   Gets an array of strings to form a table row from an event
+     * PickIndEventRow      -   Gets an list of strings to form a table row from an event
      * @param ie                An individual event to be displayed in this row
-     * @param withEventLable    true: include an event lable at th estart of the row
-     * @return
+     * @param withEventLable    true: include an event lable at the start of the row
+     * @return                  list of result strings
      */
-    private List<String> PickEventRow(IndividualEvent ie, boolean withEventLable)
+    private List<String> PickIndEventRow(IndividualEvent ie, boolean withEventLable)
     {
         List <String> content = new ArrayList<>();
         if (withEventLable) content.add(pfb.getIndividualEventLable(ie.getType()));
@@ -70,7 +67,7 @@ public class FactPicker {
         for (IndividualEventType type:eventTypes) {
             List<IndividualEvent> events = person.getEventsOfType((type));
             for (IndividualEvent event : events) {
-                results.add(PickEventRow(event, true));
+                results.add(PickIndEventRow(event, true));
             }
         }
         return results;
@@ -125,6 +122,40 @@ public class FactPicker {
         content.add(pfb.getPlaceOfAttribute(ia));
         content.add(pfb.getDescriptionOfAttribute(ia));
         return content;
+    }
+    // data based on Family Events
+
+    /**
+     * PickFamilyEventRow   -   Gets an list of strings to form a table row from an event
+     * @param fe                A Family event to be displayed in this row
+     * @param withEventLable    true: include an event lable at th estart of the row
+     * @return                  list of result strings
+     */
+    private List<String> PickFamilyEventRow(FamilyEvent fe, boolean withEventLable)
+    {
+        List <String> content = new ArrayList<>();
+        if (withEventLable) content.add(ffb.getFamilyEventLable(fe.getType()));
+        content.add(ffb.getDateOfEvent(fe));
+        content.add(ffb.getPlaceOfEvent(fe));
+        content.add(ffb.getDescriptionOfEvent(fe));
+        return content;
+    }
+
+    /**
+     *  pickIndEventTableData    -   extracts individual event data as string arrays
+     * @param eventTypes    List of events types to be included in table data
+     * @return  A list of lable rows each of which is a list of strings
+     */
+    public List <List<String>> pickFamilyEventTableData(List <FamilyEventType> eventTypes)
+    {
+        List <List <String>> results = new ArrayList<>();
+        for (FamilyEventType type:eventTypes) {
+            List<FamilyEvent> events = ffb.getEventsOfType((type));
+            for (FamilyEvent event : events) {
+                results.add(PickFamilyEventRow(event, true));
+            }
+        }
+        return results;
     }
 
 }

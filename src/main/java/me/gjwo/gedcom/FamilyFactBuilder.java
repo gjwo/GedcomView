@@ -3,27 +3,35 @@ package me.gjwo.gedcom;
 import org.gedcom4j.model.*;
 import org.gedcom4j.model.enumerations.FamilyEventType;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static me.gjwo.gedcom.FileUtil.readFile;
+import java.util.*;
 
 /**
- * FamilyFactBuilder    -   Build strings and html fragments from a family's data including
+ * FamilyFactBuilder    -   Build strings and html fragments from a focusFamily's data including
  *                          Event data Marriage, Divorce etc
  *                          Relationship data  Spouse, Children etc.
  *                          Data is often formatted into tables for use as an element of a page
  */
 public class FamilyFactBuilder
 {
-    private final Family family;
-    private Individual FocusPerson;
+    private final Family focusFamily;
+    private final Map<FamilyEventType,String> eventMap; // Events with lables
+    private Individual focusPerson;
 
     public FamilyFactBuilder(Family family)
     {
-        this.family = family;
+        this.focusFamily = family;
+        eventMap = new HashMap<>();
+        for(FamilyEventType fe:FamilyEventType.values())
+        {
+            String s = fe.toString().toLowerCase();
+            s = s.substring(0, 1).toUpperCase() + s.substring(1);
+            eventMap.put(fe,s);
+        }
+
+    }
+    String getFamilyEventLable(FamilyEventType fet)
+    {
+        return eventMap.get(fet);
     }
 
     public static Family getSpousalFamily(Individual person, Individual spouse)
@@ -39,11 +47,11 @@ public class FamilyFactBuilder
                 if(f.getHusband().getIndividual().equals(spouse))return f;
                 else if(f.getWife().getIndividual().equals(spouse)) return f;
             }
+            System.out.print("no spousal match");
+            return null;
         }
-        else return (new Family[0])[0];
-        System.out.print("no spousal match");
-        return (new Family[0])[0]; //shouldn't app
-    }
+        else return null;
+     }
     public static Family getParentalFamily(Individual person)
     {
         return person.getFamiliesWhereChild().get(0).getFamily();
@@ -51,11 +59,11 @@ public class FamilyFactBuilder
 
     public String getRefNumber()
     {
-        return family.getXref().replace("@F","").replace("@","");
+        return focusFamily.getXref().replace("@F","").replace("@","");
     }
 
 
-     private String getDateOfEvent(FamilyEvent fe)
+    String getDateOfEvent(FamilyEvent fe)
     {
         StringBuilder sb = new StringBuilder();
         if (fe.getDate() != null && fe.getDate().trim().length() > 0) {
@@ -64,7 +72,7 @@ public class FamilyFactBuilder
         return sb.toString();
     }
 
-    private String getPlaceOfEvent(FamilyEvent fe)
+    String getPlaceOfEvent(FamilyEvent fe)
     {
         StringBuilder sb = new StringBuilder();
         if (fe.getPlace() != null && fe.getPlace().getPlaceName() != null) {
@@ -73,63 +81,26 @@ public class FamilyFactBuilder
         return sb.toString();
     }
 
-    private String getDetailsOfEvent(FamilyEvent fe)
+    String getDescriptionOfEvent(FamilyEvent fe)
     {
-        /*StringBuilder sb = new StringBuilder();
-
-        if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
-            sb.append(ce.getPlace().getPlaceName());
-        }
-        sb.append("something");
-        return sb.toString(); */
-        return "some details tbd";
-    }
-
-    private String buildEventRow(FamilyEvent fe, Boolean withLables, String eventLable){
         StringBuilder sb = new StringBuilder();
-        String content = "";
-        if (withLables) content = "<td>"+eventLable+"</td>";
-        content += "<td>"+getDateOfEvent(fe)+"</td>";
-        content += "<td>"+getPlaceOfEvent(fe)+"</td>";
-        content += "<td>"+getDetailsOfEvent(fe)+"</td>";
-        return content;
-    }
 
-    public String buildEventTable(Boolean tableHeaders, Boolean eventLables) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        List<FamilyEvent> events;
-
-        sb.append("<table>");
-        if (tableHeaders) {
-            sb.append("<tr><th>Event</td><th>Date</th><th>Place</th><th>Details</th></tr>");
+        if (fe.getDescription()!= null) {
+            sb.append(fe.getDescription());
         }
-        events = getEventsOfType(family,FamilyEventType.MARRIAGE);
-        for (FamilyEvent fe : events) {
-            sb.append("<tr>");
-            sb.append(buildEventRow(fe, eventLables, "Married:"));
-            sb.append("</tr>");
-        }
-        events = getEventsOfType(family,FamilyEventType.DIVORCE);
-        for (FamilyEvent fe : events) {
-            sb.append("<tr>");
-            sb.append(buildEventRow(fe, eventLables, "Divorced:"));
-            sb.append("</tr>");
-        }
-        sb.append("</table>");
         return sb.toString();
     }
 
 
     /**
-     * Get a list of events of the supplied type for the specified family
-     * @param family    the family to be searched
+     * Get a list of events of the supplied type for the specified focusFamily
      * @param type      the type of event to get
      * @return          a list of events of the specified type
      */
 
-    private static List<FamilyEvent> getEventsOfType(Family family,FamilyEventType type) {
+    List<FamilyEvent> getEventsOfType(FamilyEventType type) {
         List<FamilyEvent> result = new ArrayList<>(0);
-        List<FamilyEvent> events = family.getEvents();
+        List<FamilyEvent> events = focusFamily.getEvents();
         if (events != null) {
             for (FamilyEvent fe : events) {
                 if (fe.getType() == type) {

@@ -6,7 +6,7 @@ import me.gjwo.gedcom.pages.elements.ElementTypes;
 
 public abstract class WebPage
 {
-    public WebPage() {
+    protected WebPage() {
         this.elements = new HashMap<>();
     }
 

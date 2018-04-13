@@ -12,7 +12,7 @@ import java.util.List;
 public class PersonKeyEventsElement extends WebElement
 {
     private final Individual person;
-    private FactPicker factPicker;
+    private final FactPicker factPicker;
 
 
     public PersonKeyEventsElement(Individual person)

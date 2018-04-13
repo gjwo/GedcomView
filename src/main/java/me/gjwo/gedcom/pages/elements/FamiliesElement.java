@@ -8,12 +8,11 @@ import me.gjwo.gedcom.HtmlWrapper;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.IndividualReference;
+import org.gedcom4j.model.enumerations.FamilyEventType;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static me.gjwo.gedcom.FileUtil.readFile;
 
 
 public class FamiliesElement extends WebElement
@@ -59,18 +58,26 @@ public class FamiliesElement extends WebElement
         if(family==null) return content;
 
         FamilyFactBuilder ffb = new FamilyFactBuilder(family);
+        FactPicker fp = new FactPicker(null,family);
         content += buildSingleCoupleTable(family);
 
-        if (showEvents) content += ffb.buildEventTable(Boolean.FALSE,Boolean.TRUE);
+        if (showEvents)
+        {
+            content += HtmlWrapper.wrapTable(
+                            fp.pickFamilyEventTableData(List.of(
+                                        FamilyEventType.MARRIAGE,
+                                        FamilyEventType.DIVORCE)),
+                    List.of("Event","Date","Place", "Description"));
+        }
 
         if(showChildren) {
             if (family.getChildren() != null) {
                 content += HtmlWrapper.wrapHeader("Children", 4);
                 for (IndividualReference childRef : family.getChildren()) {
                     Individual child = childRef.getIndividual();
-                    FactPicker fp = new FactPicker(child, family);
+                    FactPicker cfp = new FactPicker(child, family);
                     PersonFactBuilder pfb = new PersonFactBuilder(child);
-                    tableRows.add(fp.pickIndSummaryRow(pfb));
+                    tableRows.add(cfp.pickIndSummaryRow(pfb));
                 }
                 content += HtmlWrapper.wrapTable(tableRows, titles);
             } else content += HtmlWrapper.wrapHeader("No children recorded", 4);

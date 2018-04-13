@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TestElement extends WebElement
 {
-    private FactPicker factPicker;
+    private final FactPicker factPicker;
 
     public TestElement(Individual person)
     {

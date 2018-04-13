@@ -9,14 +9,14 @@ import java.util.List;
 public class HtmlWrapper
 {
 
-    public static String wrapTableRow(List<String> rowData)
+    private static String wrapTableRow(List<String> rowData)
     {
         StringBuilder content = new StringBuilder("<tr>");
         for (String cell : rowData) content.append("<td>").append(cell).append("</td>");
         content.append("</tr>");
         return content.toString();
     }
-    public static String wrapTableHeaderRow(List<String> rowData)
+    private static String wrapTableHeaderRow(List<String> rowData)
     {
         StringBuilder content = new StringBuilder("<tr>");
         for (String cell : rowData) content.append("<th>").append(cell).append("</th>");

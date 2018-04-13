@@ -3,12 +3,9 @@ import org.gedcom4j.model.*;
 import org.gedcom4j.model.enumerations.IndividualAttributeType;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static me.gjwo.gedcom.FileUtil.readFile;
 
 /**
  * PersonFactBuilder    -   Build strings and html fragments from an individual's data including
@@ -45,11 +42,11 @@ public class PersonFactBuilder
             attributeMap.put(ia,s);
         }
     }
-    public String getIndividualEventLable(IndividualEventType iet)
+    String getIndividualEventLable(IndividualEventType iet)
     {
         return eventMap.get(iet);
     }
-    public Individual getFocusPerson() {return this.focusPerson;}
+    Individual getFocusPerson() {return this.focusPerson;}
 
     public String buildPersonFamilyLink(Individual person) {
         return "/individualsfamily/" + person.getXref();
@@ -64,36 +61,11 @@ public class PersonFactBuilder
         return focusPerson.getXref().replace("@I","").replace("@","");
     }
 
-    public String buildPersonSummaryRow( boolean withLables) throws IOException {
-        String content;
-        /*
-        <tr>
-            <td>Ref:&nbsp; !REF!</td>
-            <td><a href="/individualsfamily/!ID!"> !TEXT! </a></td>
-            <td>Born:&nbsp; !DOB!</td>
-            <td>in:&nbsp; !POB!</td>
-            <td>Died:&nbsp; !DOD!</td>
-            <td>in:&nbsp; !POD!</td>
-        </tr>
-         */
-        if (withLables) content = readFile("personSummaryTableRowLables.html");
-        else content = readFile("personSummaryTableRowNoLables.html");
-        content = content.replace("!REF!", getRefNumber());
-        content = content.replace("!ID!", focusPerson.getXref());
-        content = content.replace("!FNAME!", focusPerson.getFormattedName());
-        content = content.replace("!DOB!", getDateOfBirth());
-        content = content.replace("!POB!", getPlaceOfBirth());
-        content = content.replace("!DOD!", getDateOfDeath());
-        content = content.replace("!POD!", getPlaceOfDeath());
-        return content;
-    }
-
-
     //
     // General methods for handling and presenting Personal Events
     //
 
-    public String getDateOfEvent(IndividualEvent ce)
+    String getDateOfEvent(IndividualEvent ce)
     {
         StringBuilder sb = new StringBuilder();
         if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
@@ -102,7 +74,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getPlaceOfEvent(IndividualEvent ce)
+    String getPlaceOfEvent(IndividualEvent ce)
     {
         StringBuilder sb = new StringBuilder();
         if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
@@ -111,7 +83,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getDetailsOfEvent(IndividualEvent ce)
+    String getDetailsOfEvent(IndividualEvent ce)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -126,11 +98,11 @@ public class PersonFactBuilder
     //
 
 
-     public String getIndividualAttributeLable(IndividualAttributeType iat)
+    String getIndividualAttributeLable(IndividualAttributeType iat)
     {
         return attributeMap.get(iat);
     }
-    public String getDateOfAttribute(IndividualAttribute ia)
+    String getDateOfAttribute(IndividualAttribute ia)
     {
         StringBuilder sb = new StringBuilder();
         if (ia.getDate() != null && ia.getDate().trim().length() > 0) {
@@ -139,7 +111,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getPlaceOfAttribute(IndividualAttribute ia)
+    String getPlaceOfAttribute(IndividualAttribute ia)
     {
         StringBuilder sb = new StringBuilder();
         if (ia.getPlace() != null && ia.getPlace().getPlaceName() != null) {
@@ -148,7 +120,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getDescriptionOfAttribute(IndividualAttribute ia)
+    String getDescriptionOfAttribute(IndividualAttribute ia)
     {
         StringBuilder sb = new StringBuilder();
         if (ia.getDescription() != null) {
@@ -169,7 +141,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getPlaceOfBirth() {
+    String getPlaceOfBirth() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
@@ -185,7 +157,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getPlaceOfDeath() {
+    String getPlaceOfDeath() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
