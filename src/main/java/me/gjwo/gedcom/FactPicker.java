@@ -78,8 +78,8 @@ public class FactPicker {
         List <String> results = new ArrayList<>();
 
         results.add(lpfb.getRefNumber());
-        //results.add( lpfb.getFocusPerson().getXref());
-        results.add(lpfb.getFocusPerson().getFormattedName());
+        results.add(HtmlWrapper.wrapHyperlink(  lpfb.buildPersonFamilyLink(lpfb.getFocusPerson()),
+                                                lpfb.getFocusPerson().getFormattedName()));
         results.add(lpfb.getDateOfBirth());
         results.add(lpfb.getPlaceOfBirth());
         results.add(lpfb.getDateOfDeath());
