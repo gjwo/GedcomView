@@ -30,15 +30,15 @@ public class PersonFactBuilder
         eventMap = new HashMap<>();
         for(IndividualEventType ie:IndividualEventType.values())
         {
-            String s = ie.toString().toLowerCase();
-            s = s.substring(0, 1).toUpperCase() + s.substring(1);
+            String s = ie.toString();
+            s = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
             eventMap.put(ie,s);
         }
         attributeMap = new HashMap<>();
         for(IndividualAttributeType ia:IndividualAttributeType.values())
         {
-            String s = ia.toString().toLowerCase();
-            s = s.substring(0, 1).toUpperCase() + s.substring(1);
+            String s = ia.toString();
+            s = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
             attributeMap.put(ia,s);
         }
     }
@@ -122,11 +122,10 @@ public class PersonFactBuilder
 
     String getDescriptionOfAttribute(IndividualAttribute ia)
     {
-        StringBuilder sb = new StringBuilder();
-        if (ia.getDescription() != null) {
-            sb.append(ia.getDescription());
-        }
-        return sb.toString();
+        if (ia.getDescription() != null)
+            if (ia.getDescription().toString() != null)
+                return ia.getDescription().toString();
+        return "";
     }
 
 //

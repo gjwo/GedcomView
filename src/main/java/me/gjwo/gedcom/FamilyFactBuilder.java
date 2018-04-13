@@ -23,8 +23,8 @@ public class FamilyFactBuilder
         eventMap = new HashMap<>();
         for(FamilyEventType fe:FamilyEventType.values())
         {
-            String s = fe.toString().toLowerCase();
-            s = s.substring(0, 1).toUpperCase() + s.substring(1);
+            String s = fe.toString();
+            s = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
             eventMap.put(fe,s);
         }
 
@@ -66,18 +66,16 @@ public class FamilyFactBuilder
     String getDateOfEvent(FamilyEvent fe)
     {
         StringBuilder sb = new StringBuilder();
-        if (fe.getDate() != null && fe.getDate().trim().length() > 0) {
+        if (fe.getDate() != null && fe.getDate().trim().length() > 0)
             sb.append(fe.getDate());
-        }
         return sb.toString();
     }
 
     String getPlaceOfEvent(FamilyEvent fe)
     {
         StringBuilder sb = new StringBuilder();
-        if (fe.getPlace() != null && fe.getPlace().getPlaceName() != null) {
+        if (fe.getPlace() != null && fe.getPlace().getPlaceName() != null)
             sb.append(fe.getPlace().getPlaceName());
-        }
         return sb.toString();
     }
 
@@ -85,9 +83,8 @@ public class FamilyFactBuilder
     {
         StringBuilder sb = new StringBuilder();
 
-        if (fe.getDescription()!= null) {
+        if (fe.getDescription()!= null)
             sb.append(fe.getDescription());
-        }
         return sb.toString();
     }
 
@@ -101,13 +98,10 @@ public class FamilyFactBuilder
     List<FamilyEvent> getEventsOfType(FamilyEventType type) {
         List<FamilyEvent> result = new ArrayList<>(0);
         List<FamilyEvent> events = focusFamily.getEvents();
-        if (events != null) {
-            for (FamilyEvent fe : events) {
-                if (fe.getType() == type) {
+        if (events != null)
+            for (FamilyEvent fe : events)
+                if (fe.getType() == type)
                     result.add(fe);
-                }
-            }
-        }
         return Collections.unmodifiableList(result);
     }
 
