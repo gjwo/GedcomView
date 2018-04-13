@@ -14,7 +14,7 @@ import java.util.*;
 public class FamilyFactBuilder
 {
     private final Family focusFamily;
-    private final Map<FamilyEventType,String> eventMap; // Events with lables
+    private final Map<FamilyEventType,String> eventMap; // Events with labels
     private Individual focusPerson;
 
     public FamilyFactBuilder(Family family)
@@ -29,7 +29,7 @@ public class FamilyFactBuilder
         }
 
     }
-    String getFamilyEventLable(FamilyEventType fet)
+    String getFamilyEventLabel(FamilyEventType fet)
     {
         return eventMap.get(fet);
     }

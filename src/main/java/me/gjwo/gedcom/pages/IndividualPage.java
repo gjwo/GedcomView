@@ -38,10 +38,10 @@ public class IndividualPage extends WebPage {
     public String render() throws IOException {
         PersonFactBuilder pfb = new PersonFactBuilder(individual);
         String content = readFile("IndividualPage.html");
-        content = content.replace("!HEAD!", elements.get(ElementTypes.PAGE_HEADER).render());
+        content = populate(content,"!HEAD!", elements.get(ElementTypes.PAGE_HEADER));
         content = content.replace("!NAME!", elements.get(ElementTypes.PERSON_LINK_ELEMENT).render());
         content = content.replace("!KEYFACTS!", elements.get(ElementTypes.PERSON_KEY_EVENTS_ELEMENT).render());
-        content = content.replace("!ATTRIBUTES!", elements.get(ElementTypes.PERSON_ATTRIBUTES_ELEMENT).render());
+        content = populate(content,"!ATTRIBUTES!", elements.get(ElementTypes.PERSON_ATTRIBUTES_ELEMENT));
         content= content.replace("!CENSUSTAB!",elements.get(ElementTypes.CENSUS_TABLE_ELEMENT).render());
          return content;
     }

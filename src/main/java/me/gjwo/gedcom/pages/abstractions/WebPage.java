@@ -14,4 +14,13 @@ public abstract class WebPage
 
     public abstract String render() throws IOException;
 
+    protected String populate(String content, String tag, WebElement element)
+    {
+        try{
+            content = content.replace(tag, element.render());
+        }catch(Exception ignored){
+            content = content.replace(tag,"Failed to load");
+        }
+        return content;
+    }
 }

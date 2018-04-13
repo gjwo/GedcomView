@@ -18,24 +18,25 @@ public class HtmlWrapper
     }
     private static String wrapTableHeaderRow(List<String> rowData)
     {
-        StringBuilder content = new StringBuilder("<tr>");
-        for (String cell : rowData) content.append("<th>").append(cell).append("</th>");
+        StringBuilder content = new StringBuilder();
+        content.append("<tr>");
+        for (String cell : rowData)
+            content.append("<th>").append(cell).append("</th>");
         content.append("</tr>");
         return content.toString();
     }
-    public static String wrapTable(List<List<String>> tableRows, List<String> columnLables)
+    public static String wrapTable(List<List<String>> tableRows, List<String> columnLabels)
     {
-        StringBuilder content;
-        Iterator <List<String>> tableItr = tableRows.iterator();
-        Iterator <String> columnLableItr = columnLables.iterator();
-        content = new StringBuilder("<table>");
-        if (columnLableItr.hasNext()) content.append(wrapTableHeaderRow(columnLables));
-        while (tableItr.hasNext()) content.append(wrapTableRow( tableItr.next()));
+        StringBuilder content= new StringBuilder();
+        content.append("<table>");
+        if (!columnLabels.isEmpty()) content.append(wrapTableHeaderRow(columnLabels));
+        for(List<String> row : tableRows)
+            content.append(wrapTableRow(row));
         content.append("</table>");
         return content.toString();
     }
-    public static String wrapHyperlink(String link, String lable) {
-        return "<a href=\""+ link+"\"> "+ lable+"</a>";
+    public static String wrapHyperlink(String link, String label) {
+        return "<a href=\""+ link+"\"> "+ label+"</a>";
     }
     public static String wrapHeader(String headerText, int headerLevel)
     {

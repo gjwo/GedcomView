@@ -18,8 +18,8 @@ import java.util.Map;
 public class PersonFactBuilder
 {
     private final Individual focusPerson;
-    private final Map<IndividualEventType,String> eventMap; // Events with lables
-    private final Map<IndividualAttributeType,String> attributeMap; // Events with lables
+    private final Map<IndividualEventType,String> eventMap; // Events with labels
+    private final Map<IndividualAttributeType,String> attributeMap; // Events with labels
     /**
      * Constructor
      * @param person    Individual who holds the information
@@ -42,7 +42,7 @@ public class PersonFactBuilder
             attributeMap.put(ia,s);
         }
     }
-    String getIndividualEventLable(IndividualEventType iet)
+    String getIndividualEventLabel(IndividualEventType iet)
     {
         return eventMap.get(iet);
     }
@@ -98,7 +98,7 @@ public class PersonFactBuilder
     //
 
 
-    String getIndividualAttributeLable(IndividualAttributeType iat)
+    String getIndividualAttributeLabel(IndividualAttributeType iat)
     {
         return attributeMap.get(iat);
     }
