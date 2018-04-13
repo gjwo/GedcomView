@@ -29,7 +29,8 @@ public class PersonAttributesElement extends WebElement
     }
 
     @Override
-    public String render() throws IOException {
+    public String render()
+    {
         PersonFactBuilder fb = new PersonFactBuilder(person);
         return HtmlWrapper.wrapTable(
                 factPicker.getIndAttributeTableData(

@@ -28,7 +28,7 @@ public class FamiliesElement extends WebElement
         this.showChildren = showChildren;
     }
 
-    private String buildSingleCoupleTable(Family family) throws IOException {
+    private String buildSingleCoupleTable(Family family) {
         List<String> titles = List.of("Husband","Wife");
         List<String> row = new ArrayList<>();
         List<List<String>> tableRows= new ArrayList<>();

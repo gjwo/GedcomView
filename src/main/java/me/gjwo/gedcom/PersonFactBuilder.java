@@ -178,4 +178,15 @@ public class PersonFactBuilder
         for (IndividualEvent ev : baptisms) sb.append(getPlaceOfEvent(ev));
         return sb.toString();
     }
+    public String getShortDates()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" (");
+        sb.append(getDateOfBirth());
+        sb.append(" - ");
+        sb.append(getDateOfDeath());
+        sb.append(")");
+        return sb.toString();
+    }
+
  }

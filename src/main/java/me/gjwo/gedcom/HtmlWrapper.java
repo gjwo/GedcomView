@@ -26,11 +26,11 @@ public class HtmlWrapper
     public static String wrapTable(List<List<String>> tableRows, List<String> columnLables)
     {
         StringBuilder content;
-        Iterator tableItr = tableRows.iterator();
-        Iterator columnLableItr = columnLables.iterator();
+        Iterator <List<String>> tableItr = tableRows.iterator();
+        Iterator <String> columnLableItr = columnLables.iterator();
         content = new StringBuilder("<table>");
         if (columnLableItr.hasNext()) content.append(wrapTableHeaderRow(columnLables));
-        while (tableItr.hasNext()) content.append(wrapTableRow(((List<String>) tableItr.next())));
+        while (tableItr.hasNext()) content.append(wrapTableRow( tableItr.next()));
         content.append("</table>");
         return content.toString();
     }

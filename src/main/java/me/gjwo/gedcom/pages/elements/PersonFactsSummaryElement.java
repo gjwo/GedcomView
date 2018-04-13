@@ -28,7 +28,8 @@ public class PersonFactsSummaryElement extends WebElement
     }
 
     @Override
-    public String render() throws IOException {
+    public String render()
+    {
         return HtmlWrapper.wrapTable(
                 factPicker.getIndSummaryTableData(List.of(person)),
                 List.of("Ref","Name","Birth date","Birth place", "Death Date", "Death place"));

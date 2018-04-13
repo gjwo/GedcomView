@@ -20,7 +20,7 @@ public class CensusTableElement extends WebElement
     }
 
     @Override
-    public String render() throws IOException
+    public String render()
     {
         return HtmlWrapper.wrapTable(
                 factPicker.pickIndEventTableData(List.of(IndividualEventType.CENSUS)),

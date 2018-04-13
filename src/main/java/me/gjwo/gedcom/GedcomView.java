@@ -2,7 +2,9 @@ package me.gjwo.gedcom;
 
 import me.gjwo.gedcom.pages.IndividualPage;
 import me.gjwo.gedcom.pages.IndividualsFamilyPage;
+import me.gjwo.gedcom.pages.NameIndexPage;
 import me.gjwo.gedcom.pages.TestPage;
+import org.gedcom4j.comparators.IndividualByLastNameFirstNameComparator;
 import org.gedcom4j.exception.GedcomParserException;
 import org.gedcom4j.model.*;
 import org.gedcom4j.parser.GedcomParser;
@@ -11,6 +13,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static spark.Spark.get;
 
@@ -41,6 +46,16 @@ public class GedcomView
                 return ip.render();
             } else return "Unknown person";
         });
+        get("/nameindex/", (req, res) ->
+        {
+            // Get a list of everyone and sort them last name first
+            ArrayList<Individual> everybody = new ArrayList<Individual>(g.getIndividuals().values());
+            Collections.sort(everybody,
+                    new IndividualByLastNameFirstNameComparator());
+            NameIndexPage nip = new NameIndexPage(everybody);
+            return nip.render();
+        });
+
         get("/test/:id", (req, res) ->
         {
             //example call from browser http://localhost:4567/test/@I12@

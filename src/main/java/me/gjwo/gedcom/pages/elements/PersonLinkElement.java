@@ -28,7 +28,8 @@ public class PersonLinkElement extends WebElement
     }
 
     @Override
-    public String render() throws IOException {
+    public String render()
+    {
         PersonFactBuilder pfb = new PersonFactBuilder(person);
         StringBuilder sb = new StringBuilder();
         sb.append(linkToFamily? HtmlWrapper.wrapHyperlink(pfb.buildPersonFamilyLink(person), person.getFormattedName())
@@ -39,13 +40,7 @@ public class PersonLinkElement extends WebElement
             sb.append(pfb.getRefNumber());
             sb.append(" ");
         }
-        if(includeShortDates)
-        {   sb.append(" (");
-            sb.append(pfb.getDateOfBirth());
-            sb.append(" - ");
-            sb.append(pfb.getDateOfDeath());
-            sb.append(")");
-        }
+        if(includeShortDates) sb.append(pfb.getShortDates());
         return sb.toString();
     }
 }
