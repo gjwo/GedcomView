@@ -1,12 +1,9 @@
 package me.gjwo.gedcom.pages.elements;
 
 import me.gjwo.gedcom.FactPicker;
-import me.gjwo.gedcom.PersonFactBuilder;
-import me.gjwo.gedcom.TableBuilder;
+import me.gjwo.gedcom.HtmlWrapper;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Individual;
-import org.gedcom4j.model.IndividualReference;
-import org.gedcom4j.model.enumerations.IndividualEventType;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +29,7 @@ public class PersonFactsSummaryElement extends WebElement
 
     @Override
     public String render() throws IOException {
-        return TableBuilder.buildTable(
+        return HtmlWrapper.wrapTable(
                 factPicker.getIndSummaryTableData(List.of(person)),
                 List.of("Ref","Name","Birth date","Birth place", "Death Date", "Death place"));
     }

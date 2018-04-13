@@ -48,38 +48,12 @@ public class FamilyFactBuilder
     {
         return person.getFamiliesWhereChild().get(0).getFamily();
     }
+
     public String getRefNumber()
     {
         return family.getXref().replace("@F","").replace("@","");
     }
 
-    public String buildChildrenLinksTable(Boolean tableHeaders) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        if(family.getChildren() != null)
-        {
-            sb.append("<table>");
-            sb.append("<th> Children </th>");
-            if(tableHeaders)
-            {
-                sb.append("<tr> <th>Ref</th><th>Name</th><th>Birth Date</th><th>Birth place</th><th>Death date</th><th>Death Place</th></tr>");
-            }
-            for(IndividualReference child:family.getChildren())
-            {
-                PersonFactBuilder pfb = new PersonFactBuilder(child.getIndividual());
-                sb.append("<tr>");
-                sb.append(pfb.buildPersonSummaryRow(Boolean.FALSE));
-                sb.append("</tr>");
-            }
-            sb.append("</table>");
-        } else
-        {
-            sb.append("<table>");
-            sb.append("<th>"+"No known children"+"</th>");
-            sb.append("</table>");
-        }
-
-        return sb.toString();
-    }
 
      private String getDateOfEvent(FamilyEvent fe)
     {

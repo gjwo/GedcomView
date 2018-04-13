@@ -1,5 +1,6 @@
 package me.gjwo.gedcom.pages.elements;
 
+import me.gjwo.gedcom.HtmlWrapper;
 import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Individual;
@@ -30,7 +31,8 @@ public class PersonLinkElement extends WebElement
     public String render() throws IOException {
         PersonFactBuilder pfb = new PersonFactBuilder(person);
         StringBuilder sb = new StringBuilder();
-        sb.append(linkToFamily?pfb.buildPersonFamilyLink(person):pfb.buildPersonIndividualLink(person));
+        sb.append(linkToFamily? HtmlWrapper.wrapHyperlink(pfb.buildPersonFamilyLink(person), person.getFormattedName())
+                                :HtmlWrapper.wrapHyperlink(pfb.buildPersonIndividualLink(person), person.getFormattedName()));
         if(includeRef)
         {
             sb.append(" #");

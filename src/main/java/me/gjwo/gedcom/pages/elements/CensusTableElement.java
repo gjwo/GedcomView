@@ -1,8 +1,7 @@
 package me.gjwo.gedcom.pages.elements;
 
 import me.gjwo.gedcom.FactPicker;
-import me.gjwo.gedcom.PersonFactBuilder;
-import me.gjwo.gedcom.TableBuilder;
+import me.gjwo.gedcom.HtmlWrapper;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.enumerations.IndividualEventType;
@@ -23,8 +22,8 @@ public class CensusTableElement extends WebElement
     @Override
     public String render() throws IOException
     {
-        return TableBuilder.buildTable(
-                factPicker.getIndEventTableData(List.of(IndividualEventType.CENSUS)),
+        return HtmlWrapper.wrapTable(
+                factPicker.pickIndEventTableData(List.of(IndividualEventType.CENSUS)),
                 List.of("Event","Date","Place"));
     }
 }

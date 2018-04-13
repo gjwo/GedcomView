@@ -2,7 +2,7 @@ package me.gjwo.gedcom.pages.elements;
 
 import me.gjwo.gedcom.FactPicker;
 import me.gjwo.gedcom.PersonFactBuilder;
-import me.gjwo.gedcom.TableBuilder;
+import me.gjwo.gedcom.HtmlWrapper;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.enumerations.IndividualAttributeType;
@@ -31,7 +31,7 @@ public class PersonAttributesElement extends WebElement
     @Override
     public String render() throws IOException {
         PersonFactBuilder fb = new PersonFactBuilder(person);
-        return TableBuilder.buildTable(
+        return HtmlWrapper.wrapTable(
                 factPicker.getIndAttributeTableData(
                         List.of(IndividualAttributeType.OCCUPATION,
                                 IndividualAttributeType.RESIDENCE)),

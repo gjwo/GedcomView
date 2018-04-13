@@ -52,11 +52,11 @@ public class PersonFactBuilder
     public Individual getFocusPerson() {return this.focusPerson;}
 
     public String buildPersonFamilyLink(Individual person) {
-        return "<a href=\""+"/individualsfamily/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
+        return "/individualsfamily/" + person.getXref();
     }
 
     public String buildPersonIndividualLink(Individual person) {
-        return "<a href=\""+"/individual/" + person.getXref()+"\"> "+ person.getFormattedName()+ "</a>";
+        return "/individual/" + person.getXref();
     }
 
     public String getRefNumber()

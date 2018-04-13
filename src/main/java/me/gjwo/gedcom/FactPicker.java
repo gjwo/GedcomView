@@ -60,11 +60,11 @@ public class FactPicker {
     }
 
     /**
-     *  getIndEventTableData    -   extracts individual event data as string arrays
+     *  pickIndEventTableData    -   extracts individual event data as string arrays
      * @param eventTypes    List of events types to be included in table data
      * @return  A list of lable rows each of which is a list of strings
      */
-    public List <List<String>> getIndEventTableData(List <IndividualEventType> eventTypes)
+    public List <List<String>> pickIndEventTableData(List <IndividualEventType> eventTypes)
     {
         List <List <String>> results = new ArrayList<>();
         for (IndividualEventType type:eventTypes) {
@@ -101,7 +101,7 @@ public class FactPicker {
     //Data based on Individual attributes
 
     /**
-     *  getIndEventTableData    -   extracts individual event data as string arrays
+     *  pickIndEventTableData    -   extracts individual event data as string arrays
      * @param eventTypes    List of events types to be included in table data
      * @return  A list of lable rows each of which is a list of strings
      */
