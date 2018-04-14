@@ -6,11 +6,16 @@ import me.gjwo.gedcom.pages.elements.ElementTypes;
 
 public abstract class WebPage
 {
-    protected WebPage() {
-        this.elements = new HashMap<>();
+    protected WebPage()
+    {
+        for (ElementTypes e:ElementTypes.values())
+        {
+            placeholderMap.put(e.placeholder,e);
+        }
     }
 
-    protected final HashMap<ElementTypes, WebElement> elements;
+    protected final HashMap<ElementTypes, WebElement> elements= new HashMap<>();
+    protected final HashMap<String,ElementTypes> placeholderMap= new HashMap<>();
 
     public abstract String render() throws IOException;
 
@@ -22,5 +27,12 @@ public abstract class WebPage
             content = content.replace(tag,"Failed to load");
         }
         return content;
+    }
+    protected WebElement getWebElement(String placeholder)
+    {
+        if (placeholder !=null)
+            if(placeholderMap.get(placeholder)!= null)
+                return elements.get(placeholderMap.get(placeholder));
+        return null;
     }
 }
