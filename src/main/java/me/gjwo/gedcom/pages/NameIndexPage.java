@@ -20,6 +20,14 @@ public class NameIndexPage extends WebPage {
     private final ArrayList<Individual> everybody;
     private final ArrayList<String> nameIndex;
     private String names;
+    private StringBuilder makeIndexLine(Individual person, PersonFactBuilder pfb, StringBuilder sb)
+    {
+        sb.append(HtmlWrapper.wrapHyperlink(pfb.buildPersonIndividualLink(person), pfb.getSurnameCommaForenames()));
+        sb.append("&nbsp;");
+        sb.append(pfb.getShortDates());
+        sb.append("<br>");
+        return sb;
+    }
     public NameIndexPage(ArrayList<Individual> everybody, String subIndex)
     {
         super();
@@ -30,7 +38,6 @@ public class NameIndexPage extends WebPage {
         if (subIndex!=null)
             if (!subIndex.isEmpty())
             {
-                System.out.println(subIndex);
                 if((subIndex.regionMatches(true,0,"1",0,1)))
                 {
                     //the "other" case
@@ -38,13 +45,7 @@ public class NameIndexPage extends WebPage {
                     {
                         PersonFactBuilder pfb = new PersonFactBuilder(person);
                         Character c = pfb.getSurname().toUpperCase().charAt(0);
-                        if (c<'A'||c>'Z')
-                        {
-                            sb.append(HtmlWrapper.wrapHyperlink(pfb.buildPersonIndividualLink(person), pfb.getSurnameCommaForenames()));
-                            sb.append("&nbsp;");
-                            sb.append(pfb.getShortDates());
-                            sb.append("<br>");
-                        }
+                        if (c<'A'||c>'Z') makeIndexLine(person,pfb,sb);
                     }
                 }
                 else
@@ -52,12 +53,7 @@ public class NameIndexPage extends WebPage {
                 {
                     PersonFactBuilder pfb = new PersonFactBuilder(person);
                     if (pfb.getSurname().regionMatches(true,0,subIndex,0,1))
-                    {
-                        sb.append(HtmlWrapper.wrapHyperlink(pfb.buildPersonIndividualLink(person), pfb.getSurnameCommaForenames()));
-                        sb.append("&nbsp;");
-                        sb.append(pfb.getShortDates());
-                        sb.append("<br>");
-                    }
+                        makeIndexLine(person,pfb,sb);
                 }
                 names = sb.toString();
                 elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Name Index Page"));
@@ -66,10 +62,7 @@ public class NameIndexPage extends WebPage {
         for (Individual person :everybody)
         {
             PersonFactBuilder pfb = new PersonFactBuilder(person);
-            sb.append(HtmlWrapper.wrapHyperlink(pfb.buildPersonIndividualLink(person),pfb.getSurnameCommaForenames()));
-            sb.append("&nbsp;");
-            sb.append(pfb.getShortDates());
-            sb.append("<br>");
+            makeIndexLine(person,pfb,sb);
         }
         names = sb.toString();
         elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Name Index Page"));
