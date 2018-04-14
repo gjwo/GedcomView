@@ -30,10 +30,28 @@ public class NameIndexPage extends WebPage {
         if (subIndex!=null)
             if (!subIndex.isEmpty())
             {
+                System.out.println(subIndex);
+                if((subIndex.regionMatches(true,0,"1",0,1)))
+                {
+                    //the "other" case
+                    for (Individual person :everybody)
+                    {
+                        PersonFactBuilder pfb = new PersonFactBuilder(person);
+                        Character c = pfb.getSurname().toUpperCase().charAt(0);
+                        if (c<'A'||c>'Z')
+                        {
+                            sb.append(HtmlWrapper.wrapHyperlink(pfb.buildPersonIndividualLink(person), pfb.getSurnameCommaForenames()));
+                            sb.append("&nbsp;");
+                            sb.append(pfb.getShortDates());
+                            sb.append("<br>");
+                        }
+                    }
+                }
+                else
                 for (Individual person :everybody)
                 {
                     PersonFactBuilder pfb = new PersonFactBuilder(person);
-                    if (pfb.getSurname().substring(0,1).compareToIgnoreCase(subIndex.substring(0,1))==0)
+                    if (pfb.getSurname().regionMatches(true,0,subIndex,0,1))
                     {
                         sb.append(HtmlWrapper.wrapHyperlink(pfb.buildPersonIndividualLink(person), pfb.getSurnameCommaForenames()));
                         sb.append("&nbsp;");
