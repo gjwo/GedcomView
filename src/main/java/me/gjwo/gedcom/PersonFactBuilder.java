@@ -20,6 +20,8 @@ public class PersonFactBuilder
     private final Individual focusPerson;
     private final Map<IndividualEventType,String> eventMap; // Events with labels
     private final Map<IndividualAttributeType,String> attributeMap; // Events with labels
+    private final boolean attributesNull;
+    private final boolean eventsNull;
     /**
      * Constructor
      * @param person    Individual who holds the information
@@ -41,6 +43,9 @@ public class PersonFactBuilder
             s = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
             attributeMap.put(ia,s);
         }
+        attributesNull = (focusPerson.getAttributes()==null);
+        eventsNull = (focusPerson.getEvents()==null);
+
     }
     String getIndividualEventLabel(IndividualEventType iet)
     {
@@ -61,12 +66,25 @@ public class PersonFactBuilder
         return focusPerson.getXref().replace("@I","").replace("@","");
     }
 
+    boolean getAttibutesNull() {return attributesNull;}
+
+    boolean getEventsNull() {return eventsNull;}
+
+    public String getSurnameCommaForenames()
+    {
+        String name[] = focusPerson.getFormattedName().split("/");
+        if (name.length>1) return name[1]+", "+name[0];
+        if (name.length>0)return name[0]+", ";
+        return "no name";
+    }
+
     //
     // General methods for handling and presenting Personal Events
     //
 
     String getDateOfEvent(IndividualEvent ce)
     {
+        if (eventsNull||(ce==null))return "";
         StringBuilder sb = new StringBuilder();
         if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
             sb.append(ce.getDate());
@@ -76,6 +94,7 @@ public class PersonFactBuilder
 
     String getPlaceOfEvent(IndividualEvent ce)
     {
+        if (eventsNull||(ce==null))return "";
         StringBuilder sb = new StringBuilder();
         if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
             sb.append(ce.getPlace().getPlaceName());
@@ -85,6 +104,7 @@ public class PersonFactBuilder
 
     String getDetailsOfEvent(IndividualEvent ce)
     {
+        if (eventsNull||(ce==null))return "";
         StringBuilder sb = new StringBuilder();
 
         if (ce.getDescription() != null ) {
@@ -104,6 +124,7 @@ public class PersonFactBuilder
     }
     String getDateOfAttribute(IndividualAttribute ia)
     {
+        if (attributesNull)return "";
         StringBuilder sb = new StringBuilder();
         if (ia.getDate() != null && ia.getDate().trim().length() > 0) {
             sb.append(ia.getDate());
@@ -113,6 +134,7 @@ public class PersonFactBuilder
 
     String getPlaceOfAttribute(IndividualAttribute ia)
     {
+        if (attributesNull)return "";
         StringBuilder sb = new StringBuilder();
         if (ia.getPlace() != null && ia.getPlace().getPlaceName() != null) {
             sb.append(ia.getPlace().getPlaceName());
@@ -122,6 +144,7 @@ public class PersonFactBuilder
 
     String getDescriptionOfAttribute(IndividualAttribute ia)
     {
+        if (attributesNull)return "";
         if (ia.getDescription() != null)
             if (ia.getDescription().toString() != null)
                 return ia.getDescription().toString();
@@ -132,7 +155,7 @@ public class PersonFactBuilder
 // getters for specific types of key events
 //
 
-    public String getDateOfBirth() {
+    String getDateOfBirth() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
@@ -148,7 +171,7 @@ public class PersonFactBuilder
         return sb.toString();
     }
 
-    public String getDateOfDeath() {
+    String getDateOfDeath() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
@@ -179,13 +202,7 @@ public class PersonFactBuilder
     }
     public String getShortDates()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append(" (");
-        sb.append(getDateOfBirth());
-        sb.append(" - ");
-        sb.append(getDateOfDeath());
-        sb.append(")");
-        return sb.toString();
+        return " ("+ getDateOfBirth()+" - "+getDateOfDeath()+")";
     }
 
  }

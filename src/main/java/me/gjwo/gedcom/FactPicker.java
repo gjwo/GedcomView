@@ -95,14 +95,15 @@ public class FactPicker {
     //Data based on Individual attributes
 
     /**
-     *  pickIndEventTableData    -   extracts individual event data as string arrays
-     * @param eventTypes    List of events types to be included in table data
-     * @return  A list of label rows each of which is a list of strings
+     *  pickIndEventTableData    -  extracts individual event data as string lists
+     * @param eventTypes            List of events types to be included in table data
+     * @return                      A list of label rows each of which is a list of strings
      */
     public List <List<String>> getIndAttributeTableData(List <IndividualAttributeType> eventTypes)
     {
-
         List <List <String>> results = new ArrayList<>();
+        PersonFactBuilder pfb = new PersonFactBuilder(person);
+        if(pfb.getAttibutesNull())return results;
         for (IndividualAttributeType type:eventTypes)
             for (IndividualAttribute attribute : person.getAttributesOfType(type))
                 results.add(pickAttributeRow(attribute, true));
