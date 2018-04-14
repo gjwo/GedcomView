@@ -46,13 +46,16 @@ public class GedcomView
                 return ip.render();
             } else return "Unknown person";
         });
-        get("/nameindex/", (req, res) ->
+        get("/nameindex/*", (req, res) ->
         {
+            int nbrParams = req.splat().length;
+            String subIndex = "";
+            if (nbrParams>0) subIndex = req.splat()[0];
             // Get a list of everyone and sort them last name first
             ArrayList<Individual> everybody = new ArrayList<Individual>(g.getIndividuals().values());
             Collections.sort(everybody,
                     new IndividualByLastNameFirstNameComparator());
-            NameIndexPage nip = new NameIndexPage(everybody);
+            NameIndexPage nip = new NameIndexPage(everybody,subIndex);
             return nip.render();
         });
 

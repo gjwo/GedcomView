@@ -78,6 +78,12 @@ public class PersonFactBuilder
         return "no name";
     }
 
+    public String getSurname()
+    {
+        String name[] = focusPerson.getFormattedName().split("/");
+        if (name.length>1) return name[1]; else return  "(No surname)";
+    }
+
     //
     // General methods for handling and presenting Personal Events
     //
