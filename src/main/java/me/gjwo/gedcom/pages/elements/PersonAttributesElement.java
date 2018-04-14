@@ -11,30 +11,26 @@ import java.util.List;
 
 public class PersonAttributesElement extends WebElement
 {
-    private final Individual person;
-    private boolean includeLabels;
-    private boolean includeTitles;
-    private final FactPicker factPicker;
+    private final String htmlString;
 
-    public void setLabels(Boolean includeLabels){this.includeLabels = includeLabels;}
-    public void setDates(Boolean includeTitles){this.includeTitles = includeTitles;}
-
+    /**
+     * PersonAttributesElement  -   Constructor builds a table of personal attributes as an HTML string
+     * @param person                The focus individual
+     */
     public PersonAttributesElement(Individual person)
     {
-        this.person = person;
-        this.includeLabels = true;
-        this.includeTitles = true;
-        this.factPicker = new FactPicker(person,null);
-    }
-
-    @Override
-    public String render()
-    {
-        PersonFactBuilder fb = new PersonFactBuilder(person);
-        return HtmlWrapper.wrapTable(
+        FactPicker factPicker = new FactPicker(person,null);
+        htmlString =  HtmlWrapper.wrapTable(
                 factPicker.getIndAttributeTableData(
                         List.of(IndividualAttributeType.OCCUPATION,
                                 IndividualAttributeType.RESIDENCE)),
-                        List.of("Attribute","Date", "Place","Description"));
+                List.of("Attribute","Date", "Place","Description"));
     }
+
+    /**
+     * render   -   Supplies the person's attributes as an HTML string
+     * @return      the HTML String
+     */
+    @Override
+    public String render() {return htmlString;}
 }

@@ -8,6 +8,11 @@ import static me.gjwo.gedcom.FileUtil.readFile;
 
 public class PageHeaderElement extends WebElement{
     private final String title;
+
+    /**
+     * PageHeaderElement    -   Constructor, this element contains the HTML Header block
+     * @param title             The title for the web page
+     */
     public PageHeaderElement(String title){
         this.title = title;
     }

@@ -9,28 +9,24 @@ import java.util.List;
 
 public class PersonFactsSummaryElement extends WebElement
 {
-    private final Individual person;
-    private boolean includeLabels;
-    private boolean includeTitles;
-    private final FactPicker factPicker;
+    private final String htmlString;
 
-    public void setLabels(Boolean includeLabels){this.includeLabels = includeLabels;}
-    public void setDates(Boolean includeTitles){this.includeTitles = includeTitles;}
-
+    /**
+     * PersonFactsSummaryElement    -   Builds an HTML table containing key personal events on a single row
+     * @param person                    the person that is the focus
+     */
     public PersonFactsSummaryElement(Individual person)
     {
-        this.person = person;
-        this.includeLabels = true;
-        this.includeTitles = false;
-        this.factPicker = new FactPicker(person,null);
-
+        FactPicker factPicker = new FactPicker(person,null);
+        htmlString = HtmlWrapper.wrapTable(
+                                    factPicker.getIndSummaryTableData(List.of(person)),
+                                    List.of("Ref","Name","Birth date","Birth place", "Death Date", "Death place"));
     }
 
+    /**
+     * render   -   returns HTML containing a summary fact table
+     * @return      the html string
+     */
     @Override
-    public String render()
-    {
-        return HtmlWrapper.wrapTable(
-                factPicker.getIndSummaryTableData(List.of(person)),
-                List.of("Ref","Name","Birth date","Birth place", "Death Date", "Death place"));
-    }
+    public String render(){return htmlString;}
 }

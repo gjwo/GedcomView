@@ -10,20 +10,19 @@ import java.util.List;
 
 public class TestElement extends WebElement
 {
-    private final FactPicker factPicker;
+    private final String htmlString;
 
     public TestElement(Individual person)
     {
-        this.factPicker = new FactPicker(person,null);
+        FactPicker factPicker = new FactPicker(person,null);
+        htmlString = HtmlWrapper.wrapTable(
+                                    factPicker.pickIndEventTableData(List.of(IndividualEventType.BIRTH,
+                                            IndividualEventType.BAPTISM,
+                                            IndividualEventType.DEATH,
+                                            IndividualEventType.CENSUS)),
+                                    List.of("Event","Date","Place"));
     }
 
     @Override
-    public String render()  {
-        return HtmlWrapper.wrapTable(
-                factPicker.pickIndEventTableData(List.of(IndividualEventType.BIRTH,
-                                                        IndividualEventType.BAPTISM,
-                                                        IndividualEventType.DEATH,
-                                                        IndividualEventType.CENSUS)),
-                                                List.of("Event","Date","Place"));
-    }
+    public String render() {return htmlString;}
 }

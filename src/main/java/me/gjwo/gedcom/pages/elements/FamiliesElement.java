@@ -20,19 +20,38 @@ public class FamiliesElement extends WebElement
     private final Family[] families;
     private final Individual focusPerson;
     private final boolean showChildren;
+    private final String htmlString;
 
+    /**
+     * FamiliesElement  -   Constructor
+     * @param person        Focus person for the page
+     * @param showChildren  Show children in familys
+     * @param families      0 or more families involving the focus person
+     */
     public FamiliesElement( Individual person, boolean showChildren, Family... families)
     {
         this.families = families;
         this.focusPerson = person;
         this.showChildren = showChildren;
+        StringBuilder sb = new StringBuilder();
+        for(Family f:families)
+        {
+            sb.append(buildSingleFamilyTable(f,showChildren,true));
+        }
+        htmlString =  sb.toString();
     }
 
-    private String buildSingleCoupleTable(Family family) {
+    /**
+     * buildSingleCoupleTable   -   Build a table of the husband and wife of this family
+     * @param family                The family
+     * @return                      HTML string conbtaining the table
+     */
+    private String buildSingleCoupleTable(Family family)
+    {
         List<String> titles = List.of("Husband","Wife");
         List<String> row = new ArrayList<>();
         List<List<String>> tableRows= new ArrayList<>();
-         PersonFactBuilder husbandFB, wifeFB;
+        PersonFactBuilder husbandFB, wifeFB;
 
         if(family.getHusband() != null)
         {
@@ -50,7 +69,15 @@ public class FamiliesElement extends WebElement
         return HtmlWrapper.wrapTable(tableRows, titles);
     }
 
-    private String buildSingleFamilyTable(Family family, boolean showChildren, boolean showEvents) throws IOException {
+    /**
+     * buildSingleFamilyTable   -   Builds a family table optionally including events and children
+     * @param family                The family to be built
+     * @param showChildren          true: build a children table
+     * @param showEvents            true: build a family events table
+     * @return                      HTML string containing the tables
+     */
+    private String buildSingleFamilyTable(Family family, boolean showChildren, boolean showEvents)
+    {
         List<String> titles = List.of("Ref","Name","Birth date", "Birth place", "Death date", "Death date");
         List<String> row = new ArrayList<>();
         List<List<String>> tableRows= new ArrayList<>();
@@ -85,14 +112,10 @@ public class FamiliesElement extends WebElement
         return content;
     }
 
+    /**
+     * render           -   returns HTML tables for all of the families in the list
+     * @return              HTML string containing the tables
+     */
     @Override
-    public String render() throws IOException
-    {
-        StringBuilder sb = new StringBuilder();
-        for(Family f:families)
-        {
-            sb.append(buildSingleFamilyTable(f,showChildren,true));
-        }
-        return sb.toString();
-    }
+    public String render() {return htmlString;}
 }

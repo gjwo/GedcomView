@@ -21,7 +21,6 @@ public class IndividualPage extends WebPage {
         this.individual = individual;
         elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Individual Page"));
         PersonLinkElement ple = new PersonLinkElement(individual);
-
         ple.setlinkFamily();
         elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
         ple.setDates(false);

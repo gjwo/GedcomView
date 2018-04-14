@@ -19,6 +19,10 @@ public class PersonLinkElement extends WebElement
     public void setRef(Boolean includeRef){this.includeRef=includeRef;}
     public void setDates(Boolean includeShortDates){this.includeShortDates = includeShortDates;}
 
+    /**
+     * PersonLinkElement    -   Constructor
+     * @param person            The focus person
+     */
     public PersonLinkElement(Individual person)
     {
         this.person = person;
