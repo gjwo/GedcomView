@@ -17,6 +17,7 @@ public class PersonFactsSummaryElement extends WebElement
      */
     public PersonFactsSummaryElement(Individual person)
     {
+        super(person);
         FactPicker factPicker = new FactPicker(person,null);
         htmlString = HtmlWrapper.wrapTable(
                                     factPicker.getIndSummaryTableData(List.of(person)),

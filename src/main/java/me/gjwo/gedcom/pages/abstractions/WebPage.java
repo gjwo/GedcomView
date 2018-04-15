@@ -10,12 +10,12 @@ public abstract class WebPage
     {
         for (ElementTypes e:ElementTypes.values())
         {
-            placeholderMap.put(e.placeholder,e);
+            placeholderMap.put(e.getPlaceholder(),e);
         }
     }
 
-    protected final HashMap<ElementTypes, WebElement> elements= new HashMap<>();
-    protected final HashMap<String,ElementTypes> placeholderMap= new HashMap<>();
+    public final HashMap<ElementTypes, WebElement> elements= new HashMap<>();
+    public final HashMap<String,ElementTypes> placeholderMap= new HashMap<>();
 
     public abstract String render() throws IOException;
 

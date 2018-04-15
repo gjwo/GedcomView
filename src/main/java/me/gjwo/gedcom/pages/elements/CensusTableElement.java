@@ -19,6 +19,7 @@ public class CensusTableElement extends WebElement
      */
     public CensusTableElement(Individual person)
     {
+        super(person);
         FactPicker factPicker = new FactPicker(person,null);
         htmlString = HtmlWrapper.wrapTable(
                 factPicker.pickIndEventTableData(List.of(IndividualEventType.CENSUS)),

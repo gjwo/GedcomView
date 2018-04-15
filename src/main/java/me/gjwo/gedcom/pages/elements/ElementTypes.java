@@ -17,7 +17,16 @@ public enum ElementTypes {
     CITATIONS("!CITATIONS!",null), //TODO
     SOURCES("!SOURCES!",null), //TODO
     TEST_ELEMENT("!TEST!",TestElement.class);
-    public final String placeholder;
-    public final Class webElement;
-    ElementTypes(String placeholder,Class webElement) {this.placeholder = placeholder; this.webElement=webElement;}
+    private final String placeholder;
+    private final Class webElement;
+
+    public String getPlaceholder(){return placeholder;}
+
+    public Class getWebElement(){return webElement;}
+
+    ElementTypes(String placeholder, Class webElement)
+    {
+        this.placeholder = placeholder;
+        this.webElement = webElement;
+    }
 }

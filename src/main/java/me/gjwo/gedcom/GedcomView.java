@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static me.gjwo.gedcom.FileUtil.readFile;
 import static spark.Spark.get;
 
 public class GedcomView
@@ -52,7 +53,7 @@ public class GedcomView
             String subIndex = "";
             if (nbrParams>0) subIndex = req.splat()[0];
             // Get a list of everyone and sort them last name first
-            ArrayList<Individual> everybody = new ArrayList<Individual>(g.getIndividuals().values());
+            ArrayList<Individual> everybody = new ArrayList<>(g.getIndividuals().values());
             Collections.sort(everybody,
                     new IndividualByLastNameFirstNameComparator());
             NameIndexPage nip = new NameIndexPage(everybody,subIndex);
@@ -65,15 +66,17 @@ public class GedcomView
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {
-                TestPage tp = new TestPage(g.getIndividuals().get(id));
-                return tp.render();
+                Individual person = g.getIndividuals().get(id);
+                String content = readFile("IndividualPage.html");
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,person);
+                return pageBuilder.render();
             } else return "Unknown person";
         });
     }
-
+/*
     public static String readFile(String path, Charset encoding) throws IOException
     {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
-    }
+    }*/
 }
