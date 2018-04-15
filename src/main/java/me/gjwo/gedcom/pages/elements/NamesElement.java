@@ -20,12 +20,13 @@ public class NamesElement extends WebElement
 
     /**
      * NamesElement     -   Constructor
-     * @param everybody     list of people for the index
-     * @param subIndex      subset of people
+     * @param np             a structure of list of people for the index plus the sub index letter
      */
-    public NamesElement(ArrayList<Individual> everybody, String subIndex)
+    public NamesElement(NamesParams np)
     {
         super();
+        String subIndex = np.subIndex;
+        ArrayList<Individual> everybody = np.everybody;
         ArrayList<String> nameIndex = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         if (subIndex!=null)
@@ -76,7 +77,7 @@ public class NamesElement extends WebElement
     }
 
     @Override
-    public String render() throws IOException {
+    public String render()  {
         return htmlString;
     }
 }

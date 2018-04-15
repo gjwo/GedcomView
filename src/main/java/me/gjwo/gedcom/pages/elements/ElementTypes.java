@@ -19,7 +19,7 @@ public enum ElementTypes {
     CITATIONS("!CITATIONS!",null,Individual.class), //TODO
     SOURCES("!SOURCES!",null,Individual.class), //TODO
     INDEX("!INDEX!",IndexElement.class,null),
-    NAMES("!NAMES!",NamesElement.class,ArrayList.class), //TODO need to pass 2 parameters to constructor
+    NAMES("!NAMES!",NamesElement.class,NamesParams.class),
     TEST_ELEMENT("!TEST!",TestElement.class,Individual.class);
 
     private final String placeholder;

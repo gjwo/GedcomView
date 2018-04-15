@@ -1,21 +1,15 @@
 package me.gjwo.gedcom;
 
-import me.gjwo.gedcom.pages.IndividualPage;
 import me.gjwo.gedcom.pages.IndividualsFamilyPage;
-import me.gjwo.gedcom.pages.NameIndexPage;
-import me.gjwo.gedcom.pages.TestPage;
+import me.gjwo.gedcom.pages.elements.NamesParams;
 import org.gedcom4j.comparators.IndividualByLastNameFirstNameComparator;
 import org.gedcom4j.exception.GedcomParserException;
 import org.gedcom4j.model.*;
 import org.gedcom4j.parser.GedcomParser;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 import static spark.Spark.get;
@@ -44,7 +38,7 @@ public class GedcomView
             {
                 Individual person = g.getIndividuals().get(id);
                 String content = readFile("IndividualPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual page", person);
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual page", person,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });
@@ -58,7 +52,8 @@ public class GedcomView
             Collections.sort(everybody,
                     new IndividualByLastNameFirstNameComparator());
             String content = readFile("NameIndexPage.html");
-            PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Index page", null);
+            NamesParams np = new NamesParams(everybody,subIndex);
+            PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Index page", null,np);
             //NameIndexPage nip = new NameIndexPage(everybody,subIndex);
             return pageBuilder.render();
         });
@@ -71,7 +66,7 @@ public class GedcomView
             {
                 Individual person = g.getIndividuals().get(id);
                 String content = readFile("IndividualPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person);
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });

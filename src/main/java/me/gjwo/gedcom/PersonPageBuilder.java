@@ -2,6 +2,7 @@ package me.gjwo.gedcom;
 
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import me.gjwo.gedcom.pages.elements.ElementTypes;
+import me.gjwo.gedcom.pages.elements.NamesParams;
 import org.gedcom4j.model.Individual;
 
 import java.lang.reflect.Constructor;
@@ -9,7 +10,7 @@ import java.lang.reflect.Constructor;
 public class PersonPageBuilder
 {
     private String htmlContent;
-    PersonPageBuilder(String template, String title, Individual person)
+    PersonPageBuilder(String template, String title, Individual person, NamesParams namesParams)
     {
         htmlContent = template;
         System.out.println("PersonPageBuilder constructor:"+title);
@@ -26,13 +27,16 @@ public class PersonPageBuilder
                     {
                         constructor = we.getConstructor(); // get the class constructor
                         webElementInst = constructor.newInstance(); // create a new class instance with Individual
-                    } else{
+                    } else {
                         constructor = we.getConstructor(et.getConstructorParam()); // get the class constructor
                         if(et.getConstructorParam()==Individual.class)
                             webElementInst = constructor.newInstance(person); // create a new class instance with Individual
                         else
                         if(et.getConstructorParam()==String.class)
                             webElementInst = constructor.newInstance(title); // create a new class with string
+                        else
+                            if(et.getConstructorParam()==NamesParams.class)
+                                webElementInst = constructor.newInstance(namesParams);
                         else throw new Exception("constructor signature not handled");
                     }
                     htmlContent = htmlContent.replace(et.getPlaceholder(), webElementInst.render()); //invoke a class method

@@ -39,6 +39,6 @@ public class HtmlWrapper
         return "<a href=\""+ link+"\"> "+ label+"</a>";
     }
     public static String wrapHeader(String headerText, int headerLevel){return "<h"+headerLevel +">"+ headerText+"</h"+headerLevel+">";}
-    public static String wrapCenter(String text){return "<center>"+ text + "</center";}
-    public static String wrapDiv(String text){return "<div>"+ text + "</div";}
+    public static String wrapCenter(String text){return "<center>"+ text + "</center>";}
+    public static String wrapDiv(String text){return "<div>"+ text + "</div>";}
 }
