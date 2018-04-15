@@ -9,7 +9,7 @@ import java.lang.reflect.Constructor;
 
 public class PersonPageBuilder
 {
-    String htmlContent;
+    private String htmlContent;
     public PersonPageBuilder(String template, Individual person)
     {
         htmlContent = template;
@@ -20,9 +20,9 @@ public class PersonPageBuilder
             {
                 try {
                     Class<WebElement> we = et.getWebElement(); //get the Class
-                    Constructor<WebElement> constructor = we.getConstructor(); // get the class constructor
-                    WebElement webElementInst = constructor.newInstance(/*person*/); // create a new class instance
-                    htmlContent.replace(et.getPlaceholder(), webElementInst.render()); //invoke a class method
+                    Constructor<WebElement> constructor = we.getConstructor(Individual.class); // get the class constructor
+                    WebElement webElementInst = constructor.newInstance(person); // create a new class instance
+                    htmlContent = htmlContent.replace(et.getPlaceholder(), webElementInst.render()); //invoke a class method
                 } catch (Exception e)
                 {
                     System.out.println("Exception in PersonPageBuilder");

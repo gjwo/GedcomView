@@ -46,6 +46,7 @@ public class PersonLinkElement extends WebElement
     @Override
     public String render()
     {
+        System.out.println("PersonLinkElement.render()");
         PersonFactBuilder pfb = new PersonFactBuilder(person);
         StringBuilder sb = new StringBuilder();
         sb.append(linkToFamily? HtmlWrapper.wrapHyperlink(pfb.buildPersonFamilyLink(person), person.getFormattedName())
