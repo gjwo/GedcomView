@@ -4,7 +4,6 @@ import me.gjwo.gedcom.pages.abstractions.WebElement;
 import me.gjwo.gedcom.pages.elements.ElementTypes;
 import org.gedcom4j.model.Individual;
 
-import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 
 public class PersonPageBuilder
@@ -20,15 +19,22 @@ public class PersonPageBuilder
             {
                 try {
                     System.out.println(et.toString());
-                    Class<WebElement> we = et.getWebElement(); //get the Class
-                    Constructor<WebElement> constructor = we.getConstructor(et.getConstructorParam()); // get the class constructor
+                    Class<? extends WebElement> we = et.getWebElement(); //get the Class
                     WebElement webElementInst;
-                    if(et.getConstructorParam()==Individual.class)
-                        webElementInst = constructor.newInstance(person); // create a new class instance with Individual
-                    else
+                    Constructor<? extends WebElement> constructor;
+                    if(et.getConstructorParam()==null)
+                    {
+                        constructor = we.getConstructor(); // get the class constructor
+                        webElementInst = constructor.newInstance(); // create a new class instance with Individual
+                    } else{
+                        constructor = we.getConstructor(et.getConstructorParam()); // get the class constructor
+                        if(et.getConstructorParam()==Individual.class)
+                            webElementInst = constructor.newInstance(person); // create a new class instance with Individual
+                        else
                         if(et.getConstructorParam()==String.class)
                             webElementInst = constructor.newInstance(title); // create a new class with string
-                        else webElementInst = constructor.newInstance(null); // create a new class instance with no parameter
+                        else throw new Exception("constructor signature not handled");
+                    }
                     htmlContent = htmlContent.replace(et.getPlaceholder(), webElementInst.render()); //invoke a class method
                 } catch (Exception e)
                 {

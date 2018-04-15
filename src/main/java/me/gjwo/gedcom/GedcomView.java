@@ -57,8 +57,10 @@ public class GedcomView
             ArrayList<Individual> everybody = new ArrayList<>(g.getIndividuals().values());
             Collections.sort(everybody,
                     new IndividualByLastNameFirstNameComparator());
-            NameIndexPage nip = new NameIndexPage(everybody,subIndex);
-            return nip.render();
+            String content = readFile("NameIndexPage.html");
+            PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Index page", null);
+            //NameIndexPage nip = new NameIndexPage(everybody,subIndex);
+            return pageBuilder.render();
         });
 
         get("/test/:id", (req, res) ->

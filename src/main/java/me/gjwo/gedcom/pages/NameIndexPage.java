@@ -28,6 +28,16 @@ public class NameIndexPage extends WebPage {
         sb.append("<br>");
         return sb;
     }
+    private StringBuilder makeFullIndex()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (Individual person :everybody)
+        {
+            PersonFactBuilder pfb = new PersonFactBuilder(person);
+            makeIndexLine(person,pfb,sb);
+        }
+        return sb;
+    }
     public NameIndexPage(ArrayList<Individual> everybody, String subIndex)
     {
         super();
@@ -40,7 +50,7 @@ public class NameIndexPage extends WebPage {
             {
                 if((subIndex.regionMatches(true,0,"1",0,1)))
                 {
-                    //the "other" case
+                    //the "other" case (not matching A-Z)
                     for (Individual person :everybody)
                     {
                         PersonFactBuilder pfb = new PersonFactBuilder(person);
@@ -51,19 +61,15 @@ public class NameIndexPage extends WebPage {
                 else
                 for (Individual person :everybody)
                 {
+                    //Specific first letter (A-Z) selected
                     PersonFactBuilder pfb = new PersonFactBuilder(person);
                     if (pfb.getSurname().regionMatches(true,0,subIndex,0,1))
                         makeIndexLine(person,pfb,sb);
                 }
-                names = sb.toString();
-                elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Name Index Page"));
-                return;
             }
-        for (Individual person :everybody)
-        {
-            PersonFactBuilder pfb = new PersonFactBuilder(person);
-            makeIndexLine(person,pfb,sb);
-        }
+            else sb = makeFullIndex(); //no sub index, "all" selected
+        else sb = makeFullIndex(); //no sub index, "all" selected
+
         names = sb.toString();
         elements.put(ElementTypes.PAGE_HEADER, new PageHeaderElement("Name Index Page"));
     }

@@ -3,6 +3,7 @@ package me.gjwo.gedcom.pages.elements;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Individual;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,18 +18,21 @@ public enum ElementTypes {
     PERSON_FACTS_SUMMARY_ELEMENT("!FACTS!",PersonFactsSummaryElement.class,Individual.class),
     CITATIONS("!CITATIONS!",null,Individual.class), //TODO
     SOURCES("!SOURCES!",null,Individual.class), //TODO
+    INDEX("!INDEX!",IndexElement.class,null),
+    NAMES("!NAMES!",NamesElement.class,ArrayList.class), //TODO need to pass 2 parameters to constructor
     TEST_ELEMENT("!TEST!",TestElement.class,Individual.class);
+
     private final String placeholder;
-    private final Class webElement;
+    private final Class<? extends WebElement> webElement;
     private final Class paramClass;
 
     public String getPlaceholder(){return placeholder;}
 
-    public Class getWebElement(){return webElement;}
+    public Class<? extends WebElement> getWebElement(){return webElement;}
 
     public Class getConstructorParam(){return paramClass;}
 
-    ElementTypes(String placeholder, Class webElement, Class paramClass)
+    ElementTypes(String placeholder, Class<? extends WebElement> webElement, Class paramClass)
     {
         this.placeholder = placeholder;
         this.webElement = webElement;
