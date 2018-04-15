@@ -44,7 +44,7 @@ public class PersonFactBuilder
             attributeMap.put(ia,s);
         }
         attributesNull = (focusPerson.getAttributes()==null);
-        eventsNull = (focusPerson.getEvents()==null);
+        eventsNull = (focusPerson.getEvents(true)==null);
 
     }
     String getIndividualEventLabel(IndividualEventType iet)

@@ -97,7 +97,7 @@ public class FamilyFactBuilder
 
     List<FamilyEvent> getEventsOfType(FamilyEventType type) {
         List<FamilyEvent> result = new ArrayList<>(0);
-        List<FamilyEvent> events = focusFamily.getEvents();
+        List<FamilyEvent> events = focusFamily.getEvents(true);
         if (events != null)
             for (FamilyEvent fe : events)
                 if (fe.getType() == type)

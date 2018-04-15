@@ -1,6 +1,7 @@
 package me.gjwo.gedcom.pages.elements;
 
 import me.gjwo.gedcom.pages.abstractions.WebElement;
+import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
 
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ public enum ElementTypes {
     CENSUS_TABLE_ELEMENT("!CENSUSTAB!",CensusTableElement.class,Individual.class),
     PERSON_KEY_EVENTS_ELEMENT("!KEYFACTS!",PersonKeyEventsElement.class,Individual.class),
     PERSON_ATTRIBUTES_ELEMENT("!ATTRIBUTES!",PersonAttributesElement.class,Individual.class),
-    PERSON_FACTS_SUMMARY_ELEMENT("!FACTS!",PersonFactsSummaryElement.class,Individual.class),
+    PERSON_FACTS_SUMMARY_ELEMENT("!FACTSUM!",PersonFactsSummaryElement.class,Individual.class),
+    FAMILY_KEY_EVENTS_ELEMENT("!FAMEVENTS!",FamilyKeyEventsElement.class, Family.class),
     CITATIONS("!CITATIONS!",null,Individual.class), //TODO
     SOURCES("!SOURCES!",null,Individual.class), //TODO
     INDEX("!INDEX!",IndexElement.class,null),

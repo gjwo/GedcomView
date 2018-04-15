@@ -65,16 +65,10 @@ public class GedcomView
             if(g.getIndividuals().containsKey(id))
             {
                 Individual person = g.getIndividuals().get(id);
-                String content = readFile("IndividualPage.html");
+                String content = readFile("TestPage.html");
                 PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });
     }
-/*
-    public static String readFile(String path, Charset encoding) throws IOException
-    {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-    }*/
 }
