@@ -14,7 +14,6 @@ public class TestElement extends WebElement
 
     public TestElement(Individual person)
     {
-        super(person);
         FactPicker factPicker = new FactPicker(person,null);
         htmlString = HtmlWrapper.wrapTable(
                                     factPicker.pickIndEventTableData(List.of(IndividualEventType.BIRTH,

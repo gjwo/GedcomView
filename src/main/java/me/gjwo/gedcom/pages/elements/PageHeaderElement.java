@@ -14,7 +14,6 @@ public class PageHeaderElement extends WebElement{
      * @param title             The title for the web page
      */
     public PageHeaderElement(String title){
-        super(null);
         this.title = title;
     }
 

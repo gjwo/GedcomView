@@ -30,7 +30,6 @@ public class FamiliesElement extends WebElement
      */
     public FamiliesElement( Individual person, boolean showChildren, Family... families)
     {
-        super(person);
         this.families = families;
         this.focusPerson = person;
         this.showChildren = showChildren;

@@ -19,24 +19,12 @@ public class PersonLinkElement extends WebElement
     public void setRef(Boolean includeRef){this.includeRef=includeRef;}
     public void setDates(Boolean includeShortDates){this.includeShortDates = includeShortDates;}
 
-    public PersonLinkElement( )
-    {
-        super(null);
-        System.out.println("PersonLinkElement() called");
-        this.person = null;
-        this.linkToFamily = true;
-        this.includeRef = true;
-        this.includeShortDates = true;
-    }
-
     /**
      * PersonLinkElement    -   Constructor
      * @param person            The focus person
      */
     public PersonLinkElement(Individual person)
     {
-        super(person);
-        System.out.println("PersonLinkElement(person) called");
         this.person = person;
         this.linkToFamily = true;
         this.includeRef = true;
@@ -46,7 +34,6 @@ public class PersonLinkElement extends WebElement
     @Override
     public String render()
     {
-        System.out.println("PersonLinkElement.render()");
         PersonFactBuilder pfb = new PersonFactBuilder(person);
         StringBuilder sb = new StringBuilder();
         sb.append(linkToFamily? HtmlWrapper.wrapHyperlink(pfb.buildPersonFamilyLink(person), person.getFormattedName())

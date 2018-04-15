@@ -39,12 +39,13 @@ public class GedcomView
         });
         get("/individual/:id", (req, res) ->
         {
-            //example call from browser http://localhost:4567/individual/@I12@
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {
-                IndividualPage ip = new IndividualPage(g.getIndividuals().get(id));
-                return ip.render();
+                Individual person = g.getIndividuals().get(id);
+                String content = readFile("IndividualPage.html");
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual page", person);
+                return pageBuilder.render();
             } else return "Unknown person";
         });
         get("/nameindex/*", (req, res) ->
@@ -68,7 +69,7 @@ public class GedcomView
             {
                 Individual person = g.getIndividuals().get(id);
                 String content = readFile("IndividualPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,person);
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person);
                 return pageBuilder.render();
             } else return "Unknown person";
         });

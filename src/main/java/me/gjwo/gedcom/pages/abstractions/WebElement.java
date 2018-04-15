@@ -6,7 +6,5 @@ import java.io.IOException;
 
 public abstract class WebElement
 {
-    //Individual person;
-    public WebElement(Individual person){}
     public abstract String render() throws IOException;
 }

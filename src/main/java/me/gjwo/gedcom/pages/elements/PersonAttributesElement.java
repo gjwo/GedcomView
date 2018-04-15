@@ -19,7 +19,6 @@ public class PersonAttributesElement extends WebElement
      */
     public PersonAttributesElement(Individual person)
     {
-        super(person);
         FactPicker factPicker = new FactPicker(person,null);
         htmlString =  HtmlWrapper.wrapTable(
                 factPicker.getIndAttributeTableData(
