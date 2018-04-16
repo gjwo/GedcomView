@@ -13,7 +13,6 @@ public class FactPicker {
     private final Family family;
     private final PersonFactBuilder pfb;
     private final FamilyFactBuilder ffb;
-    private DataViews dataView;
     private final List<String> cellLabels = new ArrayList<>();
     private final List<String> columnLabels = new ArrayList<>();
 
@@ -36,7 +35,6 @@ public class FactPicker {
 
     public List <String> getCellLabels(){return cellLabels;}
     public List <String> getColumnLabels(){return columnLabels;}
-    public void setDataView(DataViews view){dataView = view;}
 
     // data based on Individual Events
 
