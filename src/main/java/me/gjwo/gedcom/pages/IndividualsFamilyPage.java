@@ -29,12 +29,14 @@ public class IndividualsFamilyPage extends WebPage
         elements.put(ElementTypes.PERSON_LINK_ELEMENT, ple);
         PersonFactsSummaryElement psfe = new PersonFactsSummaryElement(person);
         elements.put(ElementTypes.PERSON_FACTS_SUMMARY_ELEMENT,psfe);
+
         Family fa[];
         fa = person.getFamiliesWhereChild() != null? person.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0];
-        FamiliesElement pfe = new FamiliesElement(person,false,fa);
+        FamiliesElement pfe = new FamiliesElement(person,false,true,fa);
         elements.put(ElementTypes.PARENTS_ELEMENT, pfe);
+
         fa = person.getFamiliesWhereSpouse() != null? person.getFamiliesWhereSpouse().stream().map(FamilySpouse::getFamily).toArray(Family[]::new):new Family[0];
-        FamiliesElement fe =  new FamiliesElement(person,true,fa);
+        FamiliesElement fe =  new FamiliesElement(person,true,true, fa);
         elements.put(ElementTypes.FAMILIES_ELEMENT,fe);
     }
 

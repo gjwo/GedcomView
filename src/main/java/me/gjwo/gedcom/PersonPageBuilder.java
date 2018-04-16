@@ -33,8 +33,6 @@ public class PersonPageBuilder
                         if(et.getConstructorParam()==Individual.class)
                             webElementInst = constructor.newInstance(person); // create a new class instance with Individual
                         else
-                        /*if(et.getConstructorParam()==Family.class)
-                            webElementInst = constructor.newInstance(family); */// create a new class instance with Individual
                         if(et.getConstructorParam()==String.class)
                             webElementInst = constructor.newInstance(title); // create a new class with string
                         else

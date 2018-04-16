@@ -17,9 +17,7 @@ import java.util.List;
 
 public class FamiliesElement extends WebElement
 {
-    private final Family[] families;
     private final Individual focusPerson;
-    private final boolean showChildren;
     private final String htmlString;
 
     /**
@@ -28,15 +26,13 @@ public class FamiliesElement extends WebElement
      * @param showChildren  Show children in familys
      * @param families      0 or more families involving the focus person
      */
-    public FamiliesElement( Individual person, boolean showChildren, Family... families)
+    public FamiliesElement( Individual person, boolean showChildren, boolean showEvents, Family... families)
     {
-        this.families = families;
         this.focusPerson = person;
-        this.showChildren = showChildren;
         StringBuilder sb = new StringBuilder();
         for(Family f:families)
         {
-            sb.append(buildSingleFamilyTable(f,showChildren,true));
+            sb.append(buildSingleFamilyTable(f,showChildren,showEvents));
         }
         htmlString =  sb.toString();
     }

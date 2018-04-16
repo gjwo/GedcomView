@@ -11,7 +11,8 @@ import java.util.Map;
 public enum ElementTypes {
     PAGE_HEADER("!HEAD!",PageHeaderElement.class, String.class),
     PERSON_LINK_ELEMENT("!NAME!",PersonLinkElement.class,Individual.class),
-    PARENTS_ELEMENT("!PARENTS!",FamiliesElement.class,Individual.class),
+    PARENTS_ELEMENT("!PARENTS!",ParentsElement.class,Individual.class),
+    PARENTS_AND_EVENTS_ELEMENT("!PARENTSEV!",ParentsAndEventsElement.class,Individual.class),
     FAMILIES_ELEMENT("!FAMILIES_SPOUSE!",FamiliesElement.class,Individual.class),
     CENSUS_TABLE_ELEMENT("!CENSUSTAB!",CensusTableElement.class,Individual.class),
     PERSON_KEY_EVENTS_ELEMENT("!KEYFACTS!",PersonKeyEventsElement.class,Individual.class),
