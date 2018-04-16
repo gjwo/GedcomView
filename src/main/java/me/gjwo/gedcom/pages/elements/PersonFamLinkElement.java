@@ -7,7 +7,7 @@ import org.gedcom4j.model.Individual;
 
 import java.io.IOException;
 
-public class PersonLinkElement extends WebElement
+public class PersonFamLinkElement extends WebElement
 {
     private final Individual person;
     private boolean linkToFamily;
@@ -23,7 +23,7 @@ public class PersonLinkElement extends WebElement
      * PersonLinkElement    -   Constructor
      * @param person            The focus person
      */
-    public PersonLinkElement(Individual person)
+    public PersonFamLinkElement(Individual person)
     {
         this.person = person;
         this.linkToFamily = true;

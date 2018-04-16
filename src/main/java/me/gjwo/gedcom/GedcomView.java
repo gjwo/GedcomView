@@ -1,6 +1,5 @@
 package me.gjwo.gedcom;
 
-import me.gjwo.gedcom.pages.IndividualsFamilyPage;
 import me.gjwo.gedcom.pages.elements.NamesParams;
 import org.gedcom4j.comparators.IndividualByLastNameFirstNameComparator;
 import org.gedcom4j.exception.GedcomParserException;
@@ -27,8 +26,10 @@ public class GedcomView
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {
-                IndividualsFamilyPage ifp = new IndividualsFamilyPage(g.getIndividuals().get(id));
-                return ifp.render();
+                Individual person = g.getIndividuals().get(id);
+                String content = readFile("IndividualsFamiliesPage.html");
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person,null);
+                return pageBuilder.render();
             } else return "Unknown person";
         });
         get("/individual/:id", (req, res) ->
