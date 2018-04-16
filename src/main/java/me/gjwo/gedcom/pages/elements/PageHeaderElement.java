@@ -19,7 +19,7 @@ public class PageHeaderElement extends WebElement{
 
     @Override
     public String render() throws IOException {
-        String content = readFile("head.html");
+        String content = readFile("public/head.html");
         content = content.replace("!TITLE!", this.title);
         return content;
     }

@@ -12,12 +12,15 @@ import java.util.Collections;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 import static spark.Spark.get;
+import static spark.Spark.staticFiles;
 
 public class GedcomView
 {
     public static void main(String[] args) throws IOException, GedcomParserException {
+        staticFiles.location("/public");
         GedcomParser gp = new GedcomParser();
-        gp.load("test.GED");
+        //gp.load("GJW20180414full.ged");
+        gp.load("test.ged");
         Gedcom g = gp.getGedcom();
         get("/hello", (req, res) -> "Hello World");
         get("/individualsfamily/:id", (req, res) ->
@@ -27,8 +30,8 @@ public class GedcomView
             if(g.getIndividuals().containsKey(id))
             {
                 Individual person = g.getIndividuals().get(id);
-                String content = readFile("IndividualsFamiliesPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person,null);
+                String content = readFile("public/IndividualsFamiliesPage.html");
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual's familys", person,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });
@@ -38,8 +41,8 @@ public class GedcomView
             if(g.getIndividuals().containsKey(id))
             {
                 Individual person = g.getIndividuals().get(id);
-                String content = readFile("IndividualPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual page", person,null);
+                String content = readFile("public/IndividualPage.html");
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual", person,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });
@@ -52,7 +55,7 @@ public class GedcomView
             ArrayList<Individual> everybody = new ArrayList<>(g.getIndividuals().values());
             Collections.sort(everybody,
                     new IndividualByLastNameFirstNameComparator());
-            String content = readFile("NameIndexPage.html");
+            String content = readFile("public/NameIndexPage.html");
             NamesParams np = new NamesParams(everybody,subIndex);
             PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Index page", null,np);
             //NameIndexPage nip = new NameIndexPage(everybody,subIndex);
@@ -66,7 +69,7 @@ public class GedcomView
             if(g.getIndividuals().containsKey(id))
             {
                 Individual person = g.getIndividuals().get(id);
-                String content = readFile("TestPage.html");
+                String content = readFile("public/TestPage.html");
                 PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person,null);
                 return pageBuilder.render();
             } else return "Unknown person";
