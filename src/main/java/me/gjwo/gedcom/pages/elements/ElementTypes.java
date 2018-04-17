@@ -36,7 +36,7 @@ public enum ElementTypes {
     SPOUSE_FAMILIES_EVENTS_ELEMENT("!FAMILIES_SPOUSE!",SpouseFamsAndEventsElement.class,Individual.class),
     FAMILIES_ELEMENT("!INTERNAL USE ONLY!",FamiliesElement.class,Individual.class),
     FAMILY_KEY_EVENTS_ELEMENT("!INTERNAL USE ONLY!",FamilyKeyEventsElement.class, Family.class),
-    CITATIONS("!CITATIONS!",null,Individual.class), //TODO
+    CITATIONS("!CITATIONS!",CitationsTableElement.class,Individual.class),
     SOURCES("!SOURCES!",null,Individual.class), //TODO
     INDEX("!INDEX!",IndexElement.class,null),
     NAMES("!NAMES!",NamesElement.class,NamesParams.class),

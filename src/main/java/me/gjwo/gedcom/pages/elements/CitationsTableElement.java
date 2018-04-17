@@ -17,26 +17,36 @@
  *
  */
 
-package me.gjwo.gedcom;
+package me.gjwo.gedcom.pages.elements;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import me.gjwo.gedcom.FactPicker;
+import me.gjwo.gedcom.HtmlWrapper;
+import me.gjwo.gedcom.pages.abstractions.WebElement;
+import org.gedcom4j.model.Individual;
+import org.gedcom4j.model.IndividualEvent;
+import org.gedcom4j.model.enumerations.IndividualEventType;
 
-public class FileUtil
+import java.util.ArrayList;
+import java.util.List;
+
+public class CitationsTableElement extends WebElement
 {
-    private static final String BASE_RESOURCE_PATH = "src/main/resources/";
-    public static String getBaseResourcePath(){return BASE_RESOURCE_PATH;}
-
-    public static String readFile(String path) throws IOException {
-        return readFile(path, Charset.defaultCharset());
-    }
-
-    public static String readFile(String path, Charset encoding) throws IOException
+    private String htmlString;
+    /**
+     * CensusTableElement   -   Constructor, builds an HTML table of citations into a string
+     * @param person            the person to collect events for
+     */
+    public CitationsTableElement(Individual person)
     {
-        byte[] encoded = Files.readAllBytes(Paths.get(BASE_RESOURCE_PATH + path));
-        return new String(encoded, encoding);
+        FactPicker factPicker = new FactPicker(person,null);
+        htmlString += HtmlWrapper.wrapTable(factPicker.pickCitationTableData(),
+                                    List.of("Event","Certainty","Source","Page","Description"));
     }
 
+    /**
+     * render   -   returns an HTML table for Census events for the specified individual
+     * @return      An HTML table
+     */
+    @Override
+    public String render() {return htmlString;}
 }

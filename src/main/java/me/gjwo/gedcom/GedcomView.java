@@ -39,7 +39,7 @@ public class GedcomView
         staticFiles.location("/public");
         GedcomParser gp = new GedcomParser();
         //gp.load("GJW20180414full.ged");
-        gp.load("test.ged");
+        gp.load(FileUtil.getBaseResourcePath()+"/public/data/test.ged");
         Gedcom g = gp.getGedcom();
         get("/hello", (req, res) -> "Hello World");
         get("/individualsfamily/:id", (req, res) ->
