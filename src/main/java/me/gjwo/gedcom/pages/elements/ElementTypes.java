@@ -34,12 +34,12 @@ public enum ElementTypes {
     PARENTS_ELEMENT("!PARENTS!",ParentsElement.class,Individual.class),
     PARENTS_AND_EVENTS_ELEMENT("!PARENTSEV!",ParentsAndEventsElement.class,Individual.class),
     SPOUSE_FAMILIES_EVENTS_ELEMENT("!FAMILIES_SPOUSE!",SpouseFamsAndEventsElement.class,Individual.class),
-    FAMILIES_ELEMENT("!INTERNAL USE ONLY!",FamiliesElement.class,Individual.class),
-    FAMILY_KEY_EVENTS_ELEMENT("!INTERNAL USE ONLY!",FamilyKeyEventsElement.class, Family.class),
     CITATIONS("!CITATIONS!",CitationsTableElement.class,Individual.class),
     SOURCES("!SOURCES!",null,Individual.class), //TODO
     INDEX("!INDEX!",IndexElement.class,null),
     NAMES("!NAMES!",NamesElement.class,NamesParams.class),
+    FAMILIES_ELEMENT("!INTERNAL USE ONLY!",FamiliesElement.class,Individual.class),
+    FAMILY_KEY_EVENTS_ELEMENT("!INTERNAL USE ONLY!",FamilyKeyEventsElement.class, Family.class),
     TEST_ELEMENT("!TEST!",TestElement.class,Individual.class);
 
     private final String placeholder;

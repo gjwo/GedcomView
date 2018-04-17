@@ -25,6 +25,7 @@ import org.gedcom4j.model.enumerations.IndividualAttributeType;
 import org.gedcom4j.model.enumerations.IndividualEventType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FactPicker {
@@ -46,7 +47,7 @@ public class FactPicker {
         if (person != null)this.pfb = new PersonFactBuilder(person);
         else this.pfb = null;
         this.family = family;
-        if (family != null) this.ffb = new FamilyFactBuilder(family);
+        if (this.family != null) this.ffb = new FamilyFactBuilder(this.family);
         else this.ffb = null;
     }
 
@@ -69,7 +70,7 @@ public class FactPicker {
         if (withEventLabel) content.add(pfb.getIndividualEventLabel(ie.getType()));
         content.add(pfb.getDateOfEvent(ie));
         content.add(pfb.getPlaceOfEvent(ie));
-        content.add(pfb.getDetailsOfEvent(ie));
+        //content.add(pfb.getDetailsOfEvent(ie));
         return content;
     }
 
@@ -177,11 +178,14 @@ public class FactPicker {
      */
     private List<String> PickIndCitationtWithSourceRow(IndividualEvent event,CitationWithSource cws, boolean withEventLabel)
     {
-        System.out.println(cws);
+        //System.out.println(cws);
+        if (cws==null) return Collections.emptyList();
         List <String> content = new ArrayList<>();
         if (event!=null)
             content.add(event.getType().toString());
-        content.add(cws.getCertainty().toString());
+        if(cws.getCertainty()!=null)
+            content.add(cws.getCertainty().toString());
+        else content.add("");
         if (withEventLabel)
             if (cws.getEventCited()!=null)
                 content.add(cws.getEventCited().toString());
@@ -216,6 +220,7 @@ public class FactPicker {
         if (withEventLabel)
             if (event!=null)
                 content.add(event.getType().toString());
+        if(cwos.getDescription()!=null)
         for (String descriptionLine: cwos.getDescription())
             content.add(descriptionLine);
         return content;
@@ -245,6 +250,7 @@ public class FactPicker {
      */
     public List <List<String>> pickCitationTableData()
     {
+        if(person.getEvents()==null) return Collections.emptyList();
         List <List <String>> results = new ArrayList<>();
         for( IndividualEvent event:person.getEvents())
         {

@@ -31,7 +31,7 @@ import java.util.List;
 
 public class CitationsTableElement extends WebElement
 {
-    private String htmlString;
+    private final String htmlString;
     /**
      * CensusTableElement   -   Constructor, builds an HTML table of citations into a string
      * @param person            the person to collect events for
@@ -39,8 +39,9 @@ public class CitationsTableElement extends WebElement
     public CitationsTableElement(Individual person)
     {
         FactPicker factPicker = new FactPicker(person,null);
-        htmlString += HtmlWrapper.wrapTable(factPicker.pickCitationTableData(),
+        htmlString = ""+HtmlWrapper.wrapTable(factPicker.pickCitationTableData(),
                                     List.of("Event","Certainty","Source","Page","Description"));
+        System.out.println(htmlString);
     }
 
     /**

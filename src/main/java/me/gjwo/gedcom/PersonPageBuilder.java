@@ -63,6 +63,7 @@ public class PersonPageBuilder
                     System.out.println("Exception in PersonPageBuilder");
                     System.out.println(title);
                     System.out.println(et.toString());
+                    System.out.println(person.getFormattedName());
                     System.out.println(e.getMessage());
                     e.printStackTrace();
                 }

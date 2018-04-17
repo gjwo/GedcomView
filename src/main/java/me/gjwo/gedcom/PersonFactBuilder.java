@@ -110,11 +110,12 @@ public class PersonFactBuilder
     String getDateOfEvent(IndividualEvent ce)
     {
         if (eventsNull||(ce==null))return "";
+
         StringBuilder sb = new StringBuilder();
         if (ce.getDate() != null && ce.getDate().trim().length() > 0) {
             sb.append(ce.getDate());
         }
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     String getPlaceOfEvent(IndividualEvent ce)
@@ -124,7 +125,7 @@ public class PersonFactBuilder
         if (ce.getPlace() != null && ce.getPlace().getPlaceName() != null) {
             sb.append(ce.getPlace().getPlaceName());
         }
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     String getDetailsOfEvent(IndividualEvent ce)
@@ -135,7 +136,7 @@ public class PersonFactBuilder
         if (ce.getDescription() != null ) {
             sb.append(ce.getDescription());
         }
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     //
@@ -154,7 +155,7 @@ public class PersonFactBuilder
         if (ia.getDate() != null && ia.getDate().trim().length() > 0) {
             sb.append(ia.getDate());
         }
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     String getPlaceOfAttribute(IndividualAttribute ia)
@@ -164,7 +165,7 @@ public class PersonFactBuilder
         if (ia.getPlace() != null && ia.getPlace().getPlaceName() != null) {
             sb.append(ia.getPlace().getPlaceName());
         }
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     String getDescriptionOfAttribute(IndividualAttribute ia)
@@ -185,7 +186,7 @@ public class PersonFactBuilder
         List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
         for (IndividualEvent ev : birthDates) sb.append(getDateOfEvent(ev));
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     String getPlaceOfBirth() {
@@ -193,7 +194,7 @@ public class PersonFactBuilder
         List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
         for (IndividualEvent ev : birthDates) sb.append(getPlaceOfEvent(ev));
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     String getDateOfDeath() {
@@ -201,7 +202,7 @@ public class PersonFactBuilder
         List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
         for (IndividualEvent ev : DeathDates) sb.append(getDateOfEvent(ev));
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     String getPlaceOfDeath() {
@@ -209,21 +210,21 @@ public class PersonFactBuilder
         List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
         for (IndividualEvent ev : DeathDates) sb.append(getPlaceOfEvent(ev));
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     public String getDateOfBaptism() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> baptisms = focusPerson.getEventsOfType(IndividualEventType.BAPTISM);
         for (IndividualEvent ev : baptisms)  sb.append(getDateOfEvent(ev));
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
 
     public String getPlaceOfBaptism() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> baptisms = focusPerson.getEventsOfType(IndividualEventType.BAPTISM);
         for (IndividualEvent ev : baptisms) sb.append(getPlaceOfEvent(ev));
-        return sb.toString();
+        return sb.length()>0? sb.toString():"";
     }
     public String getShortDates()
     {
