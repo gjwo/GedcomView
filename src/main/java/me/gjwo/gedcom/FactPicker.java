@@ -200,11 +200,19 @@ public class FactPicker {
         if(cws.getWhereInSource()!=null)
             content.add(cws.getWhereInSource().toString());
         else content.add("");
-        if (cws.getData() != null) {
-            if (cws.getData().get(0) != null) {
-                content.add(cws.getData().get(0).getSourceText().get(0).getLines().get(0).toString());
-            }
-        } else content.add("");
+        if (cws.getData() != null)
+            if (cws.getData().get(0) != null)
+                if(cws.getData().get(0).getSourceText()!=null)
+                    if(cws.getData().get(0).getSourceText().get(0)!= null)
+                        if(cws.getData().get(0).getSourceText().get(0).getLines()!=null)
+                            if(cws.getData().get(0).getSourceText().get(0).getLines().get(0)!=null)
+                                content.add(cws.getData().get(0).getSourceText().get(0).getLines().get(0));
+                            else content.add("");
+                        else content.add("");
+                    else content.add("");
+                else content.add("");
+            else content.add("");
+         else content.add("");
         return content;
     }
 
