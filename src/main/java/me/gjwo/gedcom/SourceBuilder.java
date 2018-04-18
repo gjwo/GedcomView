@@ -22,19 +22,33 @@ package me.gjwo.gedcom;
 import org.gedcom4j.model.Source;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * SourceBuilder    -   Methods for extracting and combining data related to sources
+ */
 public class SourceBuilder
 {
     private final Map<String,Source> sources;
+
+    /**
+     * SourceBuilder    -   Constructor
+     * @param sources       The map of gedcom extracted sources with references
+     */
     public SourceBuilder(Map<String,Source> sources)
     {
         this.sources = sources;
     }
+
+    //data building methods
+
+    /**
+     * buildSourcesTable    -   Builds the data for a sources table from the Ged4Java model for sources
+     * @return                  A list of table rows
+     */
     public List<List<String>> buildSourcesTable()
     {
         List<List<String>> tableRows = new ArrayList<>();
@@ -52,26 +66,40 @@ public class SourceBuilder
         });
         return tableRows;
     }
+
+    /**
+     * buildSourcesTableRow -   Builds a row of data relating to one source
+     * @param key               The source reference
+     * @param source            A single source data structure from the Ged4Java model
+     * @return                  A list of strings containing source information
+     */
     private List<String> buildSourcesTableRow(String key, Source source)
     {
         List<String> row = new ArrayList<>();
         row.add(key.replace("@","").replace("S",""));
         row.add(getTitle(source));
         row.add(getAuthor(source));
-        row.add(getNoteStructLine(source));
+        row.add(getNoteLine(source));
         return row;
     }
+
+    /**
+     * buildColumnLables    -   builds an array of column lables
+     * @return                  The column lables for sources index
+     */
     public List<String> buildColumnLables()
     {
-        List<String> row = new ArrayList<>();
-        String content = "";
-        row.add("Ref");
-        row.add("Title");
-        row.add("Author");
-        row.add("Source note");
-        return row;
+         return List.of("Ref","Title","Author","Source note");
     }
-    private String getNoteStructLine(Source source)
+
+    //data extraction methods
+
+    /**
+     * getNoteLine      -  Gets a note structure line from the model
+     * @param source       A single source data structure from the Ged4Java model
+     * @return             A string containing the first note line
+     */
+    private String getNoteLine(Source source)
     {
         if(source!=null)
             if(source.getNoteStructures()!=null)
@@ -85,6 +113,12 @@ public class SourceBuilder
             else return "";
         else return "";
     }
+
+    /**
+     * getTitle     -   Gets a source title from the model
+     * @param source    A single source data structure from the Ged4Java model
+     * @return          A string containing the title
+     */
     private String getTitle(Source source)
     {
         if(source!=null)
@@ -97,6 +131,12 @@ public class SourceBuilder
             else return "";
         else return "";
     }
+
+    /**
+     * getAuthor        -   gets the Author of the source
+     * @param source        A single source data structure from the Ged4Java model
+     * @return               A string containing the Author
+     */
     private String getAuthor(Source source)
     {
         if(source!=null)
