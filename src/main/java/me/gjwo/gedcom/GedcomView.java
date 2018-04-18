@@ -28,6 +28,8 @@ import org.gedcom4j.parser.GedcomParser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static me.gjwo.gedcom.FileUtil.readFile;
 import static spark.Spark.get;
@@ -50,7 +52,7 @@ public class GedcomView
             {
                 Individual person = g.getIndividuals().get(id);
                 String content = readFile("public/IndividualsFamiliesPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual's familys", person,null);
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual's familys", person,null,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });
@@ -61,7 +63,7 @@ public class GedcomView
             {
                 Individual person = g.getIndividuals().get(id);
                 String content = readFile("public/IndividualPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual", person,null);
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Individual", person,null,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });
@@ -72,12 +74,18 @@ public class GedcomView
             if (nbrParams>0) subIndex = req.splat()[0];
             // Get a list of everyone and sort them last name first
             ArrayList<Individual> everybody = new ArrayList<>(g.getIndividuals().values());
-            Collections.sort(everybody,
-                    new IndividualByLastNameFirstNameComparator());
+            everybody.sort(new IndividualByLastNameFirstNameComparator());
             String content = readFile("public/NameIndexPage.html");
             NamesParams np = new NamesParams(everybody,subIndex);
-            PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Index page", null,np);
+            PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Index page", null,np,null);
             //NameIndexPage nip = new NameIndexPage(everybody,subIndex);
+            return pageBuilder.render();
+        });
+        get("/sourcesindex/", (req, res) ->
+        {
+            Map<String,Source> sources = g.getSources();
+            String content = readFile("public/SourcesIndexPage.html");
+            PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Sources Index", null,null,sources);
             return pageBuilder.render();
         });
 
@@ -89,7 +97,7 @@ public class GedcomView
             {
                 Individual person = g.getIndividuals().get(id);
                 String content = readFile("public/TestPage.html");
-                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person,null);
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Test page", person,null,null);
                 return pageBuilder.render();
             } else return "Unknown person";
         });

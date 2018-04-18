@@ -24,13 +24,15 @@ import me.gjwo.gedcom.pages.elements.ElementTypes;
 import me.gjwo.gedcom.pages.elements.NamesParams;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
+import org.gedcom4j.model.Source;
 
 import java.lang.reflect.Constructor;
+import java.util.Map;
 
 public class PersonPageBuilder
 {
     private String htmlContent;
-    PersonPageBuilder(String template, String title, Individual person, NamesParams namesParams)
+    PersonPageBuilder(String template, String title, Individual person, NamesParams namesParams, Map<String,Source> sources)
     {
         htmlContent = template;
         for (ElementTypes et:ElementTypes.values())
@@ -55,7 +57,11 @@ public class PersonPageBuilder
                         else
                             if(et.getConstructorParam()==NamesParams.class)
                                 webElementInst = constructor.newInstance(namesParams);
-                        else throw new Exception("constructor signature not handled");
+                            else
+                                if (et.getConstructorParam()==Map.class)
+                                    webElementInst = constructor.newInstance(sources);
+                                else
+                                    throw new Exception("constructor signature not handled");
                     }
                     htmlContent = htmlContent.replace(et.getPlaceholder(), webElementInst.render()); //invoke a class method
                 } catch (Exception e)
@@ -63,7 +69,6 @@ public class PersonPageBuilder
                     System.out.println("Exception in PersonPageBuilder");
                     System.out.println(title);
                     System.out.println(et.toString());
-                    System.out.println(person.getFormattedName());
                     System.out.println(e.getMessage());
                     e.printStackTrace();
                 }
