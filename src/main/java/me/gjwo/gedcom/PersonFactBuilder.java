@@ -146,14 +146,15 @@ public class PersonFactBuilder
 
     String getIndividualAttributeLabel(IndividualAttributeType iat)
     {
-        return attributeMap.get(iat);
+        return attributeMap.get(iat)!=null?attributeMap.get(iat):"";
     }
     String getDateOfAttribute(IndividualAttribute ia)
     {
         if (attributesNull)return "";
         StringBuilder sb = new StringBuilder();
-        if (ia.getDate() != null && ia.getDate().trim().length() > 0) {
-            sb.append(ia.getDate());
+        if (ia.getDate() != null)
+            if( ia.getDate().trim().length() > 0) {
+            sb.append(ia.getDate().trim());
         }
         return sb.length()>0? sb.toString():"";
     }

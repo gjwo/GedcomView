@@ -66,6 +66,7 @@ public class FactPicker {
      */
     private List<String> PickIndEventRow(IndividualEvent ie, boolean withEventLabel)
     {
+        assert pfb!=null;
         List <String> content = new ArrayList<>();
         if (withEventLabel) content.add(pfb.getIndividualEventLabel(ie.getType()));
         content.add(pfb.getDateOfEvent(ie));
@@ -88,6 +89,7 @@ public class FactPicker {
         return results;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     public List<String> pickIndSummaryRow(PersonFactBuilder lpfb)
     {
         List <String> results = new ArrayList<>();
@@ -130,6 +132,7 @@ public class FactPicker {
 
     private List<String> pickAttributeRow(IndividualAttribute ia, boolean withAttributeLabel)
     {
+        assert pfb!=null;
         List <String> content = new ArrayList<>();
         if (withAttributeLabel) content.add(pfb.getIndividualAttributeLabel(ia.getType()));
         content.add(pfb.getDateOfAttribute(ia));
@@ -147,6 +150,7 @@ public class FactPicker {
      */
     private List<String> PickFamilyEventRow(FamilyEvent fe, boolean withEventLabel)
     {
+        assert ffb!=null;
         List <String> content = new ArrayList<>();
         if (withEventLabel) content.add(ffb.getFamilyEventLabel(fe.getType()));
         content.add(ffb.getDateOfEvent(fe));
@@ -162,6 +166,7 @@ public class FactPicker {
      */
     public List <List<String>> pickFamilyEventTableData(List <FamilyEventType> eventTypes)
     {
+        assert ffb!=null;
         List <List <String>> results = new ArrayList<>();
         for (FamilyEventType type:eventTypes)
             for (FamilyEvent event : ffb.getEventsOfType(type))
@@ -171,24 +176,21 @@ public class FactPicker {
     // data based on Citations
 
     /**
-     * PickIndCitationtWithSourceRow    -   Gets an list of strings to form a table row from a citation
+     * PickIndCitationWithSourceRow    -   Gets an list of strings to form a table row from a citation
      * @param cws                           The citation with source to be displayed in this row
-     * @param withEventLabel                true: include an event label at the start of the row
      * @return                              list of result strings
      */
-    private List<String> PickIndCitationtWithSourceRow(IndividualEvent event,CitationWithSource cws, boolean withEventLabel)
+    private List<String> pickIndCitationWithSourceRow(IndividualEvent event, CitationWithSource cws)
     {
         //System.out.println(cws);
         if (cws==null) return Collections.emptyList();
         List <String> content = new ArrayList<>();
         if (event!=null)
             content.add(event.getType().toString());
+        else content.add("");
         if(cws.getCertainty()!=null)
             content.add(cws.getCertainty().toString());
         else content.add("");
-        if (withEventLabel)
-            if (cws.getEventCited()!=null)
-                content.add(cws.getEventCited().toString());
         Source source = cws.getSource();
         if(source!=null)
         {
@@ -197,6 +199,7 @@ public class FactPicker {
                 content.add(source.getTitle().getLines().get(0));
             else content.add("");
         }
+        else content.add("");
         if(cws.getWhereInSource()!=null)
             content.add(cws.getWhereInSource().toString());
         else content.add("");
@@ -217,42 +220,22 @@ public class FactPicker {
     }
 
     /**
-     * PickIndCitationtWithSourceRow    -   Gets an list of strings to form a table row from a citation
+     * pickIndCitationWithSourceRow    -   Gets an list of strings to form a table row from a citation
      * @param cwos                           The citation with source to be displayed in this row
-     * @param withEventLabel                true: include an event label at the start of the row
      * @return                              list of result strings
      */
-    private List<String> PickIndCitationtWithoutSourceRow(IndividualEvent event,CitationWithoutSource cwos, boolean withEventLabel)
+    @SuppressWarnings("SpellCheckingInspection")
+    private List<String> PickIndCitationWithoutSourceRow(IndividualEvent event, CitationWithoutSource cwos)
     {
         List <String> content = new ArrayList<>();
-        if (withEventLabel)
-            if (event!=null)
-                content.add(event.getType().toString());
+        if (event!=null)
+            content.add(event.getType().toString());
         if(cwos.getDescription()!=null)
-        for (String descriptionLine: cwos.getDescription())
-            content.add(descriptionLine);
+            content.addAll(cwos.getDescription());
         return content;
     }
 
-    /**
-     *  pickCitationTableData    -   extracts individual citation data as string arrays
-     * @param citationDataList      List of citations
-     * @return  A list of labelled rows each of which is a list of strings
-     */
-    public List <List<String>> pickCitationTableData(IndividualEvent event,List <AbstractCitation> citationDataList)
-    {
-        //System.out.println(event.getType()+event.toString());
-        List <List <String>> results = new ArrayList<>();
-        for (AbstractCitation citation:citationDataList) {
-            if (citation instanceof CitationWithSource)
-                results.add(PickIndCitationtWithSourceRow(event,((CitationWithSource) citation), true));
-            else if (citation instanceof CitationWithoutSource)
-                results.add(PickIndCitationtWithoutSourceRow(event, ((CitationWithoutSource) citation), true));
-        }
-        return results;
-    }
-
-    /**
+     /**
      *  pickCitationTableData    -   extracts individual citation data for all events as string arrays
      * @return  A list of labelled rows each of which is a list of strings
      */
@@ -266,9 +249,9 @@ public class FactPicker {
             for (AbstractCitation citation:event.getCitations(true))
             {
                 if (citation instanceof CitationWithSource)
-                    results.add(PickIndCitationtWithSourceRow(event, ((CitationWithSource) citation), true));
+                    results.add(pickIndCitationWithSourceRow(event, ((CitationWithSource) citation)));
                 else if (citation instanceof CitationWithoutSource)
-                    results.add(PickIndCitationtWithoutSourceRow(event, ((CitationWithoutSource) citation), true));
+                    results.add(PickIndCitationWithoutSourceRow(event, ((CitationWithoutSource) citation)));
             }
         }
         return results;
