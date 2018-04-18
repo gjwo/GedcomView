@@ -31,21 +31,94 @@ public class SourcesElement extends WebElement
     private final String htmlString;
     public SourcesElement(Map<String,Source> sources)
     {
+        htmlString = HtmlWrapper.wrapDiv(buildSourcesTable(sources));
+    }
+
+    private String buildSourcesTable(Map<String,Source> sources)
+    {
         StringBuilder sb = new StringBuilder();
         if(sources != null)
         {
+            sb.append("<table>");
+            sb.append(buildTableTitlesRow());
             for (String key :sources.keySet())
             {
-                sb.append(key);
-                sb.append(" : ");
-                sb.append(sources.get(key));
-                sb.append("<br>");
+                sb.append(buildSourcesTableRow(key,sources.get(key)));
             }
+            sb.append("</table>");
         }
         else sb.append("No Sources");
-        htmlString = HtmlWrapper.wrapDiv(sb.toString());
-    }
 
+        return sb.toString();
+    }
+    private String  buildSourcesTableRow(String key, Source source)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<tr>");
+        sb.append("<td>");
+        sb.append(key.replace("@","").replace("S",""));
+        sb.append("</td>");
+        sb.append("<td>");
+        sb.append(getTitle(source));
+        sb.append("</td>");
+        sb.append("<td>");
+        sb.append(getAuthor(source));
+        sb.append("</td>");
+        sb.append("<td>");
+        sb.append(getNoteStructLine(source));
+        sb.append("</td>");
+        sb.append("</tr>");
+        return sb.toString();
+    }
+    private String buildTableTitlesRow()
+    {
+        String content = "";
+        content +="<tr>";
+        content +="<th>Ref</th>";
+        content +="<th>Title</th>";
+        content +="<th>Author</th>";
+        content +="<th>Source note</th>";
+        content += "</tr>";
+        return content;
+    }
+    private String getNoteStructLine(Source source)
+    {
+        if(source!=null)
+            if(source.getNoteStructures()!=null)
+                if(source.getNoteStructures().get(0)!=null)
+                    if(source.getNoteStructures().get(0).getLines()!=null)
+                        if(source.getNoteStructures().get(0).getLines().get(0)!=null)
+                            return source.getNoteStructures().get(0).getLines().get(0);
+                        else return "";
+                    else return "";
+                else return "";
+            else return "";
+        else return "";
+    }
+    private String getTitle(Source source)
+    {
+        if(source!=null)
+            if(source.getTitle()!=null)
+                if(source.getTitle().getLines()!=null)
+                    if(source.getTitle().getLines().get(0)!=null)
+                        return source.getTitle().getLines().get(0);
+                    else return "";
+                else return "";
+            else return "";
+        else return "";
+    }
+    private String getAuthor(Source source)
+    {
+        if(source!=null)
+            if(source.getOriginatorsAuthors()!=null)
+                if(source.getOriginatorsAuthors().getLines()!=null)
+                    if(source.getOriginatorsAuthors().getLines().get(0)!=null)
+                        return source.getOriginatorsAuthors().getLines().get(0);
+                    else return "";
+                else return "";
+            else return "";
+        else return "";
+    }
     @Override
     public String render()
     {
