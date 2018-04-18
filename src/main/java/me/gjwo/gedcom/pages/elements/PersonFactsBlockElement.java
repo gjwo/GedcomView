@@ -19,30 +19,36 @@
 
 package me.gjwo.gedcom.pages.elements;
 
+import me.gjwo.gedcom.HtmlWrapper;
+import me.gjwo.gedcom.PersonFactBuilder;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
-import org.gedcom4j.model.Family;
-import org.gedcom4j.model.FamilyChild;
 import org.gedcom4j.model.Individual;
 
-public class AncestorsElement extends WebElement
+import java.util.Collections;
+import java.util.List;
+
+public class PersonFactsBlockElement extends WebElement
 {
-    private final FamiliesElement pfe;
+    private final String htmlString;
 
     /**
-     * PersonKeyEventsElement - Constructor builds an HTML table of key events
-     * @param person            The focus person for information
+     * PersonFactsSummaryElement    -   Builds an HTML table containing key personal events on a single row
+     * @param person                    the person that is the focus
      */
-    public AncestorsElement(Individual person)
+    public PersonFactsBlockElement(Individual person)
     {
-        Family fa[];
-        fa = person.getFamiliesWhereChild() != null? person.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0];
-        pfe = new FamiliesElement(person,false,false,fa);
+        PersonFactBuilder pfb = new PersonFactBuilder(person);
+        String nameLink = HtmlWrapper.wrapHyperlink(pfb.buildPersonFamilyLink(person), pfb.tail(person.getFormattedName().replace("/",""),25));
+        String birth = "b."+pfb.tail(pfb.getDateOfBirth(),4)+"&nbsp;"+pfb.head(pfb.getPlaceOfBirth(),22);
+        String death = "d."+pfb.tail(pfb.getDateOfDeath(),4)+"&nbsp;"+pfb.head(pfb.getPlaceOfDeath(),22);
+        htmlString = HtmlWrapper.wrapTable( List.of(List.of(nameLink),List.of(birth),List.of(death)),
+                                    Collections.emptyList());
     }
 
     /**
-     * render   -   Returns an HTML string containing a personal events table
-     * @return      The html string
+     * render   -   returns HTML containing a summary fact table
+     * @return      the html string
      */
     @Override
-    public String render() {return pfe.render();}
+    public String render(){return htmlString;}
 }

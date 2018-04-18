@@ -186,7 +186,7 @@ public class PersonFactBuilder
 // getters for specific types of key events
 //
 
-    String getDateOfBirth() {
+    public String getDateOfBirth() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
@@ -194,7 +194,7 @@ public class PersonFactBuilder
         return sb.length()>0? sb.toString():"";
     }
 
-    String getPlaceOfBirth() {
+    public String getPlaceOfBirth() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> birthDates = focusPerson.getEventsOfType(
                 IndividualEventType.BIRTH);
@@ -202,7 +202,7 @@ public class PersonFactBuilder
         return sb.length()>0? sb.toString():"";
     }
 
-    String getDateOfDeath() {
+    public String getDateOfDeath() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
@@ -210,7 +210,7 @@ public class PersonFactBuilder
         return sb.length()>0? sb.toString():"";
     }
 
-    String getPlaceOfDeath() {
+    public String getPlaceOfDeath() {
         StringBuilder sb = new StringBuilder();
         List<IndividualEvent> DeathDates = focusPerson.getEventsOfType(
                 IndividualEventType.DEATH);
@@ -234,6 +234,27 @@ public class PersonFactBuilder
     public String getShortDates()
     {
         return " ("+ getDateOfBirth()+" - "+getDateOfDeath()+")";
+    }
+    public String tail(String s, int tailLength)
+    {
+        if(s!=null)
+            if(!s.isEmpty())
+                if( s.length()>= tailLength)
+                    return s.substring(s.length()-tailLength, s.length());
+                else return s.substring(0, s.length());
+            else return "";
+        else return "";
+    }
+
+    public String head(String s, int headLength)
+    {
+        if(s!=null)
+            if(!s.isEmpty())
+                if( s.length()>= headLength)
+                    return s.substring(0,headLength);
+                else return s.substring(0, s.length());
+            else return "";
+        else return "";
     }
 
  }

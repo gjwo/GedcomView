@@ -22,7 +22,6 @@ package me.gjwo.gedcom.pages.elements;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
-import org.gedcom4j.model.Source;
 
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public enum ElementTypes {
     PARENTS_ELEMENT("!PARENTS!",ParentsElement.class,Individual.class),
     PARENTS_AND_EVENTS_ELEMENT("!PARENTSEV!",ParentsAndEventsElement.class,Individual.class),
     SPOUSE_FAMILIES_EVENTS_ELEMENT("!FAMILIES_SPOUSE!",SpouseFamsAndEventsElement.class,Individual.class),
-    ANCESTORS_ELEMENT("!ANCESTORS!",AncestorsElement.class,Individual.class),
+    ANCESTORS_ELEMENT("!ANCESTORS!",PersonAncestorsElement.class,Individual.class),
     ANCESTORS_LINK_ELEMENT("!ANCESTORSLINK!",PersonAncestorLinkElement.class,Individual.class),
     CITATIONS("!CITATIONS!",CitationsTableElement.class,Individual.class),
     SOURCES("!SOURCES!",SourcesElement.class,Map.class),
