@@ -76,6 +76,10 @@ public class PersonFactBuilder
         return "/individualsfamily/" + person.getXref();
     }
 
+    public String buildPersonAncestorLink(Individual person) {
+        return "/ancestors/" + person.getXref();
+    }
+
     public String buildPersonIndividualLink(Individual person) {
         return "/individual/" + person.getXref();
     }

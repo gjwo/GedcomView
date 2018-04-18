@@ -67,6 +67,17 @@ public class GedcomView
                 return pageBuilder.render();
             } else return "Unknown person";
         });
+        get("/ancestors/:id", (req, res) ->
+        {
+            String id = req.params(":id");
+            if(g.getIndividuals().containsKey(id))
+            {
+                Individual person = g.getIndividuals().get(id);
+                String content = readFile("public/AncestorsPage.html");
+                PersonPageBuilder pageBuilder = new PersonPageBuilder(content,"Ancestors", person,null,null);
+                return pageBuilder.render();
+            } else return "Unknown person";
+        });
         get("/nameindex/*", (req, res) ->
         {
             int nbrParams = req.splat().length;
