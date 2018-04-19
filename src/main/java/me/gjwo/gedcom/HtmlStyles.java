@@ -17,32 +17,39 @@
  *
  */
 
-package me.gjwo.gedcom.pages.elements;
+package me.gjwo.gedcom;
 
-import me.gjwo.gedcom.HtmlStyles;
-import me.gjwo.gedcom.pages.abstractions.WebElement;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.io.IOException;
+public class HtmlStyles
+{
+    private final Map<String,String> styleMap;
 
-import static me.gjwo.gedcom.FileUtil.readFile;
-
-public class PageHeaderElement extends WebElement{
-    private final String title;
-
-    /**
-     * PageHeaderElement    -   Constructor, this element contains the HTML Header block
-     * @param title             The title for the web page
-     */
-    public PageHeaderElement(String title){
-        this.title = title;
+    private static String TableAncCell =
+            "#tac {border-collapse:collapse; border-spacing:1px;}" +
+            "#tac table {border: 1px; solid #ddd; padding: 1px;}"+
+            "#tac td,tr {border: 0px; padding: 0px;}";
+    public HtmlStyles()
+    {
+        styleMap = new HashMap<>();
+        styleMap.put("tabledefault","");
+        styleMap.put("tac",TableAncCell);
     }
 
-    @Override
-    public String render() throws IOException {
-        String content = readFile("public/head.html");
-        content = content.replace("!TITLE!", this.title);
-        HtmlStyles htmlStyles = new HtmlStyles();
-        content = content.replace( "!STYLES!",htmlStyles.getAllStyles());
-        return content;
+    public String getStyle(String styleName)
+    {
+        if (styleName!=null)
+            if(styleName.isEmpty()) return "";
+            else
+                return styleMap.getOrDefault(styleName,"");
+        else return "";
+    }
+    public String getAllStyles()
+    {
+        String styles = "";
+        for(String key:styleMap.keySet())
+            styles += styleMap.getOrDefault(key,"");
+        return styles;
     }
 }

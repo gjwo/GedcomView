@@ -45,9 +45,16 @@ public class HtmlWrapper
         return content.toString();
     }
     public static String wrapTable(List<List<String>> tableRows, List<String> columnLabels)
+    {return wrapTable(tableRows, columnLabels,"");}
+
+    public static String wrapTable(List<List<String>> tableRows, List<String> columnLabels,String tableStyle)
     {
         StringBuilder content= new StringBuilder();
-        content.append("<table>");
+        HtmlStyles htmlStyles = new HtmlStyles();
+        if (tableStyle!=null) {
+            if (htmlStyles.getStyle(tableStyle).isEmpty()) content.append("<table>");
+            else content.append("<table id=\""+tableStyle+"\">");
+        } else  content.append("<table>");
         if (!columnLabels.isEmpty()) content.append(wrapTableHeaderRow(columnLabels));
         for(List<String> row : tableRows)
             content.append(wrapTableRow(row));
