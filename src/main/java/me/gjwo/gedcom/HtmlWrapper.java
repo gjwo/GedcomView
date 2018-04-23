@@ -53,7 +53,7 @@ public class HtmlWrapper
         HtmlStyles htmlStyles = new HtmlStyles();
         if (tableStyle!=null) {
             if (htmlStyles.getStyle(tableStyle).isEmpty()) content.append("<table>");
-            else content.append("<table id=\""+tableStyle+"\">");
+            else content.append("<table class=\""+tableStyle+"\">");
         } else  content.append("<table>");
         if (!columnLabels.isEmpty()) content.append(wrapTableHeaderRow(columnLabels));
         for(List<String> row : tableRows)

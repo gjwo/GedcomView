@@ -33,6 +33,7 @@ public enum ElementTypes {
     PERSON_KEY_EVENTS_ELEMENT("!KEYFACTS!",PersonKeyEventsElement.class,Individual.class),
     PERSON_ATTRIBUTES_ELEMENT("!ATTRIBUTES!",PersonAttributesElement.class,Individual.class),
     PERSON_FACTS_SUMMARY_ELEMENT("!FACTSUM!",PersonFactsSummaryElement.class,Individual.class),
+    PERSON_FACTS_BLOCK_ELEMENT("!PFACTBLOCK!",PersonFactsBlockElement.class,Individual.class),
     PARENTS_ELEMENT("!PARENTS!",ParentsElement.class,Individual.class),
     PARENTS_AND_EVENTS_ELEMENT("!PARENTSEV!",ParentsAndEventsElement.class,Individual.class),
     SPOUSE_FAMILIES_EVENTS_ELEMENT("!FAMILIES_SPOUSE!",SpouseFamsAndEventsElement.class,Individual.class),

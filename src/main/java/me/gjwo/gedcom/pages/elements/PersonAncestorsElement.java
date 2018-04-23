@@ -46,7 +46,7 @@ public class PersonAncestorsElement extends WebElement
     }
 
     /**
-     * render   -   Returns an HTML string containing a personal events table
+     * render   -   Returns an HTML string
      * @return      The html string
      */
     @Override

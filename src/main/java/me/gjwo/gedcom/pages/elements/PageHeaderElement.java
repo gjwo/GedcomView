@@ -42,7 +42,7 @@ public class PageHeaderElement extends WebElement{
         String content = readFile("public/head.html");
         content = content.replace("!TITLE!", this.title);
         HtmlStyles htmlStyles = new HtmlStyles();
-        content = content.replace( "!STYLES!",htmlStyles.getAllStyles());
+        content = content.replace( "!STYLES!",htmlStyles.getStyle("tac"));
         return content;
     }
 }

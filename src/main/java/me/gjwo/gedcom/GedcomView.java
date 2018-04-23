@@ -69,6 +69,7 @@ public class GedcomView
         });
         get("/ancestors/:id", (req, res) ->
         {
+            //example call from browser http://localhost:4567/ancestors/@I12@
             String id = req.params(":id");
             if(g.getIndividuals().containsKey(id))
             {

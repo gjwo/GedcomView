@@ -27,14 +27,19 @@ public class HtmlStyles
     private final Map<String,String> styleMap;
 
     private static String TableAncCell =
-            "#tac {border-collapse:collapse; border-spacing:1px;}" +
-            "#tac table {border: 1px; solid #ddd; padding: 1px;}"+
-            "#tac td,tr {border: 0px; padding: 0px;}";
+            "#tac {border-collapse: collapse:separate; border-spacing:0 10px; width: 95%; background-color: AntiqueWhite;}" +
+            "#tac div {background-color: AntiqueWhite;padding: 1px; width:96%}"+
+            "#tac table {border: 3px solid black; padding: 1px;}"+
+            "#tac tr { padding: 2px;}"+
+            "#tac td { width: 200px; height:55;}"+
+            ".indblock {background-color: white; padding: 2px;}";
+private static String indblock = ".indblock {background-color: white; padding: 2px;}";
     public HtmlStyles()
     {
         styleMap = new HashMap<>();
         styleMap.put("tabledefault","");
         styleMap.put("tac",TableAncCell);
+        styleMap.put("indblock",indblock);
     }
 
     public String getStyle(String styleName)

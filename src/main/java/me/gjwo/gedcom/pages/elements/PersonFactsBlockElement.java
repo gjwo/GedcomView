@@ -41,8 +41,10 @@ public class PersonFactsBlockElement extends WebElement
         String nameLink = HtmlWrapper.wrapHyperlink(pfb.buildPersonFamilyLink(person), pfb.tail(person.getFormattedName().replace("/",""),25));
         String birth = "b."+pfb.tail(pfb.getDateOfBirth(),4)+"&nbsp;"+pfb.head(pfb.getPlaceOfBirth(),22);
         String death = "d."+pfb.tail(pfb.getDateOfDeath(),4)+"&nbsp;"+pfb.head(pfb.getPlaceOfDeath(),22);
+        /*
         htmlString = HtmlWrapper.wrapTable( List.of(List.of(nameLink),List.of(birth),List.of(death)),
-                                    Collections.emptyList(),"tac");
+                                    Collections.emptyList(),"tac");*/
+        htmlString = nameLink+"<br>"+birth+"<br>"+death;
     }
 
     /**
