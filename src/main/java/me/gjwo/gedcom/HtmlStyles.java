@@ -26,14 +26,14 @@ public class HtmlStyles
 {
     private final Map<String,String> styleMap;
 
+    private static String indblock = ".indblock {background-color: white;border: 3px solid black; padding: 2px;}";
     private static String TableAncCell =
             "#tac {border-collapse: collapse:separate; border-spacing:0 10px; width: 95%; background-color: AntiqueWhite;}" +
-            "#tac div {background-color: AntiqueWhite;padding: 1px; width:96%}"+
+            "#tac div {background-color: AntiqueWhite; padding: 1px; width:96%}"+
             "#tac table {border: 3px solid black; padding: 1px;}"+
             "#tac tr { padding: 2px;}"+
             "#tac td { width: 200px; height:55;}"+
-            ".indblock {background-color: white; padding: 2px;}";
-private static String indblock = ".indblock {background-color: white; padding: 2px;}";
+            indblock;
     public HtmlStyles()
     {
         styleMap = new HashMap<>();
