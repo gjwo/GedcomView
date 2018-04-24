@@ -19,35 +19,72 @@
 
 package me.gjwo.gedcom;
 
+import org.gedcom4j.factory.IndividualFactory;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.FamilyChild;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.IndividualReference;
 
+import java.util.Arrays;
+
 public class AncestorPicker
 {
     private final Individual focusPerson;
     private char[] ancestorPath;
-    AncestorPicker(Individual person, String placeholder) throws IllegalArgumentException
+
+    /**
+     * This class finds a specific ancestor of a given person based on a placeholder
+     * @param person        The starting person
+     * @param placeholder   !MFMF! where M = Mother F = Father so !MF! would be the maternal grandfather etc.
+     * @throws IllegalArgumentException if the person is null
+     */
+    public AncestorPicker(Individual person, String placeholder) throws IllegalArgumentException
     {
         if (person == null) throw new IllegalArgumentException("Null person in AncestorPicker constructor");
         focusPerson = person;
+        // have a valid ancestor path
+    }
+
+    /**
+     * Finds the ancestor of the focus person stored in the class
+     * @param placeholder   !MFMF! where M = Mother F = Father so !MF! would be the maternal grandfather etc.
+     * @return the Individual ancestor or null if not found
+     */
+    public Individual findAncestor(String placeholder)
+    {
+        if (buildPath(placeholder))
+            return findAncestor(focusPerson, ancestorPath);
+        else return null;
+    }
+
+    /**
+     * Validates and builds an array of characters from the placeholder string
+     * @param placeholder !MFMF! where M = Mother F = Father so !MF! would be the maternal grandfather etc.
+     * @return true if the string is valid and the class has been updated
+     */
+    private boolean buildPath(String placeholder)
+    {
         String ph = placeholder.replace("!","").toUpperCase().trim();
         if (ph.length() !=0)
         {
             ancestorPath = ph.toCharArray();
             for (char c : ancestorPath)
-            {
-                if( (c!='M') && (c!='F')) throw new IllegalArgumentException("invalid character in ancestor path in AncestorPicker constructor");
-
-            }
+                if ((c != 'M') && (c != 'F')) return false;
         }
-        else  throw new IllegalArgumentException("no valid characters in ancestor path in AncestorPicker constructor");
-        // have a valid ancestor path
+        else  return false;
+        return true;
     }
 
-    Individual findAncestor(Individual person, char[] path)
+    /**
+     * A recursive method to find the specified ancestor of the person
+     * @param person    The immediate descendant of the next candidate ancestor
+     * @param path      [M,F,M,F] where M = Mother F = Father so [M,F] would be the maternal grandfather etc.
+     * @return          The Individual person if found, null otherwise
+     */
+    private Individual findAncestor(Individual person, char[] path)
     {
+        Individual nextPerson = null;
+
         FamilyChild fc;
         if (person.getFamiliesWhereChild()!= null) {
             if (person.getFamiliesWhereChild().get(0) != null)
@@ -61,7 +98,7 @@ public class AncestorPicker
                 family = fc.getFamily();
                 IndividualReference wifeRef = family.getWife();
                 if (wifeRef != null)
-                    return family.getWife().getIndividual();
+                    nextPerson = family.getWife().getIndividual();
             } else return null;
         }
         if (path[0]=='F')
@@ -72,9 +109,13 @@ public class AncestorPicker
                 family = fc.getFamily();
                 IndividualReference husbandRef = family.getHusband();
                 if (husbandRef!=null)
-                    return family.getHusband().getIndividual();
+                    nextPerson =  family.getHusband().getIndividual();
             }else return null;
         }
-        return null; //invalid character
+        if (nextPerson==null)return  null; //invalid character
+
+        if (path.length==1)  return nextPerson;
+        else // not gone back far enough yet, recurse
+            return findAncestor(nextPerson, Arrays.copyOfRange(path,1,path.length-1));
     }
 }
