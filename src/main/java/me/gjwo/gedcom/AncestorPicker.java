@@ -19,7 +19,6 @@
 
 package me.gjwo.gedcom;
 
-import org.gedcom4j.factory.IndividualFactory;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.FamilyChild;
 import org.gedcom4j.model.Individual;
@@ -27,13 +26,16 @@ import org.gedcom4j.model.IndividualReference;
 
 import java.util.Arrays;
 
+/**
+ * This class finds a specific ancestor of a given person based on a placeholder
+ */
 public class AncestorPicker
 {
     private final Individual focusPerson;
     private char[] ancestorPath;
 
     /**
-     * This class finds a specific ancestor of a given person based on a placeholder
+     * Class Constructor
      * @param person        The starting person
      * @param placeholder   !MFMF! where M = Mother F = Father so !MF! would be the maternal grandfather etc.
      * @throws IllegalArgumentException if the person is null
@@ -42,7 +44,17 @@ public class AncestorPicker
     {
         if (person == null) throw new IllegalArgumentException("Null person in AncestorPicker constructor");
         focusPerson = person;
+        if (!buildPath(placeholder)) throw new IllegalArgumentException("Invalid ancestor path in AncestorPicker constructor");
         // have a valid ancestor path
+    }
+
+    /**
+     * Finds the ancestor stored in the class  of the focus person stored in the class
+     * @return the Individual ancestor or null if not found
+     */
+    public Individual findAncestor()
+    {
+        return findAncestor(focusPerson, ancestorPath);
     }
 
     /**
