@@ -19,42 +19,31 @@
 
 package me.gjwo.gedcom.pages.elements;
 
-import me.gjwo.gedcom.HtmlWrapper;
-import me.gjwo.gedcom.PersonFactBuilder;
+import me.gjwo.gedcom.AncestorPicker;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
+import org.gedcom4j.model.Family;
+import org.gedcom4j.model.FamilyChild;
 import org.gedcom4j.model.Individual;
 
-import java.util.Collections;
-import java.util.List;
-
-public class PersonFactsBlockElement extends WebElement
+public class PersonFindAncestorElement extends WebElement
 {
     private final String htmlString;
 
     /**
-     * PersonFactsSummaryElement    -   Builds an HTML table containing key personal events on a single row
-     * @param person                    the person that is the focus
+     * PersonKeyEventsElement - Constructor builds an HTML table of key events
+     * @param params            A stricture of yhe focus person for information and a placeholder
      */
-    PersonFactsBlockElement(Individual person)
+    public PersonFindAncestorElement(AncestorParams params)
     {
-        if (person != null)
-        {
-            PersonFactBuilder pfb = new PersonFactBuilder(person);
-            String nameLink = HtmlWrapper.wrapHyperlink(pfb.buildPersonFamilyLink(person), pfb.tail(person.getFormattedName().replace("/", ""), 25));
-            String birth = "b." + pfb.tail(pfb.getDateOfBirth(), 4) + "&nbsp;" + pfb.head(pfb.getPlaceOfBirth(), 22);
-            String death = "d." + pfb.tail(pfb.getDateOfDeath(), 4) + "&nbsp;" + pfb.head(pfb.getPlaceOfDeath(), 22);
-            htmlString = nameLink + "<br>" + birth + "<br>" + death;
-        }
-        else
-        {
-            htmlString = "<br><br>";
-        }
+        AncestorPicker ancestorPicker = new AncestorPicker(params.person, params.placeholder);
+        PersonFactsBlockElement pfbe = new PersonFactsBlockElement(ancestorPicker.findAncestor());
+        htmlString = pfbe.render();
     }
 
     /**
-     * render   -   returns HTML containing a summary fact table
-     * @return      the html string
+     * render   -   Returns an HTML string
+     * @return      The html string
      */
     @Override
-    public String render(){return htmlString;}
+    public String render() {return htmlString;}
 }

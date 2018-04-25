@@ -45,6 +45,19 @@ public enum ElementTypes {
     NAMES("!NAMES!",NamesElement.class,NamesParams.class),
     FAMILIES_ELEMENT("!INTERNAL USE ONLY!",FamiliesElement.class,Individual.class),
     FAMILY_KEY_EVENTS_ELEMENT("!INTERNAL USE ONLY!",FamilyKeyEventsElement.class, Family.class),
+    FIND_ANC_F("!F!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_FF("!FF!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_FM("!FM!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_FFF("!FFF!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_FFM("!FFM!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_FMF("!FMF!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_FMM("!FMM!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_MF("!MF!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_MM("!MM!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_MFF("!MFF!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_MFM("!MFM!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_MMF("!MMF!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_MMM("!MMM!",PersonFindAncestorElement.class,AncestorParams.class),
     TEST_ELEMENT("!TEST!",TestElement.class,Individual.class);
 
     private final String placeholder;

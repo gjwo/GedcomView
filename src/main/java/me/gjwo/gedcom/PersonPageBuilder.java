@@ -22,6 +22,7 @@ package me.gjwo.gedcom;
 import me.gjwo.gedcom.pages.abstractions.WebElement;
 import me.gjwo.gedcom.pages.elements.ElementTypes;
 import me.gjwo.gedcom.pages.elements.NamesParams;
+import me.gjwo.gedcom.pages.elements.AncestorParams;
 import org.gedcom4j.model.Family;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.Source;
@@ -32,7 +33,11 @@ import java.util.Map;
 public class PersonPageBuilder
 {
     private String htmlContent;
-    PersonPageBuilder(String template, String title, Individual person, NamesParams namesParams, Map<String,Source> sources)
+    PersonPageBuilder(String template,
+                      String title,
+                      Individual person,
+                      NamesParams namesParams,
+                      Map<String,Source> sources)
     {
         htmlContent = template;
         for (ElementTypes et:ElementTypes.values())
@@ -55,13 +60,16 @@ public class PersonPageBuilder
                         if(et.getConstructorParam()==String.class)
                             webElementInst = constructor.newInstance(title); // create a new class with string
                         else
-                            if(et.getConstructorParam()==NamesParams.class)
-                                webElementInst = constructor.newInstance(namesParams);
-                            else
-                                if (et.getConstructorParam()==Map.class)
-                                    webElementInst = constructor.newInstance(sources);
-                                else
-                                    throw new Exception("constructor signature not handled");
+                        if(et.getConstructorParam()==NamesParams.class)
+                            webElementInst = constructor.newInstance(namesParams);
+                        else
+                        if (et.getConstructorParam()==Map.class)
+                            webElementInst = constructor.newInstance(sources);
+                        else
+                        if(et.getConstructorParam()==AncestorParams.class)
+                            webElementInst = constructor.newInstance(new AncestorParams(person,et.getPlaceholder()));
+                        else
+                            throw new Exception("constructor signature not handled");
                     }
                     htmlContent = htmlContent.replace(et.getPlaceholder(), webElementInst.render()); //invoke a class method
                 } catch (Exception e)
