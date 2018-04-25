@@ -28,6 +28,8 @@ import java.util.Arrays;
 
 /**
  * This class finds a specific ancestor of a given person based on a placeholder
+ * which contains a route to the required ancestor for example
+ * the person's Mother's Father's Mother would be "!MFM!"
  */
 public class AncestorPicker
 {
@@ -100,9 +102,7 @@ public class AncestorPicker
         FamilyChild fc;
         Family family;
         IndividualReference parentRef;
-        if (person == null) {
-            return null;
-        }
+        if (person == null) return null;
         if (path.length==0 ) return person;
 
         if (person.getFamiliesWhereChild()!= null) {
@@ -110,42 +110,31 @@ public class AncestorPicker
                 fc = person.getFamiliesWhereChild().get(0);
             else return null;
         }else return null;
-        if (path[0]=='M')
-        {
-            //find mother
-            if (fc.getFamily() != null)
-            {
+
+        if (path[0]=='M') //find mother
+            if (fc.getFamily() != null) {
                 family = fc.getFamily();
                 parentRef = family.getWife();
                 if (parentRef != null)
                     nextPerson = family.getWife().getIndividual();
                 else return null;
             } else return null;
-        }else {
-            if (path[0]=='F')
-            {
-                //find father
-                if (fc.getFamily()!= null)
-                {
-                    family = fc.getFamily();
-                    parentRef = family.getHusband();
-                    if (parentRef!=null)
-                        nextPerson =  family.getHusband().getIndividual();
-                    else return null;
-                }else return null;
-            }else {
-                System.out.println("FindAncestor: "+"path[0] = "+ path[0]);
-                return null;
-            }
-        }
-
-        //if (nextPerson==null)return  null;
-
-        if (path.length==1)  return nextPerson;
         else
-        { // not gone back far enough yet, recurse
-            path = Arrays.copyOfRange(path, 1, path.length);
-            return findAncestor(nextPerson,path);
+            if (path[0] == 'F') //find father
+                if (fc.getFamily() != null) {
+                family = fc.getFamily();
+                parentRef = family.getHusband();
+                if (parentRef != null)
+                    nextPerson = family.getHusband().getIndividual();
+                else return null;
+            } else return null;
+            else return null; //invalid character in path
+
+        if (path.length==1)  return nextPerson; // we have found what we were looking for
+        else
+        { // not gone back far enough yet
+            path = Arrays.copyOfRange(path, 1, path.length); //remove first character in path as we have done that
+            return findAncestor(nextPerson,path); //recurse with new focus and path
         }
     }
 }
