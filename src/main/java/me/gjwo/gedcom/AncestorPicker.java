@@ -40,12 +40,12 @@ public class AncestorPicker
      * @param placeholder   !MFMF! where M = Mother F = Father so !MF! would be the maternal grandfather etc.
      * @throws IllegalArgumentException if the person is null
      */
-    public AncestorPicker(Individual person, String placeholder) throws IllegalArgumentException
+    public AncestorPicker(Individual person, String placeholder)
     {
-        if (person == null) throw new IllegalArgumentException("Null person in AncestorPicker constructor");
         focusPerson = person;
-        if (!buildPath(placeholder)) throw new IllegalArgumentException("Invalid ancestor path in AncestorPicker constructor");
-        // have a valid ancestor path
+        if (!buildPath(placeholder)){
+            ancestorPath = new char[0];
+        }
     }
 
     /**
@@ -81,9 +81,10 @@ public class AncestorPicker
         {
             ancestorPath = ph.toCharArray();
             for (char c : ancestorPath)
-                if ((c != 'M') && (c != 'F')) return false;
+                if ((c != 'F') && (c != 'M'))
+                    return false;
         }
-        else  return false;
+        else return false;
         return true;
     }
 
@@ -95,39 +96,56 @@ public class AncestorPicker
      */
     private Individual findAncestor(Individual person, char[] path)
     {
-        Individual nextPerson = null;
-
+        Individual nextPerson;
         FamilyChild fc;
+        Family family;
+        IndividualReference parentRef;
+        if (person == null) {
+            return null;
+        }
+        if (path.length==0 ) return person;
+
         if (person.getFamiliesWhereChild()!= null) {
             if (person.getFamiliesWhereChild().get(0) != null)
                 fc = person.getFamiliesWhereChild().get(0);
             else return null;
         }else return null;
-        if (path[0]=='M') {
-            //find mother
-            Family family;
-            if (fc.getFamily() != null) {
-                family = fc.getFamily();
-                IndividualReference wifeRef = family.getWife();
-                if (wifeRef != null)
-                    nextPerson = family.getWife().getIndividual();
-            } else return null;
-        }
-        if (path[0]=='F')
+        if (path[0]=='M')
         {
-            //find father
-            Family family;
-            if (fc.getFamily()!= null) {
+            //find mother
+            if (fc.getFamily() != null)
+            {
                 family = fc.getFamily();
-                IndividualReference husbandRef = family.getHusband();
-                if (husbandRef!=null)
-                    nextPerson =  family.getHusband().getIndividual();
-            }else return null;
+                parentRef = family.getWife();
+                if (parentRef != null)
+                    nextPerson = family.getWife().getIndividual();
+                else return null;
+            } else return null;
+        }else {
+            if (path[0]=='F')
+            {
+                //find father
+                if (fc.getFamily()!= null)
+                {
+                    family = fc.getFamily();
+                    parentRef = family.getHusband();
+                    if (parentRef!=null)
+                        nextPerson =  family.getHusband().getIndividual();
+                    else return null;
+                }else return null;
+            }else {
+                System.out.println("FindAncestor: "+"path[0] = "+ path[0]);
+                return null;
+            }
         }
-        if (nextPerson==null)return  null; //invalid character
+
+        //if (nextPerson==null)return  null;
 
         if (path.length==1)  return nextPerson;
-        else // not gone back far enough yet, recurse
-            return findAncestor(nextPerson, Arrays.copyOfRange(path,1,path.length-1));
+        else
+        { // not gone back far enough yet, recurse
+            path = Arrays.copyOfRange(path, 1, path.length);
+            return findAncestor(nextPerson,path);
+        }
     }
 }

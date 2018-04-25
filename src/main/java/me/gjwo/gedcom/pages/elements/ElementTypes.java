@@ -52,6 +52,7 @@ public enum ElementTypes {
     FIND_ANC_FFM("!FFM!",PersonFindAncestorElement.class,AncestorParams.class),
     FIND_ANC_FMF("!FMF!",PersonFindAncestorElement.class,AncestorParams.class),
     FIND_ANC_FMM("!FMM!",PersonFindAncestorElement.class,AncestorParams.class),
+    FIND_ANC_M("!M!",PersonFindAncestorElement.class,AncestorParams.class),
     FIND_ANC_MF("!MF!",PersonFindAncestorElement.class,AncestorParams.class),
     FIND_ANC_MM("!MM!",PersonFindAncestorElement.class,AncestorParams.class),
     FIND_ANC_MFF("!MFF!",PersonFindAncestorElement.class,AncestorParams.class),

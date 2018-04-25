@@ -34,12 +34,6 @@ public class PersonAncestorsElement extends WebElement
      */
     public PersonAncestorsElement(Individual person)
     {
-        Family fa[];
-        FamiliesElement pfe;
-        fa = person.getFamiliesWhereChild() != null? person.getFamiliesWhereChild().stream().map(FamilyChild::getFamily).toArray(Family[]::new):new Family[0];
-        pfe = new FamiliesElement(person,false,false,fa);
-        pfe.render();
-
         PersonFactsBlockElement pfbe;
         pfbe = new PersonFactsBlockElement(person);
         htmlString = pfbe.render();
